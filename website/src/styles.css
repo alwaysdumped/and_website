@@ -1,0 +1,259 @@
+/* ========== RESET & GLOBAL ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f8f8f8;
+  color: #222;
+  scroll-behavior: smooth;
+}
+
+/* ========== NAVBAR ========== */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 70px;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 1000;
+}
+.navbar-left .logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: white;
+}
+.navbar-center .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+.navbar-center .nav-links a,
+.navbar-center .link-btn {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+.navbar-center .nav-links a:hover,
+.navbar-center .link-btn:hover {
+  color: #ff3c78;
+}
+.navbar-right .signup-btn {
+  background: #ff3c78;
+  border: none;
+  padding: 8px 16px;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.navbar-right .signup-btn:hover {
+  background: #ff1f60;
+}
+
+/* ========== LANDING ========== */
+.landing {
+  height: 100vh;
+  background: linear-gradient(135deg, #111, #333); /* fallback gradient */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+
+.landing-content h1 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+.landing-content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+.explore-btn {
+  background: #ff3c78;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.explore-btn:hover {
+  background: #ff1f60;
+}
+
+/* ========== WHAT WE DO ========== */
+.what-we-do {
+  padding: 80px 20px;
+  text-align: center;
+  background: #fff;
+}
+.what-we-do h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.what-we-do p {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* ========== WORKS GRID ========== */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 60px 20px;
+  background: #f2f2f2;
+}
+.grid-item {
+  position: relative;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.7s ease-in-out;
+}
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.7s ease-in-out;
+}
+.grid-text {
+  position: relative;
+  font-size: 3rem;
+  font-weight: 900;
+  color: white;
+  transition: all 0.7s ease-in-out;
+  z-index: 1;
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: white;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: black;
+  opacity: 0.7;
+  transition: opacity 0.7s ease-in-out;
+}
+.grid-item:hover .grid-bg {
+  opacity: 1;
+}
+.grid-item:hover .grid-text {
+  -webkit-text-fill-color: transparent;
+}
+.grid-item:hover .overlay {
+  opacity: 0;
+}
+
+/* ========== SIGNUP ========== */
+/* ========== SIGNUP PAGE ========== */
+.signup {
+  padding: 80px 20px;
+  background: #fff;
+  text-align: center;
+  min-height: 100vh;
+}
+.signup h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+.signup-form {
+  max-width: 500px;
+  margin: 0 auto 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+.form-group input,
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+}
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #ff3c78;
+}
+.signup-submit {
+  background: #ff3c78;
+  border: none;
+  padding: 12px 20px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.signup-submit:hover {
+  background: #ff1f60;
+}
+.back-btn {
+  margin-top: 10px;
+  background: transparent;
+  border: none;
+  color: #ff3c78;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.back-btn:hover {
+  color: #ff1f60;
+}
+
+
+/* ========== FOOTER ========== */
+.footer {
+  background: #111;
+  color: #aaa;
+  padding: 30px 20px;
+  text-align: center;
+}
+.footer-links {
+  margin-top: 10px;
+}
+.footer-links a {
+  margin: 0 10px;
+  color: #ddd;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-links a:hover {
+  color: #ff3c78;
+}
