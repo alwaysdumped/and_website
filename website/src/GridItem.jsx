@@ -4,11 +4,9 @@ import React from "react";
 const GridItem = ({ label, bgImage, textBgImage }) => {
   return (
     <div className="grid-item">
+      {/* MODIFIED: Replaced background div with an img tag for better control */}
       {bgImage && (
-        <div
-          className="grid-bg"
-          style={{ backgroundImage: `url(${bgImage})` }}
-        ></div>
+        <img src={bgImage} alt="" className="grid-bg-img" />
       )}
 
       <h1 className="grid-text text-hover-target">{label}</h1>
