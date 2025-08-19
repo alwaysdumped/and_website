@@ -28,7 +28,8 @@ const FestPage = () => {
       <div className="breadcrumb">
         <Link to="/">Home</Link> / <span>{pageTitle}</span>
       </div>
-      <section className="works-grid">
+      {/* MODIFIED: Using a new "fest-grid" class for a 3-column layout */}
+      <section className="fest-grid">
         {years.map((year) => {
           const yearData = festData[year];
           return (

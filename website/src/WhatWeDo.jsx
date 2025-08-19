@@ -1,3 +1,4 @@
+// src/WhatWeDo.jsx
 import React from "react";
 
 const WhatWeDo = () => {

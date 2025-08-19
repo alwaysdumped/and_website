@@ -3,11 +3,10 @@ import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ScrollContext } from "./App";
 
-const Navbar = ({ scrollToWorks, isSticky, isSignupPage }) => {
+const Navbar = ({ scrollToWorks, isSticky, isSignupPage, isHomePage }) => { // MODIFIED: Added isHomePage prop
   const location = useLocation();
   const { showSignupInNav } = useContext(ScrollContext);
   
-  // ADDED: A variable to check if we are on the contact page
   const isContactPage = location.pathname === '/contact';
 
   const handleHomeClick = (e) => {
@@ -31,10 +30,12 @@ const Navbar = ({ scrollToWorks, isSticky, isSignupPage }) => {
     }
   };
 
+  const shouldMakeSpaceForButton = (isSticky || showSignupInNav) && !isContactPage && location.pathname !== '/signup';
+
   return (
-    <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isSignupPage ? "navbar-signup" : ""}`}>
-      {/* MODIFIED: The .with-button class is now disabled on the contact page */}
-      <div className={`navbar-right ${showSignupInNav && !isContactPage ? 'with-button' : ''}`}>
+    // MODIFIED: Added logic to apply a 'home-scroll' class only when sticky on the homepage
+    <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isSticky && isHomePage ? "home-scroll" : ""} ${isSignupPage ? "navbar-signup" : ""}`}>
+      <div className={`navbar-right ${shouldMakeSpaceForButton ? 'with-button' : ''}`}>
         <ul className="nav-links">
           <li>
             <Link to="/" onClick={handleHomeClick}>Home</Link>
@@ -43,7 +44,6 @@ const Navbar = ({ scrollToWorks, isSticky, isSignupPage }) => {
             <Link to="/#works" onClick={handleWorksClick}>Our Works</Link>
           </li>
           
-          {/* MODIFIED: Conditionally render Contact link or Sign Up button */}
           {isContactPage ? (
             <li>
               <Link to="/signup" className="signup-btn">
@@ -58,7 +58,6 @@ const Navbar = ({ scrollToWorks, isSticky, isSignupPage }) => {
         </ul>
       </div>
 
-      {/* MODIFIED: This button is now hidden on the contact page as well */}
       {location.pathname !== "/signup" && !isContactPage && (
         <Link 
           to="/signup"

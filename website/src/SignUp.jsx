@@ -40,7 +40,6 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // ... (Your existing submission logic is fine and remains the same)
     console.log("Form submitted:", formData);
     alert("✅ Sign up successful!");
     navigate("/");
@@ -48,7 +47,6 @@ const SignUp = () => {
 
   return (
     <div className="signup-container">
-      {/* Panel 1: Image & Welcome Text */}
       <div className="signup-image-panel">
         <div className="image-panel-content">
           <h1>Join Our Community</h1>
@@ -56,7 +54,6 @@ const SignUp = () => {
         </div>
       </div>
 
-      {/* Panel 2: Form */}
       <div className="signup-form-panel">
         <form className="signup-form" onSubmit={handleSubmit}>
           <h2>Create Account</h2>

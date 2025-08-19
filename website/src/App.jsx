@@ -15,19 +15,15 @@ import WorksGrid from "./WorksGrid";
 import Footer from "./Footer";
 import SignUp from "./SignUp";
 import Contact from "./Contact";
-// --- NEW IMPORTS ---
 import FestPage from "./FestPage";
 import GalleryPage from "./GalleryPage";
 import "./styles.css";
 
-// This component scrolls the window to the top on every route change.
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
   return null;
 };
 
@@ -60,7 +56,6 @@ const Layout = ({ scrollToWorks }) => {
       } else {
         setIsLogoVisible(true);
       }
-      
       setShowSignupInNav(window.scrollY > 300); 
     };
 
@@ -83,6 +78,7 @@ const Layout = ({ scrollToWorks }) => {
   };
 
   const isSignupPage = location.pathname === '/signup';
+  const isHomePage = location.pathname === '/'; // MODIFIED: Added isHomePage flag
 
   return (
     <ScrollContext.Provider value={{ showSignupInNav }}>
@@ -98,6 +94,7 @@ const Layout = ({ scrollToWorks }) => {
         scrollToWorks={scrollToWorks}
         isSticky={!isLogoVisible || isSignupPage || location.pathname.startsWith('/works')}
         isSignupPage={isSignupPage}
+        isHomePage={isHomePage} // MODIFIED: Pass isHomePage to Navbar
       />
 
       <main>
@@ -132,7 +129,6 @@ const App = () => {
           <Route index element={<HomePageContent worksRef={worksRef} />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="contact" element={<Contact />} />
-          {/* --- NEW ROUTES FOR WORKS --- */}
           <Route path="works/:festName" element={<FestPage />} />
           <Route path="works/:festName/:year" element={<GalleryPage />} />
         </Route>
