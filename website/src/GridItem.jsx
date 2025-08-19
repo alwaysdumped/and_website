@@ -1,6 +1,6 @@
 import React from "react";
 
-const GridItem = ({ label, bgColor, bgImage }) => {
+const GridItem = ({ label, bgColor, bgImage, textBgImage }) => {
   return (
     <div className="grid-item" style={{ backgroundColor: bgColor }}>
       {bgImage && (
@@ -11,7 +11,7 @@ const GridItem = ({ label, bgColor, bgImage }) => {
       )}
       <h1
         className="grid-text"
-        style={bgImage ? { backgroundImage: `url(${bgImage})` } : {}}
+        style={textBgImage ? { backgroundImage: `url(${textBgImage})` } : {}}
       >
         {label}
       </h1>

@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const Navbar = ({ scrollToWorks }) => {
   const location = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleHomeClick = (e) => {
     if (location.pathname === "/") {
@@ -14,23 +23,19 @@ const Navbar = ({ scrollToWorks }) => {
   const handleWorksClick = (e) => {
     if (location.pathname === "/") {
       e.preventDefault();
-      if (scrollToWorks) {
-        scrollToWorks();
-      }
+      scrollToWorks && scrollToWorks();
     }
   };
 
   return (
-    <nav className="navbar">
-      {/* Left: Logo */}
-      <div className="navbar-left">
-        <Link to="/" className="logo" onClick={handleHomeClick}>
-          LOGO
-        </Link>
-      </div>
+    <nav className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
+      {/* Logo */}
+      <Link to="/" className="logo" onClick={handleHomeClick}>
+        <img src="/images/logo.png" alt="Company Logo" />
+      </Link>
 
-      {/* Center: Links */}
-      <div className="navbar-center">
+      {/* Right items */}
+      <div className="navbar-right">
         <ul className="nav-links">
           <li>
             <Link to="/" onClick={handleHomeClick}>Home</Link>
@@ -42,10 +47,7 @@ const Navbar = ({ scrollToWorks }) => {
             <a href="#contact">Contact</a>
           </li>
         </ul>
-      </div>
 
-      {/* Right: Sign Up button */}
-      <div className="navbar-right">
         <Link to="/signup" className="signup-btn">Sign Up</Link>
       </div>
     </nav>
