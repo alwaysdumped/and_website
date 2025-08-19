@@ -14,11 +14,23 @@ import WhatWeDo from "./WhatWeDo";
 import WorksGrid from "./WorksGrid";
 import Footer from "./Footer";
 import SignUp from "./SignUp";
-import FestPage from "./FestPage"; // ADDED
-import GalleryPage from "./GalleryPage"; // ADDED
+import Contact from "./Contact";
+// --- NEW IMPORTS ---
+import FestPage from "./FestPage";
+import GalleryPage from "./GalleryPage";
 import "./styles.css";
 
-// Create a Context to share scroll state
+// This component scrolls the window to the top on every route change.
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 export const ScrollContext = createContext();
 
 const Layout = ({ scrollToWorks }) => {
@@ -27,8 +39,16 @@ const Layout = ({ scrollToWorks }) => {
   const [showSignupInNav, setShowSignupInNav] = useState(false);
 
   useEffect(() => {
+    if (location.hash === '#works') {
+      setTimeout(() => {
+        const worksElement = document.getElementById('works');
+        if (worksElement) {
+          worksElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 0);
+    }
+    
     const handleScroll = () => {
-      // Logic for logo visibility
       const logo = document.querySelector(".main-logo");
       const worksGrid = document.querySelector(".works-grid");
       if (logo && worksGrid) {
@@ -41,7 +61,6 @@ const Layout = ({ scrollToWorks }) => {
         setIsLogoVisible(true);
       }
       
-      // Logic for signup button transition
       setShowSignupInNav(window.scrollY > 300); 
     };
 
@@ -49,14 +68,12 @@ const Layout = ({ scrollToWorks }) => {
       window.addEventListener("scroll", handleScroll);
       handleScroll();
     } else {
-      // On other pages, reset the scroll-dependent states
-      window.removeEventListener("scroll", handleScroll);
       setIsLogoVisible(true);
-      setShowSignupInNav(true); 
+      setShowSignupInNav(false);
     }
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [location.pathname]);
+  }, [location]);
 
   const handleLogoClick = (e) => {
     if (location.pathname === "/") {
@@ -79,7 +96,7 @@ const Layout = ({ scrollToWorks }) => {
       
       <Navbar
         scrollToWorks={scrollToWorks}
-        isSticky={!isLogoVisible || location.pathname !== '/'}
+        isSticky={!isLogoVisible || isSignupPage || location.pathname.startsWith('/works')}
         isSignupPage={isSignupPage}
       />
 
@@ -95,7 +112,7 @@ const HomePageContent = ({ worksRef }) => (
   <>
     <Landing />
     <WhatWeDo />
-    <div ref={worksRef}>
+    <div id="works" ref={worksRef}>
       <WorksGrid />
     </div>
   </>
@@ -109,13 +126,15 @@ const App = () => {
 
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout scrollToWorks={scrollToWorks} />}>
           <Route index element={<HomePageContent worksRef={worksRef} />} />
           <Route path="signup" element={<SignUp />} />
-          {/* 👇 UPDATED ROUTES 👇 */}
-          <Route path="fest/:festName" element={<FestPage />} />
-          <Route path="fest/:festName/:year" element={<GalleryPage />} />
+          <Route path="contact" element={<Contact />} />
+          {/* --- NEW ROUTES FOR WORKS --- */}
+          <Route path="works/:festName" element={<FestPage />} />
+          <Route path="works/:festName/:year" element={<GalleryPage />} />
         </Route>
       </Routes>
     </Router>

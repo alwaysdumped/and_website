@@ -78,7 +78,7 @@ body {
   color: white;
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
 }
-.navbar .signup-btn {
+.navbar > .signup-btn {
   position: absolute;
   right: 40px; /* Aligns with the navbar's padding */
   /* The vertical alignment is handled by the parent .navbar's flex properties */
@@ -89,6 +89,7 @@ body {
   list-style: none;
   display: flex;
   gap: 30px;
+  align-items: center; /* Vertically aligns nav items */
 }
 .nav-links a {
   text-decoration: none;
@@ -280,9 +281,10 @@ body {
 .grid-item:hover .overlay {
   opacity: 0.9;
 }
+
 /* ========= CONTACT =========*/
 .contact-tagline {
-  font-size: 3.3rem; /* Increased from 2.5rem */
+  font-size: 3.3rem;
   font-weight: bold;
   line-height: 1.2;
   color: #4a90e2;
@@ -292,20 +294,22 @@ body {
 .contact-content {
   display: flex;
   align-items: center;
-  gap: 40px; /* Reduced gap to accommodate 3 columns */
-  max-width: 1400px; /* Increased max-width */
+  gap: 60px; /* Increased gap for better spacing */
+  max-width: 1200px; /* Adjusted max-width for balance */
   width: 100%;
+  margin: 0 auto; /* Added to center the content block */
 }
 
 .contact-text {
-  flex: 0.8;
+  flex: 1; /* Set to equal width */
 }
 
 .image-placeholders {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  flex: 1.2;
+  flex: 1; /* Set to equal width */
+  align-items: center; /* Center the image blocks within the column */
 }
 
 .image-placeholder {
@@ -321,11 +325,11 @@ body {
   font-size: 1rem;
 }
 
-.contact-blocks {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  flex: 1;
+/* MODIFIED: A more aggressive reduction in top padding */
+.contact-page-container {
+  /* This overrides the padding from .page-container (120px 40px 60px) */
+  /* The navbar is 100px tall, this leaves a 5px gap. */
+  padding: 105px 40px 60px;
 }
 
 @media (max-width: 1024px) {
@@ -341,24 +345,8 @@ body {
   }
 
   .image-placeholder {
-    width: 150px;
-    height: 120px;
-  }
-}
-
-@media (max-width: 768px) {
-  .image-placeholders {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .contact-tagline {
-    font-size: 2.5rem;
-    text-align: center;
-  }
-
-  .contact-label {
-    font-size: 1.5rem;
+    width: 200px; /* Adjusted for better fit */
+    height: 150px;
   }
 }
 
@@ -369,12 +357,17 @@ body {
   }
 
   .contact-tagline {
-    font-size: 2.5rem; /* Increased from 2rem for mobile */
+    font-size: 2.5rem;
     text-align: center;
   }
 
   .contact-label {
     font-size: 1.5rem;
+  }
+  
+  .image-placeholders {
+    flex-direction: column;
+    align-items: center;
   }
 }
 
@@ -520,7 +513,7 @@ body {
   color: #222;
 }
 
-/* Make grid items fill the link wrapper */
+/* --- NEW --- Make grid items fill the link wrapper */
 .grid-item-link {
   display: block;
   text-decoration: none;
@@ -528,7 +521,7 @@ body {
   position: relative; /* Needed for hover effects */
 }
 
-/* ========== GALLERY PAGE STYLES ========== */
+/* --- NEW --- GALLERY PAGE STYLES */
 .breadcrumb {
   text-align: center;
   margin-bottom: 40px;
@@ -577,6 +570,12 @@ body {
 @media (max-width: 768px) {
   .masonry-gallery {
     column-count: 2;
+  }
+  .works-grid {
+    grid-template-columns: 1fr;
+  }
+  .grid-text {
+    font-size: 8rem;
   }
 }
 

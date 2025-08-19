@@ -1,75 +1,46 @@
 // src/FestPage.jsx
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams, Link } from "react-router-dom";
+import { worksData } from "./data";
 import GridItem from "./GridItem";
-import "./styles.css";
-
-const STRAPI_URL = "http://localhost:1337";
 
 const FestPage = () => {
-  const { festName } = useParams(); // festName here is the slug, e.g., 'atmos'
-  const [fest, setFest] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { festName } = useParams();
+  const festData = worksData[festName];
 
-  useEffect(() => {
-    const fetchFestData = async () => {
-      try {
-        const response = await fetch(
-          `${STRAPI_URL}/api/event-years?populate=*&filters[fest][slug][$eq]=${festName}`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        
-        if (data.data.length > 0) {
-            const festDisplayName = data.data[0].attributes.fest.data.attributes.name;
-            setFest({ name: festDisplayName, years: data.data });
-        } else {
-            // Handle case where the fest exists but has no years yet.
-            const festResponse = await fetch(`${STRAPI_URL}/api/fests?filters[slug][$eq]=${festName}`);
-            const festData = await festResponse.json();
-            if (festData.data.length > 0) {
-                 setFest({ name: festData.data[0].attributes.name, years: [] });
-            } else {
-                 setFest(null); // No fest found
-            }
-        }
-      } catch (e) {
-        setError(e.message);
-        console.error("Failed to fetch fest data:", e);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Capitalize the first letter of the fest name for the title
+  const pageTitle = festName.charAt(0).toUpperCase() + festName.slice(1);
 
-    fetchFestData();
-  }, [festName]);
+  if (!festData) {
+    return (
+      <div className="page-container">
+        <h1 className="page-title">Fest Not Found</h1>
+      </div>
+    );
+  }
 
-  if (loading) {
-    return <div className="page-container"><h2>Loading...</h2></div>;
-  }
-  if (error) {
-    return <div className="page-container"><h2>Error: {error}</h2></div>;
-  }
-  if (!fest) {
-    return <div className="page-container"><h2>Fest not found!</h2></div>;
-  }
+  // Get the years and sort them in descending order (newest first)
+  const years = Object.keys(festData).sort((a, b) => b - a);
 
   return (
     <div className="page-container">
-      <h1 className="page-title">{fest.name}</h1>
+      <h1 className="page-title">{pageTitle}</h1>
+      <div className="breadcrumb">
+        <Link to="/">Home</Link> / <span>{pageTitle}</span>
+      </div>
       <section className="works-grid">
-        {fest.years.length > 0 ? fest.years.map((item) => (
-          <Link key={item.id} to={`/fest/${festName}/${item.attributes.year}`} className="grid-item-link">
-            <GridItem
-              label={item.attributes.label}
-              bgImage={`${STRAPI_URL}${item.attributes.bgImage.data.attributes.url}`}
-              textBgImage={`${STRAPI_URL}${item.attributes.textBgImage.data.attributes.url}`}
-            />
-          </Link>
-        )) : <p style={{textAlign: 'center'}}>No events found for this fest yet.</p>}
+        {years.map((year) => {
+          const yearData = festData[year];
+          return (
+            <Link key={year} to={`/works/${festName}/${year}`} className="grid-item-link">
+              <GridItem
+                label={`${pageTitle} ${year}`}
+                bgImage={yearData.coverImage}
+                textBgImage={yearData.coverImage} // Using cover image for text fill as well
+              />
+            </Link>
+          );
+        })}
       </section>
     </div>
   );

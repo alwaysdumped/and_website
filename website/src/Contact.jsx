@@ -1,9 +1,10 @@
-//placeholder 
+// src/Contact.jsx
 import React from "react";
 
 const Contact = () => {
   return (
-    <div className="contact-container" style={{ padding: "90px 1rem 3rem"}}>
+    <div className="page-container contact-page-container">
+      <h1 className="page-title">Contact Us</h1>
       <div className="contact-content">
         <div className="contact-text">
           <h1 className="contact-tagline">

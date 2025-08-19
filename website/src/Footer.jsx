@@ -1,24 +1,33 @@
 // src/Footer.jsx
-
 import React from "react";
+// MODIFIED: Imported Link and useLocation
+import { Link, useLocation } from "react-router-dom";
 
 const Footer = () => {
+  // ADDED: Get location to make click handler smarter
+  const location = useLocation();
+
   const handleHomeClick = (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    // MODIFIED: Only prevent default if already on the homepage
+    if (location.pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+    // On other pages, this function will do nothing, allowing the Link to navigate
   };
 
   return (
-    <footer id="contact" className="footer">
+    <footer className="footer">
       <p>© 2025 Department of Arts & Deco</p>
       <div className="footer-links">
-        <a href="#home" onClick={handleHomeClick}>
+        {/* MODIFIED: Changed <a> to <Link> and updated its handler */}
+        <Link to="/" onClick={handleHomeClick}>
           Home
-        </a>
-        <a href="#contact">Contact</a>
+        </Link>
+        <Link to="/contact">Contact</Link>
       </div>
     </footer>
   );
