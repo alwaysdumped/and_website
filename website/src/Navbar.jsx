@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
+// src/Navbar.jsx
+import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { ScrollContext } from "./App";
 
-const Navbar = ({ scrollToWorks }) => {
+const Navbar = ({ scrollToWorks, isSticky, isSignupPage }) => {
   const location = useLocation();
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { showSignupInNav } = useContext(ScrollContext);
 
   const handleHomeClick = (e) => {
     if (location.pathname === "/") {
@@ -28,14 +22,9 @@ const Navbar = ({ scrollToWorks }) => {
   };
 
   return (
-    <nav className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
-      {/* Logo */}
-      <Link to="/" className="logo" onClick={handleHomeClick}>
-        <img src="/images/logo.png" alt="Company Logo" />
-      </Link>
-
-      {/* Right items */}
-      <div className="navbar-right">
+    <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isSignupPage ? "navbar-signup" : ""}`}>
+      {/* MODIFIED: Added a conditional class here */}
+      <div className={`navbar-right ${showSignupInNav ? 'with-button' : ''}`}>
         <ul className="nav-links">
           <li>
             <Link to="/" onClick={handleHomeClick}>Home</Link>
@@ -47,9 +36,17 @@ const Navbar = ({ scrollToWorks }) => {
             <a href="#contact">Contact</a>
           </li>
         </ul>
-
-        <Link to="/signup" className="signup-btn">Sign Up</Link>
       </div>
+
+      {/* This button remains positioned absolutely */}
+      {location.pathname !== "/signup" && (
+        <Link 
+          to="/signup"
+          className={`signup-btn ${showSignupInNav ? 'visible' : 'hidden'}`}
+        >
+          Sign Up
+        </Link>
+      )}
     </nav>
   );
 };

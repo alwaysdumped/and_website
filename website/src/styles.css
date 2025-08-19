@@ -1,5 +1,22 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+/* ========== MAIN LOGO ========== */
+.main-logo {
+  position: fixed;
+  top: 15px;
+  left: 40px;
+  z-index: 1001;
+  display: block;
+  transition: opacity 0.4s ease;
+}
+
+.main-logo img {
+  height: 70px;
+  display: block;
+}
+.main-logo.logo-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* ========== RESET & GLOBAL ========== */
 * {
@@ -19,40 +36,52 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 50px;
+  height: 100px;
   display: flex;
-  justify-content: space-between; /* logo left, items right */
+  justify-content: flex-end;
   align-items: center;
   padding: 0 40px;
   z-index: 1000;
-  background: transparent; /* transparent initially */
-  transition: background 0.4s ease, box-shadow 0.4s ease;
+  background: transparent;
+  transition: background 0.4s ease, box-shadow 0.4s ease, height 0.4s ease;
 }
-
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 30px; /* spacing between links and signup */
+  gap: 30px;
+  /* ADDED: This will animate the links sliding over */
+  transition: margin-right 0.4s ease-in-out;
+}
+.navbar-right.with-button {
+  /* This value is the approximate width of your button plus the gap. */
+  /* You can adjust it slightly to get the perfect spacing. */
+  margin-right: 135px;
+}
+.navbar-scrolled {
+  height: 60px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+}
+.navbar-scrolled .signup-btn {
+  font-size: 0.9rem;
+  padding: 8px 14px;
 }
 
+/* This is the new rule for the signup page navbar height */
+.navbar.navbar-signup {
+  height: 100px;
+}
 /* Ensure text is visible on any background */
 .nav-links a,
 .logo,
 .signup-btn {
   color: white;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6); /* subtle dark shadow for readability */
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
 }
-
-/* Logo */
-.logo {
-  font-weight: bold;
-  font-size: 1.5rem;
-  text-decoration: none;
-}
-/* ========== NAVBAR LOGO ========== */
-.logo img {
-  height: 45px; /* Adjust size as needed */
-  display: block; /* Removes extra space under the image */
+.navbar .signup-btn {
+  position: absolute;
+  right: 40px; /* Aligns with the navbar's padding */
+  /* The vertical alignment is handled by the parent .navbar's flex properties */
 }
 
 /* Links */
@@ -64,7 +93,7 @@ body {
 .nav-links a {
   text-decoration: none;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 1.1rem;
   transition: color 0.3s;
 }
 .nav-links a:hover {
@@ -75,16 +104,51 @@ body {
 .signup-btn {
   background: #ff3c78;
   border: none;
-  padding: 8px 16px;
+  padding: 10px 18px;
   font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
   text-decoration: none;
   display: inline-block;
+  font-size: 1rem;
+  /* MODIFIED: This makes all changes (opacity, size, position) animate smoothly */
+  transition: all 0.4s ease-in-out;
 }
 .signup-btn:hover {
   background: #ff1f60;
+}
+/* Add these new rules to styles.css */
+
+/* Positions the new button on the landing page */
+.signup-btn-landing {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  z-index: 10;
+  /* ADDED: Larger padding and font-size */
+  padding: 14px 28px;
+  font-size: 1.2rem;
+}
+
+/* Controls the visibility states for the transition */
+.signup-btn.hidden {
+  opacity: 0;
+  visibility: hidden;
+  /* Adds a slight movement to the fade */
+  transform: translateX(-50%) translateY(10px);
+}
+.signup-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* The navbar's signup button needs slightly different transforms */
+.navbar .signup-btn.hidden {
+  transform: translateY(10px);
+}
+.navbar .signup-btn.visible {
+  transform: translateY(0);
 }
 
 /* ========== LANDING ========== */
@@ -97,7 +161,7 @@ body {
   text-align: center;
   color: white;
 }
-
+/* ... rest of the styles ... */
 .landing-content h1 {
   font-size: 3rem;
   margin-bottom: 15px;
@@ -155,31 +219,55 @@ body {
   overflow: hidden;
   transition: all 0.7s ease-in-out;
 }
-
 .grid-bg {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
   filter: blur(8px);
-  opacity: 1; 
+  opacity: 1;
   transition: opacity 0.7s ease-in-out;
 }
-/* Find and replace this existing rule */
 .grid-text {
-  position: relative;
+  position: absolute;
+  display: inline-block;
+  width: fit-content;
   font-family: 'Anton', sans-serif;
-  font-size: 14rem; /* Increased from 12rem */
+  font-size: 14rem;
   font-weight: 900;
-  letter-spacing: 10px; /* Added for more space between letters */
-  color: white;
-  transition: all 0.7s ease-in-out;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+}
+
+/* --- CORRECTED 3-LAYER TEXT STYLES --- */
+.text-visible {
+  line-height: 1.2;
   z-index: 1;
+  -webkit-text-fill-color: white;
+  background: none;
+  transition: opacity 0.5s ease-in-out;
+}
+.text-image-fill {
+  line-height: 1.2;
+  z-index: 2;
   background-size: cover;
   background-position: center;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: white;
-  text-transform: uppercase;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+.text-hover-target {
+  line-height: 0.7;
+  z-index: 3;
+  color: transparent;
+  cursor: pointer;
+}
+.text-hover-target:hover ~ .text-image-fill {
+  opacity: 1;
+}
+.text-hover-target:hover ~ .text-visible {
+  opacity: 0;
 }
 .overlay {
   position: absolute;
@@ -188,31 +276,63 @@ body {
   opacity: 0.7;
   transition: opacity 0.7s ease-in-out;
 }
-
-.grid-item:hover .grid-text {
-  -webkit-text-fill-color: transparent;
-}
 .grid-item:hover .overlay {
-  opacity: 0.9; /* This was changed from 0 */
+  opacity: 0.9;
 }
 
 /* ========== SIGNUP ========== */
-.signup {
-  padding: 80px 20px;
-  background: #fff;
-  text-align: center;
+.signup-container {
+  display: flex;
   min-height: 100vh;
+  width: 100%;
 }
-.signup h2 {
-  font-size: 2rem;
-  margin-bottom: 30px;
+.signup-image-panel {
+  flex: 1;
+  background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+.image-panel-content {
+  color: white;
+  text-align: center;
+}
+.image-panel-content h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+.image-panel-content p {
+  font-size: 1.1rem;
+  max-width: 350px;
+  line-height: 1.6;
+}
+.signup-form-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: #f4f7f6;
 }
 .signup-form {
+  width: 100%;
   max-width: 500px;
-  margin: 0 auto 20px auto;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+.signup-form h2 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 700;
+  color: #333;
 }
 .form-group {
   display: flex;
@@ -220,46 +340,52 @@ body {
   text-align: left;
 }
 .form-group label {
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-weight: 600;
+  font-size: 0.9rem;
+  color: #555;
 }
-.form-group input,
-.form-group select {
-  padding: 10px;
-  border: 1px solid #ccc;
+.form-group input {
+  padding: 12px;
+  border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 1rem;
   outline: none;
+  transition: border-color 0.3s;
 }
-.form-group input:focus,
-.form-group select:focus {
+.form-group input:focus {
   border-color: #ff3c78;
+}
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  padding-top: 8px;
+  text-align: left;
+}
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #333;
 }
 .signup-submit {
   background: #ff3c78;
   border: none;
-  padding: 12px 20px;
+  padding: 15px 20px;
   color: white;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s;
+  margin-top: 10px;
+  width: 100%;
 }
 .signup-submit:hover {
   background: #ff1f60;
-}
-.back-btn {
-  margin-top: 10px;
-  background: transparent;
-  border: none;
-  color: #ff3c78;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-.back-btn:hover {
-  color: #ff1f60;
 }
 
 /* ========== FOOTER ========== */

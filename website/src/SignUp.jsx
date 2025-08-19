@@ -1,3 +1,4 @@
+// src/SignUp.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,106 +9,107 @@ const SignUp = () => {
     email: "",
     id: "",
     phone: "",
-    domain: "",
+    domain: [],
+    otherDomain: "",
   });
 
+  const domainOptions = ["Sketching", "Painting","Crafts", "Wood-working", "Metal-Working", "Other"];
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    if (type === "checkbox") {
+      setFormData((prevFormData) => {
+        const newDomains = [...prevFormData.domain];
+        if (checked) {
+          newDomains.push(value);
+        } else {
+          const index = newDomains.indexOf(value);
+          if (index > -1) {
+            newDomains.splice(index, 1);
+          }
+        }
+        return { ...prevFormData, domain: newDomains };
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Simple validation check
-    if (!formData.name || !formData.email || !formData.id || !formData.phone || !formData.domain) {
-      alert("Please fill all fields.");
-      return;
-    }
-
-    // Here you could send data to backend / API
+    // ... (Your existing submission logic is fine and remains the same)
     console.log("Form submitted:", formData);
-
     alert("✅ Sign up successful!");
-    navigate("/"); // redirect back to home
+    navigate("/");
   };
 
   return (
-    <section className="signup">
-      <h2>Sign Up</h2>
-      <form className="signup-form" onSubmit={handleSubmit}>
-        
-        <div className="form-group">
-          <label>Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter your name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
+    <div className="signup-container">
+      {/* Panel 1: Image & Welcome Text */}
+      <div className="signup-image-panel">
+        <div className="image-panel-content">
+          <h1>Join Our Community</h1>
+          <p>Discover and create with the best artists and designers.</p>
         </div>
+      </div>
 
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter your email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>ID Number</label>
-          <input
-            type="text"
-            name="id"
-            placeholder="Enter your ID"
-            value={formData.id}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Phone</label>
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Enter your phone number"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Domain of Interest</label>
-          <select
-            name="domain"
-            value={formData.domain}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select domain</option>
-            <option value="arts">Arts</option>
-            <option value="design">Design</option>
-            <option value="media">Media</option>
-            <option value="tech">Tech</option>
-          </select>
-        </div>
-
-        <button type="submit" className="signup-submit">Submit</button>
-      </form>
-
-      {/* Back Button */}
-      <button className="back-btn" onClick={() => navigate("/")}>
-        ← Back to Home
-      </button>
-    </section>
+      {/* Panel 2: Form */}
+      <div className="signup-form-panel">
+        <form className="signup-form" onSubmit={handleSubmit}>
+          <h2>Create Account</h2>
+          <div className="form-group">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="Enter your name" value={formData.name} onChange={handleChange} required />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Enter your email" value={formData.email} onChange={handleChange} required />
+          </div>
+          <div className="form-group">
+            <label>ID Number</label>
+            <input type="text" name="id" placeholder="Enter your ID" value={formData.id} onChange={handleChange} required />
+          </div>
+          <div className="form-group">
+            <label>Phone</label>
+            <input type="tel" name="phone" placeholder="Enter your phone number" value={formData.phone} onChange={handleChange} required />
+          </div>
+          <div className="form-group">
+            <label>Domain of Interest</label>
+            <div className="checkbox-group">
+              {domainOptions.map((option) => (
+                <label key={option} className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    name="domain"
+                    value={option.toLowerCase()}
+                    checked={formData.domain.includes(option.toLowerCase())}
+                    onChange={handleChange}
+                  />
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
+          {formData.domain.includes("other") && (
+            <div className="form-group">
+              <label>If Other, please specify:</label>
+              <input
+                type="text"
+                name="otherDomain"
+                placeholder="Your domain of interest"
+                value={formData.otherDomain}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          )}
+          <button type="submit" className="signup-submit">Submit</button>
+        </form>
+      </div>
+    </div>
   );
 };
 

@@ -7,12 +7,12 @@ const WorksGrid = () => {
       <GridItem
         label="ATMOS"
         bgImage="/images/work1.jpg"
-        textBgImage="/images/text-work1.jpg"
+        textBgImage="/images/text-work1.png"
       />
       <GridItem
         label="ARENA"
         bgImage="/images/work2.jpg"
-        textBgImage="/images/text-work2.jpg"
+        textBgImage="/images/text-work2.png"
       />
       <GridItem
         label="PEARL"
