@@ -14,15 +14,16 @@ import WhatWeDo from "./WhatWeDo";
 import WorksGrid from "./WorksGrid";
 import Footer from "./Footer";
 import SignUp from "./SignUp";
+import FestPage from "./FestPage"; // ADDED
+import GalleryPage from "./GalleryPage"; // ADDED
 import "./styles.css";
 
-// ADDED: Create a Context to share scroll state
+// Create a Context to share scroll state
 export const ScrollContext = createContext();
 
 const Layout = ({ scrollToWorks }) => {
   const location = useLocation();
   const [isLogoVisible, setIsLogoVisible] = useState(true);
-  // ADDED: New state to track when to show the signup button in the nav
   const [showSignupInNav, setShowSignupInNav] = useState(false);
 
   useEffect(() => {
@@ -40,8 +41,7 @@ const Layout = ({ scrollToWorks }) => {
         setIsLogoVisible(true);
       }
       
-      // ADDED: Logic for signup button transition
-      // Show button in nav after scrolling 300px down
+      // Logic for signup button transition
       setShowSignupInNav(window.scrollY > 300); 
     };
 
@@ -49,8 +49,10 @@ const Layout = ({ scrollToWorks }) => {
       window.addEventListener("scroll", handleScroll);
       handleScroll();
     } else {
+      // On other pages, reset the scroll-dependent states
+      window.removeEventListener("scroll", handleScroll);
       setIsLogoVisible(true);
-      setShowSignupInNav(false); // Don't show landing button on other pages
+      setShowSignupInNav(true); 
     }
 
     return () => window.removeEventListener("scroll", handleScroll);
@@ -66,7 +68,6 @@ const Layout = ({ scrollToWorks }) => {
   const isSignupPage = location.pathname === '/signup';
 
   return (
-    // ADDED: Context Provider to pass down scroll state
     <ScrollContext.Provider value={{ showSignupInNav }}>
       <Link
         to="/"
@@ -78,7 +79,7 @@ const Layout = ({ scrollToWorks }) => {
       
       <Navbar
         scrollToWorks={scrollToWorks}
-        isSticky={!isLogoVisible || isSignupPage}
+        isSticky={!isLogoVisible || location.pathname !== '/'}
         isSignupPage={isSignupPage}
       />
 
@@ -112,6 +113,9 @@ const App = () => {
         <Route path="/" element={<Layout scrollToWorks={scrollToWorks} />}>
           <Route index element={<HomePageContent worksRef={worksRef} />} />
           <Route path="signup" element={<SignUp />} />
+          {/* 👇 UPDATED ROUTES 👇 */}
+          <Route path="fest/:festName" element={<FestPage />} />
+          <Route path="fest/:festName/:year" element={<GalleryPage />} />
         </Route>
       </Routes>
     </Router>
