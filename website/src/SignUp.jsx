@@ -38,16 +38,39 @@ const SignUp = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  // MODIFIED: This function now sends the form data to a backend server.
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("✅ Sign up successful!");
-    navigate("/");
+
+    // This is the URL of the backend endpoint you would create.
+    const backendEndpoint = "http://localhost:3001/api/submit-to-google-sheet";;
+
+    try {
+      const response = await fetch(backendEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Something went wrong with the submission.");
+      }
+
+      // If the submission to the backend is successful:
+      console.log("Form submitted successfully:", formData);
+      alert("✅ Sign up successful!");
+      navigate("/");
+
+    } catch (error) {
+      console.error("Submission Error:", error);
+      alert("❌ There was a problem with your submission. Please try again.");
+    }
   };
 
   return (
     <>
-      {/* // MODIFIED: Replaced Helmet with native React 19 tags */}
       <title>Sign Up - Arts & Deco</title>
       <meta name="description" content="Create an account to join the Department of Arts & Deco community." />
 
@@ -62,6 +85,7 @@ const SignUp = () => {
         <div className="signup-form-panel">
           <form className="signup-form" onSubmit={handleSubmit}>
             <h2>Create Account</h2>
+            {/* Form inputs remain the same */}
             <div className="form-group">
               <label>Name</label>
               <input type="text" name="name" placeholder="Enter your name" value={formData.name} onChange={handleChange} required />
