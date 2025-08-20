@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useRef, useState, useEffect, createContext, useContext } from "react";
+import React, { useRef, useState, useEffect, createContext, useContext, Suspense, lazy, memo } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,11 +13,13 @@ import Landing from "./Landing";
 import WhatWeDo from "./WhatWeDo";
 import WorksGrid from "./WorksGrid";
 import Footer from "./Footer";
-import SignUp from "./SignUp";
-import Contact from "./Contact";
-import FestPage from "./FestPage";
-import GalleryPage from "./GalleryPage";
 import "./styles.css";
+
+// Lazily import page components for code-splitting
+const SignUp = lazy(() => import('./SignUp'));
+const Contact = lazy(() => import('./Contact'));
+const FestPage = lazy(() => import('./FestPage'));
+const GalleryPage = lazy(() => import('./GalleryPage'));
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -78,7 +80,7 @@ const Layout = ({ scrollToWorks }) => {
   };
 
   const isSignupPage = location.pathname === '/signup';
-  const isHomePage = location.pathname === '/'; // MODIFIED: Added isHomePage flag
+  const isHomePage = location.pathname === '/';
 
   return (
     <ScrollContext.Provider value={{ showSignupInNav }}>
@@ -94,7 +96,7 @@ const Layout = ({ scrollToWorks }) => {
         scrollToWorks={scrollToWorks}
         isSticky={!isLogoVisible || isSignupPage || location.pathname.startsWith('/works')}
         isSignupPage={isSignupPage}
-        isHomePage={isHomePage} // MODIFIED: Pass isHomePage to Navbar
+        isHomePage={isHomePage}
       />
 
       <main>
@@ -105,15 +107,17 @@ const Layout = ({ scrollToWorks }) => {
   );
 };
 
-const HomePageContent = ({ worksRef }) => (
+const HomePageContent = memo(({ worksRef }) => (
   <>
+    <title>Arts & Deco</title>
+    <meta name="description" content="Official website for the Department of Arts & Deco." />
     <Landing />
     <WhatWeDo />
     <div id="works" ref={worksRef}>
       <WorksGrid />
     </div>
   </>
-);
+));
 
 const App = () => {
   const worksRef = useRef(null);
@@ -124,15 +128,17 @@ const App = () => {
   return (
     <Router>
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Layout scrollToWorks={scrollToWorks} />}>
-          <Route index element={<HomePageContent worksRef={worksRef} />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="works/:festName" element={<FestPage />} />
-          <Route path="works/:festName/:year" element={<GalleryPage />} />
-        </Route>
-      </Routes>
+      <Suspense fallback={<div className="page-container"><h1>Loading...</h1></div>}>
+        <Routes>
+          <Route path="/" element={<Layout scrollToWorks={scrollToWorks} />}>
+            <Route index element={<HomePageContent worksRef={worksRef} />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="works/:festName" element={<FestPage />} />
+            <Route path="works/:festName/:year" element={<GalleryPage />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </Router>
   );
 };

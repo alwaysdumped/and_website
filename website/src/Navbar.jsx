@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ScrollContext } from "./App";
 
-const Navbar = ({ scrollToWorks, isSticky, isSignupPage, isHomePage }) => { // MODIFIED: Added isHomePage prop
+const Navbar = ({ scrollToWorks, isSticky, isSignupPage, isHomePage }) => {
   const location = useLocation();
   const { showSignupInNav } = useContext(ScrollContext);
   
@@ -33,7 +33,6 @@ const Navbar = ({ scrollToWorks, isSticky, isSignupPage, isHomePage }) => { // M
   const shouldMakeSpaceForButton = (isSticky || showSignupInNav) && !isContactPage && location.pathname !== '/signup';
 
   return (
-    // MODIFIED: Added logic to apply a 'home-scroll' class only when sticky on the homepage
     <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isSticky && isHomePage ? "home-scroll" : ""} ${isSignupPage ? "navbar-signup" : ""}`}>
       <div className={`navbar-right ${shouldMakeSpaceForButton ? 'with-button' : ''}`}>
         <ul className="nav-links">

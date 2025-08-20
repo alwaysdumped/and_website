@@ -1,7 +1,8 @@
+// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './styles.css';  // ✅ import your global CSS here
+import './styles.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

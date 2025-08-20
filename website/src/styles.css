@@ -130,13 +130,10 @@ body {
 
 .signup-btn-landing {
   position: absolute;
-  /* MODIFIED: Changed from 10% to 15% to move it up */
   bottom: 15%;
   left: 50%;
   z-index: 10;
-  /* MODIFIED: Increased padding to make the button bigger */
   padding: 18px 34px;
-  /* MODIFIED: Increased font-size for better proportion */
   font-size: 1.3rem;
 }
 
@@ -240,19 +237,18 @@ body {
   justify-content: center;
   overflow: hidden;
   transition: all 0.7s ease-in-out;
-  isolation: isolate; /* Add this line */
+  isolation: isolate;
 }
-/* MODIFIED: Replaced .grid-bg with styles for the new <img> tag */
 .grid-bg-img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image covers the area without distortion */
+  object-fit: cover;
   object-position: center;
   filter: blur(8px);
-  z-index: -1; /* Place it behind the text content */
+  z-index: -1;
 }
 
 .grid-text {
@@ -294,9 +290,7 @@ body {
   opacity: 1;
 }
 
-/* ADDED: New rule to apply the animation on hover for scrolling items */
 .text-hover-target:hover ~ .text-image-fill.scrolling {
-  /* MODIFIED: Changed duration from 20s to 40s to slow down the animation */
   animation: scroll-text-bg 40s linear infinite alternate;
 }
 
@@ -309,7 +303,7 @@ body {
   background: black;
   opacity: 0.7;
   transition: opacity 0.7s ease-in-out;
-  z-index: 0; /* Ensure it's behind text but in front of bg image */
+  z-index: 0;
 }
 .grid-item:hover .overlay {
   opacity: 0.9;
@@ -569,12 +563,12 @@ body {
   backdrop-filter: blur(5px);
   opacity: 0;
   transition: opacity 0.3s ease;
-  pointer-events: none; /* Prevents interaction when hidden */
+  pointer-events: none;
 }
 
 .lightbox-overlay.visible {
   opacity: 1;
-  pointer-events: auto; /* Allows interaction when visible */
+  pointer-events: auto;
 }
 
 .lightbox-content {

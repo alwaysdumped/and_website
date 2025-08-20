@@ -8,27 +8,20 @@ const GalleryPage = () => {
   const festData = worksData[festName];
   const yearData = festData ? festData[year] : null;
 
-  // State to manage the currently selected image for the lightbox
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
-  // Capitalize fest name for display
   const capitalizedFestName = festName.charAt(0).toUpperCase() + festName.slice(1);
 
-  // --- Lightbox Logic ---
-
-  // Function to open the lightbox with the clicked image
   const openLightbox = (index) => {
     setSelectedImageIndex(index);
   };
 
-  // Function to close the lightbox
   const closeLightbox = () => {
     setSelectedImageIndex(null);
   };
 
-  // Functions to navigate to the next/previous image
   const showNextImage = (e) => {
-    e.stopPropagation(); // Prevents the click from closing the lightbox
+    e.stopPropagation();
     if (selectedImageIndex === null) return;
     const nextIndex = (selectedImageIndex + 1) % yearData.images.length;
     setSelectedImageIndex(nextIndex);
@@ -41,7 +34,6 @@ const GalleryPage = () => {
     setSelectedImageIndex(prevIndex);
   };
 
-  // Effect to handle keyboard navigation for the lightbox
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (selectedImageIndex === null) return;
@@ -75,33 +67,37 @@ const GalleryPage = () => {
   }
 
   return (
-    <div className="page-container">
-      <h1 className="page-title">{`${capitalizedFestName} ${year}`}</h1>
-      <div className="breadcrumb">
-        <Link to="/">Home</Link> / <Link to={`/works/${festName}`}>{capitalizedFestName}</Link> / <span>{year}</span>
-      </div>
+    <>
+      {/* // MODIFIED: Replaced Helmet with native React 19 tags */}
+      <title>{`${capitalizedFestName} ${year}`} - Arts & Deco</title>
+      <meta name="description" content={`Gallery for ${capitalizedFestName} ${year}.`} />
 
-      {/* --- NEW Google Photos-style Grid --- */}
-      <div className="photo-grid">
-        {yearData.images.map((image, index) => (
-          <div key={image.id} className="photo-grid-item" onClick={() => openLightbox(index)}>
-            <img src={image.src} alt={image.alt} />
-          </div>
-        ))}
-      </div>
-
-      {/* --- NEW Lightbox/Modal for Enlarged View --- */}
-      {selectedImageIndex !== null && (
-        <div className="lightbox-overlay visible" onClick={closeLightbox}>
-          <button className="lightbox-close" onClick={closeLightbox}>&times;</button>
-          <button className="lightbox-nav lightbox-prev" onClick={showPrevImage}>&#10094;</button>
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <img src={yearData.images[selectedImageIndex].src} alt={yearData.images[selectedImageIndex].alt} />
-          </div>
-          <button className="lightbox-nav lightbox-next" onClick={showNextImage}>&#10095;</button>
+      <div className="page-container">
+        <h1 className="page-title">{`${capitalizedFestName} ${year}`}</h1>
+        <div className="breadcrumb">
+          <Link to="/">Home</Link> / <Link to={`/works/${festName}`}>{capitalizedFestName}</Link> / <span>{year}</span>
         </div>
-      )}
-    </div>
+
+        <div className="photo-grid">
+          {yearData.images.map((image, index) => (
+            <div key={image.id} className="photo-grid-item" onClick={() => openLightbox(index)}>
+              <img src={image.src} alt={image.alt} />
+            </div>
+          ))}
+        </div>
+        
+        {selectedImageIndex !== null && (
+          <div className="lightbox-overlay visible" onClick={closeLightbox} role="dialog" aria-modal="true">
+            <button className="lightbox-close" onClick={closeLightbox} aria-label="Close image viewer">&times;</button>
+            <button className="lightbox-nav lightbox-prev" onClick={showPrevImage} aria-label="Previous image">&#10094;</button>
+            <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+              <img src={yearData.images[selectedImageIndex].src} alt={yearData.images[selectedImageIndex].alt} />
+            </div>
+            <button className="lightbox-nav lightbox-next" onClick={showNextImage} aria-label="Next image">&#10095;</button>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

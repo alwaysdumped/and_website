@@ -8,7 +8,6 @@ const FestPage = () => {
   const { festName } = useParams();
   const festData = worksData[festName];
 
-  // Capitalize the first letter of the fest name for the title
   const pageTitle = festName.charAt(0).toUpperCase() + festName.slice(1);
 
   if (!festData) {
@@ -19,31 +18,35 @@ const FestPage = () => {
     );
   }
 
-  // Get the years and sort them in descending order (newest first)
   const years = Object.keys(festData).sort((a, b) => b - a);
 
   return (
-    <div className="page-container">
-      <h1 className="page-title">{pageTitle}</h1>
-      <div className="breadcrumb">
-        <Link to="/">Home</Link> / <span>{pageTitle}</span>
+    <>
+      {/* // MODIFIED: Replaced Helmet with native React 19 tags */}
+      <title>{pageTitle} Works - Arts & Deco</title>
+      <meta name="description" content={`Explore our works from ${pageTitle}.`} />
+
+      <div className="page-container">
+        <h1 className="page-title">{pageTitle}</h1>
+        <div className="breadcrumb">
+          <Link to="/">Home</Link> / <span>{pageTitle}</span>
+        </div>
+        <section className="fest-grid">
+          {years.map((year) => {
+            const yearData = festData[year];
+            return (
+              <Link key={year} to={`/works/${festName}/${year}`} className="grid-item-link">
+                <GridItem
+                  label={`${pageTitle} ${year}`}
+                  bgImage={yearData.coverImage}
+                  textBgImage={yearData.coverImage}
+                />
+              </Link>
+            );
+          })}
+        </section>
       </div>
-      {/* MODIFIED: Using a new "fest-grid" class for a 3-column layout */}
-      <section className="fest-grid">
-        {years.map((year) => {
-          const yearData = festData[year];
-          return (
-            <Link key={year} to={`/works/${festName}/${year}`} className="grid-item-link">
-              <GridItem
-                label={`${pageTitle} ${year}`}
-                bgImage={yearData.coverImage}
-                textBgImage={yearData.coverImage} // Using cover image for text fill as well
-              />
-            </Link>
-          );
-        })}
-      </section>
-    </div>
+    </>
   );
 };
 
