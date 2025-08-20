@@ -1,4 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+/* ADDED: Keyframes for the scrolling background effect */
+@keyframes scroll-text-bg {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
 /* ========== MAIN LOGO ========== */
 .main-logo {
   position: fixed;
@@ -119,11 +130,14 @@ body {
 
 .signup-btn-landing {
   position: absolute;
-  bottom: 10%;
+  /* MODIFIED: Changed from 10% to 15% to move it up */
+  bottom: 15%;
   left: 50%;
   z-index: 10;
-  padding: 14px 28px;
-  font-size: 1.2rem;
+  /* MODIFIED: Increased padding to make the button bigger */
+  padding: 18px 34px;
+  /* MODIFIED: Increased font-size for better proportion */
+  font-size: 1.3rem;
 }
 
 .signup-btn.hidden {
@@ -279,6 +293,13 @@ body {
 .text-hover-target:hover ~ .text-image-fill {
   opacity: 1;
 }
+
+/* ADDED: New rule to apply the animation on hover for scrolling items */
+.text-hover-target:hover ~ .text-image-fill.scrolling {
+  /* MODIFIED: Changed duration from 20s to 40s to slow down the animation */
+  animation: scroll-text-bg 40s linear infinite alternate;
+}
+
 .text-hover-target:hover ~ .text-visible {
   opacity: 0;
 }
