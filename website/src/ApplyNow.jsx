@@ -1,8 +1,8 @@
-// src/SignUp.jsx
+// src/ApplyNow.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const ApplyNow = () => { // MODIFIED: Renamed component
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -38,12 +38,9 @@ const SignUp = () => {
     }
   };
 
-  // MODIFIED: This function now sends the form data to a backend server.
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // This is the URL of the backend endpoint you would create.
-    const backendEndpoint = "http://localhost:3001/api/submit-to-google-sheet";;
+    const backendEndpoint = "http://localhost:3001/api/submit-to-google-sheet";
 
     try {
       const response = await fetch(backendEndpoint, {
@@ -58,9 +55,8 @@ const SignUp = () => {
         throw new Error("Something went wrong with the submission.");
       }
 
-      // If the submission to the backend is successful:
       console.log("Form submitted successfully:", formData);
-      alert("✅ Sign up successful!");
+      alert("✅ Application successful!"); // MODIFIED: Updated alert message
       navigate("/");
 
     } catch (error) {
@@ -71,21 +67,23 @@ const SignUp = () => {
 
   return (
     <>
-      <title>Sign Up - Arts & Deco</title>
-      <meta name="description" content="Create an account to join the Department of Arts & Deco community." />
+      {/* MODIFIED: Updated title */}
+      <title>Apply Now - Arts & Deco</title>
+      <meta name="description" content="Apply to join the Department of Arts & Deco community." />
 
-      <div className="signup-container">
-        <div className="signup-image-panel">
+      {/* MODIFIED: Renamed classNames for consistency */}
+      <div className="apply-now-container">
+        <div className="apply-now-image-panel">
           <div className="image-panel-content">
             <h1>Join Our Community</h1>
             <p>Discover and create with the best artists and designers.</p>
           </div>
         </div>
 
-        <div className="signup-form-panel">
-          <form className="signup-form" onSubmit={handleSubmit}>
-            <h2>Create Account</h2>
-            {/* Form inputs remain the same */}
+        <div className="apply-now-form-panel">
+          <form className="apply-now-form" onSubmit={handleSubmit}>
+            {/* MODIFIED: Updated heading */}
+            <h2>Apply Now</h2>
             <div className="form-group">
               <label>Name</label>
               <input type="text" name="name" placeholder="Enter your name" value={formData.name} onChange={handleChange} required />
@@ -132,7 +130,8 @@ const SignUp = () => {
                 />
               </div>
             )}
-            <button type="submit" className="signup-submit">Submit</button>
+            {/* MODIFIED: Updated button text and className */}
+            <button type="submit" className="apply-now-submit">Apply Now</button>
           </form>
         </div>
       </div>
@@ -140,4 +139,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default ApplyNow;

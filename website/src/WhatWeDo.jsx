@@ -1,5 +1,5 @@
 // src/WhatWeDo.jsx
-import React from "react";
+import React, { memo } from "react";
 
 const WhatWeDo = () => {
   return (
@@ -13,4 +13,4 @@ const WhatWeDo = () => {
   );
 };
 
-export default WhatWeDo;
+export default memo(WhatWeDo);

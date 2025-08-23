@@ -1,15 +1,15 @@
-// src/Contact.jsx
+// src/Team.jsx
 import React from "react";
 
-const Contact = () => {
+const Team = () => {
   return (
     <>
-      {/* // MODIFIED: Replaced Helmet with native React 19 tags */}
-      <title>Contact Us - Arts & Deco</title>
+      <title>Team - Arts & Deco</title>
       <meta name="description" content="Get in touch with the Department of Arts & Deco." />
 
-      <div className="page-container contact-page-container">
-        <h1 className="page-title">Contact Us</h1>
+      {/* MODIFIED: Renamed className to match new CSS */}
+      <div className="page-container team-page-container">
+        <h1 className="page-title">Our Team</h1>
         <div className="contact-content">
           <div className="contact-text">
             <h1 className="contact-tagline">
@@ -41,4 +41,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default Team;

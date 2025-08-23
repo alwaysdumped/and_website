@@ -1,31 +1,26 @@
 // src/Footer.jsx
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { memo } from "react";
 
 const Footer = () => {
-  const location = useLocation();
-
-  const handleHomeClick = (e) => {
-    if (location.pathname === "/") {
-      e.preventDefault();
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }
-  };
-
   return (
     <footer className="footer">
-      <p>© 2025 Department of Arts & Deco</p>
       <div className="footer-links">
-        <Link to="/" onClick={handleHomeClick}>
-          Home
-        </Link>
-        <Link to="/contact">Contact</Link>
+        {/* IMPORTANT: Replace with your actual Instagram handle and URL */}
+        <a 
+          href="https://www.instagram.com/yourhandle" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          @yourhandle
+        </a>
+        
+        {/* IMPORTANT: Replace with your actual email address */}
+        <a href="mailto:contact@yourdomain.com">
+          contact@yourdomain.com
+        </a>
       </div>
     </footer>
   );
 };
 
-export default Footer;
+export default memo(Footer);

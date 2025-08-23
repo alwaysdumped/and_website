@@ -14,11 +14,15 @@ const GridItem = ({ label, bgImage, textBgImage }) => {
 
   const textFillClassName = `grid-text text-image-fill ${isScrolling ? 'scrolling' : ''}`;
 
-
   return (
     <div className="grid-item">
       {bgImage && (
-        <img src={bgImage} alt="" className="grid-bg-img" />
+        <img 
+          src={bgImage} 
+          alt="" 
+          className="grid-bg-img" 
+          loading="lazy" /* MODIFIED: Added lazy loading */
+        />
       )}
 
       <h1 className="grid-text text-hover-target">{label}</h1>

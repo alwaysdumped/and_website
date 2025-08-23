@@ -1,13 +1,13 @@
 // src/Navbar.jsx
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ScrollContext } from "./App";
+import { ScrollContext } from "./ScrollContext";
 
-const Navbar = ({ scrollToWorks, isSticky, isSignupPage, isHomePage }) => {
+const Navbar = ({ isSticky, isHomePage }) => {
   const location = useLocation();
-  const { showSignupInNav } = useContext(ScrollContext);
-  
-  const isContactPage = location.pathname === '/contact';
+  const { showSignupInNav, isWorkGridAligned } = useContext(ScrollContext);
+
+  const isTeamPage = location.pathname === '/team';
 
   const handleHomeClick = (e) => {
     if (location.pathname === "/") {
@@ -16,57 +16,58 @@ const Navbar = ({ scrollToWorks, isSticky, isSignupPage, isHomePage }) => {
     }
   };
 
-  const handleWorksClick = (e) => {
-    if (location.pathname === "/") {
-      e.preventDefault();
-      scrollToWorks && scrollToWorks();
-    }
-  };
-
-  const handleContactClick = (e) => {
-    if (location.pathname === "/contact") {
+  const handleTeamClick = (e) => {
+    if (location.pathname === "/team") {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  const shouldMakeSpaceForButton = (isSticky || showSignupInNav) && !isContactPage && location.pathname !== '/signup';
+  const shouldShowOurWorks = isHomePage ? !isWorkGridAligned : true;
+  const shouldMakeSpaceForButton = (isSticky || (showSignupInNav && isHomePage)) && !isTeamPage && location.pathname !== '/apply-now';
+
 
   return (
-    <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isSticky && isHomePage ? "home-scroll" : ""} ${isSignupPage ? "navbar-signup" : ""}`}>
+    <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isSticky && isHomePage ? "home-scroll" : ""} ${location.pathname === '/apply-now' ? "navbar-apply-now" : ""}`}>
       <div className={`navbar-right ${shouldMakeSpaceForButton ? 'with-button' : ''}`}>
         <ul className="nav-links">
-          <li>
-            <Link to="/" onClick={handleHomeClick}>Home</Link>
-          </li>
-          <li>
-            <Link to="/#works" onClick={handleWorksClick}>Our Works</Link>
-          </li>
-          
-          {isContactPage ? (
+          {/* This condition now correctly shows the "Home" link on the apply page */}
+          {(isSticky || !isHomePage) && (
             <li>
-              <Link to="/signup" className="signup-btn">
-                Sign Up
+              <Link to="/" onClick={handleHomeClick}>Home</Link>
+            </li>
+          )}
+
+          {shouldShowOurWorks && (
+            <li>
+              <Link to="/#works">Our Works</Link>
+            </li>
+          )}
+
+          {isTeamPage ? (
+            <li>
+              <Link to="/apply-now" className="signup-btn">
+                Apply Now
               </Link>
             </li>
           ) : (
             <li>
-              <Link to="/contact" onClick={handleContactClick}>Contact</Link>
+              <Link to="/team" onClick={handleTeamClick}>Team</Link>
             </li>
           )}
         </ul>
       </div>
 
-      {location.pathname !== "/signup" && !isContactPage && (
-        <Link 
-          to="/signup"
+      {location.pathname !== "/apply-now" && !isTeamPage && (
+        <Link
+          to="/apply-now"
           className={`signup-btn ${showSignupInNav ? 'visible' : 'hidden'}`}
         >
-          Sign Up
+          Apply Now
         </Link>
       )}
     </nav>
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

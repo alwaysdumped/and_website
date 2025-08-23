@@ -1,5 +1,5 @@
 // src/WorksGrid.jsx
-import React from "react";
+import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import GridItem from "./GridItem";
 
@@ -54,4 +54,4 @@ const WorksGrid = () => {
   );
 };
 
-export default WorksGrid;
+export default memo(WorksGrid);

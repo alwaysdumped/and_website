@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useRef, useState, useEffect, createContext, useContext, Suspense, lazy, memo } from "react";
+import React, { useRef, useState, useEffect, Suspense, lazy, memo } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,10 +14,10 @@ import WhatWeDo from "./WhatWeDo";
 import WorksGrid from "./WorksGrid";
 import Footer from "./Footer";
 import "./styles.css";
+import { ScrollContext } from "./ScrollContext";
 
-// Lazily import page components for code-splitting
-const SignUp = lazy(() => import('./SignUp'));
-const Contact = lazy(() => import('./Contact'));
+const ApplyNow = lazy(() => import('./ApplyNow'));
+const Team = lazy(() => import('./Team'));
 const FestPage = lazy(() => import('./FestPage'));
 const GalleryPage = lazy(() => import('./GalleryPage'));
 
@@ -29,48 +29,56 @@ const ScrollToTop = () => {
   return null;
 };
 
-export const ScrollContext = createContext();
-
-const Layout = ({ scrollToWorks }) => {
+const Layout = ({ scrollToWorks, worksRef }) => {
   const location = useLocation();
   const [isLogoVisible, setIsLogoVisible] = useState(true);
   const [showSignupInNav, setShowSignupInNav] = useState(false);
+  const [isWorkGridAligned, setIsWorkGridAligned] = useState(false);
+  const logoRef = useRef(null);
 
   useEffect(() => {
     if (location.hash === '#works') {
-      setTimeout(() => {
-        const worksElement = document.getElementById('works');
-        if (worksElement) {
-          worksElement.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 0);
+      const timer = setTimeout(() => {
+        scrollToWorks && scrollToWorks();
+      }, 100);
+      return () => clearTimeout(timer);
     }
-    
+  }, [location, scrollToWorks]);
+
+  useEffect(() => {
     const handleScroll = () => {
-      const logo = document.querySelector(".main-logo");
-      const worksGrid = document.querySelector(".works-grid");
-      if (logo && worksGrid) {
-        const logoRect = logo.getBoundingClientRect();
-        const gridRect = worksGrid.getBoundingClientRect();
-        const isOverlapping =
-          logoRect.bottom > gridRect.top && logoRect.top < gridRect.bottom;
+      const logoEl = logoRef.current;
+      const worksGridEl = worksRef.current;
+
+      if (logoEl && worksGridEl) {
+        const logoRect = logoEl.getBoundingClientRect();
+        const gridRect = worksGridEl.getBoundingClientRect();
+
+        const isOverlapping = logoRect.bottom > gridRect.top;
         setIsLogoVisible(!isOverlapping);
-      } else {
-        setIsLogoVisible(true);
+
+        const stickyNavHeight = 60;
+        const isExactlyAligned = Math.abs(gridRect.top - stickyNavHeight) < 2;
+        setIsWorkGridAligned(isExactlyAligned);
       }
-      setShowSignupInNav(window.scrollY > 300); 
+
+      setShowSignupInNav(window.scrollY > 300);
     };
 
-    if (location.pathname === "/") {
+    const isHomePage = location.pathname === '/';
+    if (isHomePage) {
       window.addEventListener("scroll", handleScroll);
       handleScroll();
     } else {
       setIsLogoVisible(true);
       setShowSignupInNav(false);
+      setIsWorkGridAligned(false);
     }
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [location]);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [location, worksRef]);
 
   const handleLogoClick = (e) => {
     if (location.pathname === "/") {
@@ -79,23 +87,22 @@ const Layout = ({ scrollToWorks }) => {
     }
   };
 
-  const isSignupPage = location.pathname === '/signup';
+  const isApplyNowPage = location.pathname === '/apply-now';
   const isHomePage = location.pathname === '/';
 
   return (
-    <ScrollContext.Provider value={{ showSignupInNav }}>
+    <ScrollContext.Provider value={{ showSignupInNav, isWorkGridAligned }}>
       <Link
         to="/"
+        ref={logoRef}
         className={`main-logo ${isLogoVisible ? "" : "logo-hidden"}`}
         onClick={handleLogoClick}
       >
         <img src="/images/and_logo.png" alt="Company Logo" />
       </Link>
-      
+
       <Navbar
-        scrollToWorks={scrollToWorks}
-        isSticky={!isLogoVisible || isSignupPage || location.pathname.startsWith('/works')}
-        isSignupPage={isSignupPage}
+        isSticky={!isLogoVisible || isApplyNowPage || location.pathname.startsWith('/works')}
         isHomePage={isHomePage}
       />
 
@@ -121,8 +128,19 @@ const HomePageContent = memo(({ worksRef }) => (
 
 const App = () => {
   const worksRef = useRef(null);
+
   const scrollToWorks = () => {
-    worksRef.current?.scrollIntoView({ behavior: "smooth" });
+    const worksGridEl = worksRef.current;
+    if (worksGridEl) {
+      const stickyNavHeight = 60;
+      const elementPosition = worksGridEl.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - stickyNavHeight;
+
+      window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+      });
+    }
   };
 
   return (
@@ -130,10 +148,10 @@ const App = () => {
       <ScrollToTop />
       <Suspense fallback={<div className="page-container"><h1>Loading...</h1></div>}>
         <Routes>
-          <Route path="/" element={<Layout scrollToWorks={scrollToWorks} />}>
+          <Route path="/" element={<Layout scrollToWorks={scrollToWorks} worksRef={worksRef} />}>
             <Route index element={<HomePageContent worksRef={worksRef} />} />
-            <Route path="signup" element={<SignUp />} />
-            <Route path="contact" element={<Contact />} />
+            <Route path="apply-now" element={<ApplyNow />} />
+            <Route path="team" element={<Team />} />
             <Route path="works/:festName" element={<FestPage />} />
             <Route path="works/:festName/:year" element={<GalleryPage />} />
           </Route>

@@ -1,6 +1,8 @@
+/* src/styles.css */
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-/* ADDED: Keyframes for the scrolling background effect */
+/* ========== KEYFRAMES ========== */
 @keyframes scroll-text-bg {
   from {
     background-position: 0% 50%;
@@ -10,7 +12,23 @@
   }
 }
 
-/* ========== MAIN LOGO ========== */
+/* ========== GLOBAL & RESET STYLES ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f8f8f8;
+  color: #222;
+  scroll-behavior: smooth;
+}
+
+/* ========== CORE LAYOUT COMPONENTS ========== */
+
+/* --- Main Logo --- */
 .main-logo {
   position: fixed;
   top: 15px;
@@ -24,25 +42,13 @@
   height: 70px;
   display: block;
 }
+
 .main-logo.logo-hidden {
   opacity: 0;
   pointer-events: none;
 }
 
-/* ========== RESET & GLOBAL ========== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  font-family: "Poppins", sans-serif;
-  background: #f8f8f8;
-  color: #222;
-  scroll-behavior: smooth;
-}
-
-/* ========== NAVBAR ========== */
+/* --- Navbar --- */
 .navbar {
   position: fixed;
   top: 0;
@@ -56,154 +62,167 @@ body {
   background: transparent;
   transition: background 0.4s ease, box-shadow 0.4s ease, height 0.4s ease;
 }
+
 .navbar-right {
   display: flex;
   align-items: center;
   gap: 30px;
   transition: margin-right 0.4s ease-in-out;
 }
+
 .navbar-right.with-button {
   margin-right: 135px;
 }
+
 .navbar-scrolled {
-  /* This is the default scrolled height (for fest/gallery pages) */
   height: 90px;
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(5px);
 }
+
 .navbar-scrolled.home-scroll {
   height: 60px;
 }
 
-.navbar-scrolled .signup-btn {
-  font-size: 0.9rem;
-  padding: 8px 14px;
+/* MODIFIED: This rule now gives the navbar a dark background on the Apply Now page. */
+.navbar.navbar-apply-now {
+  height: 90px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
 }
 
-.navbar.navbar-signup {
-  height: 110px;
-}
-.nav-links a,
-.logo,
-.signup-btn {
-  color: white;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-}
-.navbar > .signup-btn {
-  position: absolute;
-  right: 40px; 
-}
-
-/* Links */
 .nav-links {
   list-style: none;
   display: flex;
   gap: 30px;
   align-items: center;
 }
+
 .nav-links a {
+  color: #333;
+  text-shadow: none;
   text-decoration: none;
   font-weight: 500;
   font-size: 1.1rem;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
+
 .nav-links a:hover {
+  color: #002cee;
+}
+
+.navbar-scrolled .nav-links a {
+  color: white;
+  text-shadow: 0 1px 3px rgba(24, 24, 24, 0.6);
+}
+
+.navbar-scrolled .nav-links a:hover {
   color: #ff3c78;
 }
 
-/* Sign Up */
-.signup-btn {
-  background: #ff3c78;
-  border: none;
-  padding: 10px 18px;
-  font-weight: 600;
-  border-radius: 6px;
-  cursor: pointer;
+
+/* --- Footer --- */
+.footer {
+  background: #111;
+  color: #aaa;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.footer-links a {
+  margin: 0;
+  color: #ddd;
   text-decoration: none;
-  display: inline-block;
+  transition: color 0.3s;
   font-size: 1rem;
-  transition: all 0.4s ease-in-out;
-}
-.signup-btn:hover {
-  background: #ff1f60;
 }
 
-.signup-btn-landing {
-  position: absolute;
-  bottom: 15%;
-  left: 50%;
-  z-index: 10;
-  padding: 18px 34px;
-  font-size: 1.3rem;
+.footer-links a:hover {
+  color: #ff3c78;
 }
 
-.signup-btn.hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(-50%) translateY(10px);
-}
-.signup-btn.visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
+
+/* ========== GENERIC PAGE & SHARED COMPONENT STYLES ========== */
+
+.page-container {
+  padding: 130px 40px 60px;
+  min-height: 100vh;
+  background: #f8f8f8;
 }
 
-.navbar .signup-btn.hidden {
-  transform: translateY(10px);
-}
-.navbar .signup-btn.visible {
-  transform: translateY(0);
-}
-
-.navbar.navbar-scrolled > .signup-btn.hidden {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+.page-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #222;
 }
 
-/* ========== LANDING ========== */
+.breadcrumb {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.breadcrumb a {
+  color: #ff3c78;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.grid-item-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+
+/* ========== HOMEPAGE SECTIONS ========== */
+
+/* --- Landing Section --- */
 .landing {
   height: 100vh;
-  background: url("../public/images/and_landing.png") center/cover no-repeat;
+  background: url("../public/images/and_logo_end1.PNG") center/cover no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   color: white;
 }
+
 .landing-content h1 {
   font-size: 3rem;
   margin-bottom: 15px;
 }
+
 .landing-content p {
   font-size: 1.2rem;
   margin-bottom: 20px;
 }
-.explore-btn {
-  background: #ff3c78;
-  border: none;
-  padding: 10px 20px;
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-.explore-btn:hover {
-  background: #ff1f60;
-}
 
-/* ========== WHAT WE DO ========== */
+/* --- What We Do Section --- */
 .what-we-do {
   padding: 80px 20px;
   text-align: center;
   background: #fff;
 }
+
 .what-we-do h2 {
   font-size: 2rem;
   margin-bottom: 20px;
 }
+
 .what-we-do p {
   max-width: 600px;
   margin: 0 auto;
@@ -211,15 +230,18 @@ body {
   line-height: 1.6;
 }
 
-/* ========== WORKS GRID & FEST GRID ========== */
+/* --- Works Grid Section (Homepage) --- */
 .works-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0px;
-  padding: 60px 0px;
+  padding: 0 0 60px;
   background: #f2f2f2;
 }
 
+/* ========== PAGE-SPECIFIC STYLES ========== */
+
+/* --- Fest Page Grid --- */
 .fest-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -228,7 +250,7 @@ body {
   padding: 0;
 }
 
-
+/* --- Grid Item (Shared by WorksGrid and FestGrid) --- */
 .grid-item {
   position: relative;
   height: 400px;
@@ -239,6 +261,7 @@ body {
   transition: all 0.7s ease-in-out;
   isolation: isolate;
 }
+
 .grid-bg-img {
   position: absolute;
   top: 0;
@@ -269,6 +292,7 @@ body {
   background: none;
   transition: opacity 0.5s ease-in-out;
 }
+
 .text-image-fill {
   line-height: 1.2;
   z-index: 2;
@@ -280,23 +304,26 @@ body {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
+
+.text-image-fill.scrolling {
+  animation: scroll-text-bg 40s linear infinite alternate;
+}
+
 .text-hover-target {
   line-height: 0.7;
   z-index: 3;
   color: transparent;
   cursor: pointer;
 }
+
 .text-hover-target:hover ~ .text-image-fill {
   opacity: 1;
-}
-
-.text-hover-target:hover ~ .text-image-fill.scrolling {
-  animation: scroll-text-bg 40s linear infinite alternate;
 }
 
 .text-hover-target:hover ~ .text-visible {
   opacity: 0;
 }
+
 .overlay {
   position: absolute;
   inset: 0;
@@ -305,17 +332,14 @@ body {
   transition: opacity 0.7s ease-in-out;
   z-index: 0;
 }
+
 .grid-item:hover .overlay {
   opacity: 0.9;
 }
 
-/* ========= CONTACT =========*/
-.contact-tagline {
-  font-size: 3.3rem;
-  font-weight: bold;
-  line-height: 1.2;
-  color: #4a90e2;
-  margin: 0;
+/* --- Team Page --- */
+.team-page-container {
+  padding-top: 100px;
 }
 
 .contact-content {
@@ -329,6 +353,14 @@ body {
 
 .contact-text {
   flex: 1;
+}
+
+.contact-tagline {
+  font-size: 3.3rem;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #4a90e2;
+  margin: 0;
 }
 
 .image-placeholders {
@@ -352,17 +384,163 @@ body {
   font-size: 1rem;
 }
 
-.contact-page-container {
-  padding-top: 115px;
+/* --- Apply Now Page & Button --- */
+.signup-btn {
+  background: #fbca1f;
+  font-family: inherit;
+  padding: 0.3em 1.1em;
+  font-weight: 900;
+  font-size: 18px;
+  border: 3px solid black;
+  border-radius: 0.4em;
+  box-shadow: 0.1em 0.1em;
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+  display: inline-block;
+  text-shadow: none;
+  transition: all 0.2s ease-in-out;
 }
 
-/* ========== SIGNUP ========== */
-.signup-container {
+.signup-btn:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
+
+.signup-btn:active {
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
+}
+.navbar > .signup-btn {
+  position: absolute;
+  right: 40px;
+}
+
+/*
+ This rule targets the button when it's visible but the navbar
+ is still transparent. It makes it smaller than the default, but larger
+ than the final scrolled state.
+*/
+.navbar:not(.navbar-scrolled) .signup-btn.visible {
+  font-size: 15px;
+  padding: 0.25em 1em;
+}
+
+.navbar-scrolled .signup-btn {
+  font-size: 14px;
+}
+
+.signup-btn-landing {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  z-index: 10;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 10px;
+  color: white;
+  text-shadow: 2px 2px rgb(116, 116, 116);
+  text-transform: uppercase;
+  cursor: pointer;
+  border: solid 2px black;
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-size: 17px;
+  background-color: hsl(49deg 98% 60%);
+  border-radius: 50px;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  height: 60px;
+  width: 160px;
+  text-decoration: none;
+}
+
+.signup-btn-landing:active {
+  transform: translateX(-50%) scale(0.9);
+  transition: all 100ms ease;
+}
+
+.signup-btn-landing svg {
+  transition: all 0.5s ease;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+}
+
+.signup-btn-landing .play {
+  transition: all 0.5s ease;
+  transition-delay: 300ms;
+}
+
+.signup-btn-landing:hover svg {
+  transform: scale(3) translate(50%, -10%);
+}
+
+.signup-btn-landing .now {
+  position: absolute;
+  left: 0;
+  transform: translateX(-100%);
+  transition: all 0.5s ease;
+  z-index: 2;
+}
+
+.signup-btn-landing:hover .now {
+  transform: translateX(10px);
+  transition-delay: 300ms;
+}
+
+.signup-btn-landing:hover .play {
+  transform: translateX(200%);
+  transition-delay: 300ms;
+}
+.signup-btn-landing.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.signup-btn-landing.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(20px);
+}
+
+.signup-btn.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(10px);
+}
+
+.signup-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.navbar .signup-btn.hidden {
+  transform: translateY(10px);
+}
+
+.navbar .signup-btn.visible {
+  transform: translateY(0);
+}
+
+.navbar.navbar-scrolled > .signup-btn.hidden {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.apply-now-container {
   display: flex;
   min-height: 100vh;
   width: 100%;
+  padding-top: 90px;
 }
-.signup-image-panel {
+
+.apply-now-image-panel {
   flex: 1;
   background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
   display: flex;
@@ -370,21 +548,25 @@ body {
   align-items: center;
   padding: 40px;
 }
+
 .image-panel-content {
   color: white;
   text-align: center;
 }
+
 .image-panel-content h1 {
   font-family: 'Anton', sans-serif;
   font-size: 3rem;
   margin-bottom: 1rem;
 }
+
 .image-panel-content p {
   font-size: 1.1rem;
   max-width: 350px;
   line-height: 1.6;
 }
-.signup-form-panel {
+
+.apply-now-form-panel {
   flex: 1;
   display: flex;
   justify-content: center;
@@ -392,7 +574,8 @@ body {
   padding: 40px;
   background: #f4f7f6;
 }
-.signup-form {
+
+.apply-now-form {
   width: 100%;
   max-width: 500px;
   background: #ffffff;
@@ -403,24 +586,28 @@ body {
   flex-direction: column;
   gap: 20px;
 }
-.signup-form h2 {
+
+.apply-now-form h2 {
   font-size: 2.2rem;
   margin-bottom: 10px;
   text-align: center;
   font-weight: 700;
   color: #333;
 }
+
 .form-group {
   display: flex;
   flex-direction: column;
   text-align: left;
 }
+
 .form-group label {
   margin-bottom: 8px;
   font-weight: 600;
   font-size: 0.9rem;
   color: #555;
 }
+
 .form-group input {
   padding: 12px;
   border: 1px solid #ddd;
@@ -429,9 +616,11 @@ body {
   outline: none;
   transition: border-color 0.3s;
 }
+
 .form-group input:focus {
   border-color: #ff3c78;
 }
+
 .checkbox-group {
   display: flex;
   flex-wrap: wrap;
@@ -439,6 +628,7 @@ body {
   padding-top: 8px;
   text-align: left;
 }
+
 .checkbox-label {
   display: flex;
   align-items: center;
@@ -447,7 +637,8 @@ body {
   cursor: pointer;
   color: #333;
 }
-.signup-submit {
+
+.apply-now-submit {
   background: #ff3c78;
   border: none;
   padding: 15px 20px;
@@ -460,177 +651,9 @@ body {
   margin-top: 10px;
   width: 100%;
 }
-.signup-submit:hover {
+
+.apply-now-submit:hover {
   background: #ff1f60;
-}
-
-/* ========== FOOTER ========== */
-.footer {
-  background: #111;
-  color: #aaa;
-  padding: 30px 20px;
-  text-align: center;
-}
-.footer-links {
-  margin-top: 10px;
-}
-.footer-links a {
-  margin: 0 10px;
-  color: #ddd;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-.footer-links a:hover {
-  color: #ff3c78;
-}
-/* ========== GENERIC PAGE STYLES ========== */
-.page-container {
-  padding: 130px 40px 60px;
-  min-height: 100vh;
-  background: #f8f8f8;
-}
-
-.page-title {
-  font-family: 'Anton', sans-serif;
-  font-size: 4rem;
-  text-align: center;
-  margin-bottom: 40px;
-  color: #222;
-}
-
-.grid-item-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  position: relative;
-}
-
-/* ========== GALLERY PAGE STYLES ========== */
-.breadcrumb {
-  text-align: center;
-  margin-bottom: 40px;
-  font-size: 1rem;
-  color: #555;
-}
-
-.breadcrumb a {
-  color: #ff3c78;
-  text-decoration: none;
-}
-.breadcrumb a:hover {
-  text-decoration: underline;
-}
-
-/* --- NEW --- Google Photos-style Grid */
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-}
-
-.photo-grid-item {
-  width: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.photo-grid-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.photo-grid-item:hover img {
-  transform: scale(1.05);
-}
-
-
-/* --- NEW --- Lightbox Styles */
-.lightbox-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  backdrop-filter: blur(5px);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.lightbox-overlay.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.lightbox-content {
-  position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
-  animation: zoomIn 0.3s ease;
-}
-
-@keyframes zoomIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.lightbox-content img {
-  max-width: 100%;
-  max-height: 100%;
-  display: block;
-  object-fit: contain;
-  border-radius: 4px;
-}
-
-.lightbox-close {
-  position: absolute;
-  top: 15px;
-  right: 25px;
-  font-size: 3rem;
-  color: white;
-  background: none;
-  border: none;
-  cursor: pointer;
-  line-height: 1;
-  padding: 0;
-  transition: transform 0.2s ease;
-}
-.lightbox-close:hover {
-  transform: scale(1.1);
-}
-
-.lightbox-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(30, 30, 30, 0.5);
-  color: white;
-  border: none;
-  font-size: 2rem;
-  padding: 10px 15px;
-  cursor: pointer;
-  user-select: none;
-  border-radius: 5px;
-  transition: background 0.2s ease;
-}
-.lightbox-nav:hover {
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.lightbox-prev {
-  left: 15px;
-}
-.lightbox-next {
-  right: 15px;
 }
 
 
@@ -677,10 +700,6 @@ body {
     font-size: 2.5rem;
     text-align: center;
   }
-
-  .contact-label {
-    font-size: 1.5rem;
-  }
   
   .image-placeholders {
     flex-direction: column;
@@ -692,13 +711,91 @@ body {
   .page-container {
     padding: 120px 20px 40px;
   }
-  .lightbox-nav {
-    font-size: 1.5rem;
-    padding: 8px 12px;
-  }
-  .lightbox-close {
-    font-size: 2.5rem;
-    top: 10px;
-    right: 15px;
-  }
+}
+/* ========== LIGHTBOX STYLES ========== */
+@keyframes zoomIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.lightbox-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  animation: zoomIn 0.3s ease;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 3rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+
+.lightbox-close:hover {
+  transform: scale(1.1);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(30, 30, 30, 0.5);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  padding: 10px 15px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+}
+
+.lightbox-nav:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-prev {
+  left: 15px;
+}
+
+.lightbox-next {
+  right: 15px;
 }
