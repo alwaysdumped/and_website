@@ -1,14 +1,23 @@
 // src/Landing.jsx
 import React, { useContext, memo } from "react";
 import { Link } from "react-router-dom";
-// MODIFIED: Changed import path to the new context file
 import { ScrollContext } from "./ScrollContext";
 
 const Landing = () => {
   const { showSignupInNav } = useContext(ScrollContext);
 
   return (
-    <section id="home" className="landing">
+    <section 
+      id="home" 
+      className="landing"
+      // MODIFIED: Added inline style for the background image to fix the build error
+      style={{ 
+        backgroundImage: `url('/images/and_logo_end1.PNG')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
       <div className="landing-content">
       </div>
 

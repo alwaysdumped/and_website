@@ -22,7 +22,6 @@ const FestPage = () => {
 
   return (
     <>
-      {/* // MODIFIED: Replaced Helmet with native React 19 tags */}
       <title>{pageTitle} Works - Arts & Deco</title>
       <meta name="description" content={`Explore our works from ${pageTitle}.`} />
 
@@ -34,12 +33,15 @@ const FestPage = () => {
         <section className="fest-grid">
           {years.map((year) => {
             const yearData = festData[year];
+            
             return (
               <Link key={year} to={`/works/${festName}/${year}`} className="grid-item-link">
                 <GridItem
-                  label={`${pageTitle} ${year}`}
-                  bgImage={yearData.coverImage}
-                  textBgImage={yearData.coverImage}
+                  label={year}
+                  // Use the new 'background' property for the static background
+                  bgImage={yearData.background}
+                  // Use the 'coverImage' (logo) for the repeating hover effect
+                  textBgImage={Array(5).fill(yearData.coverImage)}
                 />
               </Link>
             );

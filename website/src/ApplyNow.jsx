@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ApplyNow = () => { // MODIFIED: Renamed component
+const ApplyNow = () => {
   const navigate = useNavigate();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,120 +20,119 @@ const ApplyNow = () => { // MODIFIED: Renamed component
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
-      setFormData((prevFormData) => {
-        const newDomains = [...prevFormData.domain];
+      setFormData((prev) => {
+        const newDomains = [...prev.domain];
         if (checked) {
           newDomains.push(value);
         } else {
           const index = newDomains.indexOf(value);
-          if (index > -1) {
-            newDomains.splice(index, 1);
-          }
+          if (index > -1) newDomains.splice(index, 1);
         }
-        return { ...prevFormData, domain: newDomains };
+        
+        if (value === 'other' && !newDomains.includes('other')) {
+          return { ...prev, domain: newDomains, otherDomain: '' };
+        }
+
+        return { ...prev, domain: newDomains };
       });
     } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+      setFormData({ ...formData, [name]: value });
     }
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const backendEndpoint = "http://localhost:3001/api/submit-to-google-sheet";
-
+    
     try {
-      const response = await fetch(backendEndpoint, {
-        method: "POST",
+      const response = await fetch('http://localhost:3001/api/submit-to-google-sheet', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        throw new Error("Something went wrong with the submission.");
+        throw new Error('Network response was not ok');
       }
 
-      console.log("Form submitted successfully:", formData);
-      alert("✅ Application successful!"); // MODIFIED: Updated alert message
-      navigate("/");
+      setIsSubmitted(true);
 
     } catch (error) {
-      console.error("Submission Error:", error);
-      alert("❌ There was a problem with your submission. Please try again.");
+      console.error('Error submitting form:', error);
+      alert("❌ There was an error submitting your application. Please try again.");
     }
   };
 
   return (
     <>
-      {/* MODIFIED: Updated title */}
       <title>Apply Now - Arts & Deco</title>
       <meta name="description" content="Apply to join the Department of Arts & Deco community." />
 
-      {/* MODIFIED: Renamed classNames for consistency */}
-      <div className="apply-now-container">
-        <div className="apply-now-image-panel">
-          <div className="image-panel-content">
-            <h1>Join Our Community</h1>
-            <p>Discover and create with the best artists and designers.</p>
-          </div>
+      <div className="apply-now-page-container">
+        <div className="image-section">
+          {/* This div is now dedicated to the background image to fix the error */}
+          <div 
+            className="image-section-bg" 
+            style={{ backgroundImage: `url('/images/thope.png')` }}
+          ></div>
+          <h1 className="image-section-text">Join Us</h1>
         </div>
 
-        <div className="apply-now-form-panel">
+        <div className="form-section">
           <form className="apply-now-form" onSubmit={handleSubmit}>
-            {/* MODIFIED: Updated heading */}
-            <h2>Apply Now</h2>
-            <div className="form-group">
-              <label>Name</label>
-              <input type="text" name="name" placeholder="Enter your name" value={formData.name} onChange={handleChange} required />
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input type="email" name="email" placeholder="Enter your email" value={formData.email} onChange={handleChange} required />
-            </div>
-            <div className="form-group">
-              <label>ID Number</label>
-              <input type="text" name="id" placeholder="Enter your ID" value={formData.id} onChange={handleChange} required />
-            </div>
-            <div className="form-group">
-              <label>Phone</label>
-              <input type="tel" name="phone" placeholder="Enter your phone number" value={formData.phone} onChange={handleChange} required />
-            </div>
-            <div className="form-group">
+            {/* ... form content remains the same ... */}
+            <div className="title">Apply Now</div>
+            
+            <input className="form-input" placeholder="Name" name="name" type="text" value={formData.name} onChange={handleChange} required />
+            <input className="form-input" name="email" placeholder="Email" type="email" value={formData.email} onChange={handleChange} required />
+            <input className="form-input" name="id" placeholder="ID Number" type="text" value={formData.id} onChange={handleChange} required />
+            <input className="form-input" name="phone" placeholder="Phone" type="tel" value={formData.phone} onChange={handleChange} required />
+
+            <div className="form-group-condensed">
               <label>Domain of Interest</label>
-              <div className="checkbox-group">
-                {domainOptions.map((option) => (
-                  <label key={option} className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      name="domain"
-                      value={option.toLowerCase()}
-                      checked={formData.domain.includes(option.toLowerCase())}
-                      onChange={handleChange}
-                    />
-                    {option}
-                  </label>
-                ))}
+              <div className="checklist">
+                {domainOptions.map((option) => {
+                  const optionValue = option.toLowerCase().replace('-', '');
+                  return (
+                    <div className="checklist-item" key={option}>
+                      <input 
+                        value={optionValue} 
+                        name="domain" 
+                        type="checkbox" 
+                        id={optionValue}
+                        checked={formData.domain.includes(optionValue)}
+                        onChange={handleChange}
+                      />
+                      <label htmlFor={optionValue}>{option}</label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            {formData.domain.includes("other") && (
-              <div className="form-group">
-                <label>If Other, please specify:</label>
-                <input
-                  type="text"
-                  name="otherDomain"
-                  placeholder="Your domain of interest"
-                  value={formData.otherDomain}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+            
+            {formData.domain.includes('other') && (
+              <input 
+                className="form-input" 
+                name="otherDomain" 
+                placeholder="Please specify your domain" 
+                type="text" 
+                value={formData.otherDomain} 
+                onChange={handleChange} 
+                required 
+              />
             )}
-            {/* MODIFIED: Updated button text and className */}
-            <button type="submit" className="apply-now-submit">Apply Now</button>
+            
+            {!isSubmitted ? (
+              <button className="form-btn">Submit</button>
+            ) : (
+              <p className="form-success-message">
+                <svg className="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                </svg>
+                Application successful!
+              </p>
+            )}
           </form>
         </div>
       </div>

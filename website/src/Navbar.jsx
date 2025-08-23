@@ -3,7 +3,7 @@ import React, { useContext, memo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ScrollContext } from "./ScrollContext";
 
-const Navbar = ({ isSticky, isHomePage }) => {
+const Navbar = ({ isSticky, isHomePage, isMinified }) => {
   const location = useLocation();
   const { showSignupInNav, isWorkGridAligned } = useContext(ScrollContext);
 
@@ -28,19 +28,22 @@ const Navbar = ({ isSticky, isHomePage }) => {
 
 
   return (
-    <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isSticky && isHomePage ? "home-scroll" : ""} ${location.pathname === '/apply-now' ? "navbar-apply-now" : ""}`}>
+    <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isSticky && isHomePage ? "home-scroll" : ""} ${location.pathname === '/apply-now' ? "navbar-apply-now" : ""} ${isMinified ? "navbar-minified" : ""}`}>
       <div className={`navbar-right ${shouldMakeSpaceForButton ? 'with-button' : ''}`}>
         <ul className="nav-links">
-          {/* This condition now correctly shows the "Home" link on the apply page */}
           {(isSticky || !isHomePage) && (
             <li>
-              <Link to="/" onClick={handleHomeClick}>Home</Link>
+              <Link to="/" onClick={handleHomeClick} className="animated-nav-link">
+                <p>Home</p>
+              </Link>
             </li>
           )}
 
           {shouldShowOurWorks && (
             <li>
-              <Link to="/#works">Our Works</Link>
+              <Link to="/#works" className="animated-nav-link">
+                <p>Our Works</p>
+              </Link>
             </li>
           )}
 
@@ -52,7 +55,9 @@ const Navbar = ({ isSticky, isHomePage }) => {
             </li>
           ) : (
             <li>
-              <Link to="/team" onClick={handleTeamClick}>Team</Link>
+              <Link to="/team" onClick={handleTeamClick} className="animated-nav-link">
+                <p>Team</p>
+              </Link>
             </li>
           )}
         </ul>

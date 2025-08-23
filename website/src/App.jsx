@@ -34,6 +34,7 @@ const Layout = ({ scrollToWorks, worksRef }) => {
   const [isLogoVisible, setIsLogoVisible] = useState(true);
   const [showSignupInNav, setShowSignupInNav] = useState(false);
   const [isWorkGridAligned, setIsWorkGridAligned] = useState(false);
+  const [isTeamPageScrolled, setIsTeamPageScrolled] = useState(false);
   const logoRef = useRef(null);
 
   useEffect(() => {
@@ -46,14 +47,16 @@ const Layout = ({ scrollToWorks, worksRef }) => {
   }, [location, scrollToWorks]);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const isHomePage = location.pathname === '/';
+    const isTeamPage = location.pathname === '/team';
+
+    const handleHomeScroll = () => {
       const logoEl = logoRef.current;
       const worksGridEl = worksRef.current;
-
       if (logoEl && worksGridEl) {
         const logoRect = logoEl.getBoundingClientRect();
         const gridRect = worksGridEl.getBoundingClientRect();
-
+        if (gridRect.top === 0) return;
         const isOverlapping = logoRect.bottom > gridRect.top;
         setIsLogoVisible(!isOverlapping);
 
@@ -61,23 +64,31 @@ const Layout = ({ scrollToWorks, worksRef }) => {
         const isExactlyAligned = Math.abs(gridRect.top - stickyNavHeight) < 2;
         setIsWorkGridAligned(isExactlyAligned);
       }
-
       setShowSignupInNav(window.scrollY > 300);
     };
+    
+    const handleTeamScroll = () => {
+      setIsTeamPageScrolled(window.scrollY > 50);
+    };
 
-    const isHomePage = location.pathname === '/';
+    setIsLogoVisible(true);
+    setIsTeamPageScrolled(false);
+    
     if (isHomePage) {
-      window.addEventListener("scroll", handleScroll);
-      handleScroll();
-    } else {
-      setIsLogoVisible(true);
-      setShowSignupInNav(false);
-      setIsWorkGridAligned(false);
+      window.addEventListener("scroll", handleHomeScroll);
+      handleHomeScroll(); 
+      return () => window.removeEventListener("scroll", handleHomeScroll);
+    } 
+    
+    if (isTeamPage) {
+      window.addEventListener("scroll", handleTeamScroll);
+      handleTeamScroll(); 
+      return () => window.removeEventListener("scroll", handleTeamScroll);
     }
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    setShowSignupInNav(false);
+    setIsWorkGridAligned(false);
+    
   }, [location, worksRef]);
 
   const handleLogoClick = (e) => {
@@ -88,28 +99,39 @@ const Layout = ({ scrollToWorks, worksRef }) => {
   };
 
   const isApplyNowPage = location.pathname === '/apply-now';
+  const isTeamPage = location.pathname === '/team';
   const isHomePage = location.pathname === '/';
+
+  const isNavbarSticky = () => {
+    if (isTeamPage) {
+      return isTeamPageScrolled;
+    }
+    return !isLogoVisible || isApplyNowPage || location.pathname.startsWith('/works');
+  };
 
   return (
     <ScrollContext.Provider value={{ showSignupInNav, isWorkGridAligned }}>
       <Link
         to="/"
         ref={logoRef}
-        className={`main-logo ${isLogoVisible ? "" : "logo-hidden"}`}
+        className={`main-logo ${isLogoVisible && !isTeamPageScrolled ? "" : "logo-hidden"}`}
         onClick={handleLogoClick}
       >
         <img src="/images/and_logo.png" alt="Company Logo" />
       </Link>
 
       <Navbar
-        isSticky={!isLogoVisible || isApplyNowPage || location.pathname.startsWith('/works')}
+        isSticky={isNavbarSticky()}
         isHomePage={isHomePage}
+        isMinified={isTeamPageScrolled}
       />
 
       <main>
         <Outlet />
       </main>
-      <Footer />
+      
+      {/* MODIFIED: Reverted change to always render the Footer and pass it the isTeamPage prop */}
+      <Footer isApplyNowPage={isApplyNowPage} isTeamPage={isTeamPage} />
     </ScrollContext.Provider>
   );
 };
@@ -118,8 +140,12 @@ const HomePageContent = memo(({ worksRef }) => (
   <>
     <title>Arts & Deco</title>
     <meta name="description" content="Official website for the Department of Arts & Deco." />
-    <Landing />
-    <WhatWeDo />
+    <div id="home">
+      <Landing />
+    </div>
+    <div id="what-we-do">
+      <WhatWeDo />
+    </div>
     <div id="works" ref={worksRef}>
       <WorksGrid />
     </div>
