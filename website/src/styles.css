@@ -194,6 +194,12 @@ body {
   backdrop-filter: blur(5px);
 }
 
+/* Rule to move button wrapper left on Apply Now page */
+.navbar.navbar-apply-now .pre-nav-wrapper {
+  position: relative;
+  right: 20px;
+}
+
 .navbar.navbar-minified {
   height: 55px;
   padding: 0 40px;
@@ -245,10 +251,10 @@ body {
   color: #ff3c78;
 }
 
-/* MODIFIED: Re-added rule for split-layout footer on Team Page */
+/* This is the corrected rule for the desktop split-layout footer */
 .footer.footer-split-layout {
-  width: 70%;
-  margin-left: 30%;
+  width: 45%;
+  margin-left:55%;
 }
 
 .footer-icon {
@@ -342,11 +348,12 @@ body {
 }
 
 .pre-nav-link {
-  padding: 0.3em 1.1em;
+  /* MODIFIED: Increased padding and font-size */
+  padding: 0.4em 1.2em;
   color: black;
   text-decoration: none;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   transition: background-color 0.2s ease;
   position: relative;
   display: block;
@@ -598,7 +605,6 @@ body {
 }
 
 /* --- Team Page --- */
-/* MODIFIED: Reverted to non-flex layout for fixed sidebar */
 .team-page-container {
   padding: 0;
 }
@@ -607,7 +613,6 @@ body {
   display: none;
 }
 
-/* MODIFIED: Reverted to fixed-position sidebar */
 .team-tagline-section {
   position: fixed;
   left: 0;
@@ -620,7 +625,6 @@ body {
   padding: 0 40px;
 }
 
-/* MODIFIED: Reverted to margin-based offset for content */
 .team-content-section {
   margin-left: 30%;
   padding: 100px 40px 60px 40px;
@@ -736,9 +740,10 @@ body {
 .signup-btn {
   background: #fbca1f;
   font-family: inherit;
-  padding: 0.3em 1.1em;
+  /* MODIFIED: Increased padding and font-size */
+  padding: 0.4em 1.2em;
   font-weight: 900;
-  font-size: 14px;
+  font-size: 16px;
   border: 3px solid black;
   border-radius: 0.4em;
   box-shadow: 0.1em 0.1em;
@@ -784,9 +789,12 @@ body {
   pointer-events: none;
 }
 
+/* REMOVED: This rule is now redundant after changes to .signup-btn */
+/*
 .navbar .signup-btn {
   font-size: 14px;
 }
+*/
 
 .navbar.navbar-minified .signup-btn {
   font-size: 13px;
@@ -891,9 +899,9 @@ body {
   flex: 1;
   position: fixed;
   left: 0;
-  top: 90px;
-  width: 50%;
-  height: calc(100vh - 90px);
+  top: 0;
+  width: 55%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -932,18 +940,19 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
-  margin-left: 50%;
+  /* Corrected margin to align with image width */
+  margin-left: 55%;
   min-height: 100vh;
   padding-top: 110px;
 }
-
 
 .apply-now-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
   width: 100%;
-  max-width: 350px;
+  /* Increased max-width to make the form wider */
+  max-width: 450px;
   background: #f8f8f8;
   padding: 20px;
   border-radius: 5px;
@@ -1372,7 +1381,6 @@ body {
     padding: 0 10px;
   }
   
-  /* MODIFIED: New rules to shrink navbar and logo on Fest/Gallery pages on mobile */
   .navbar.works-page-scrolled {
     height: 60px;
   }
@@ -1420,7 +1428,7 @@ body {
     width: 100%;
     top: 0;
     height: auto;
-    padding: 0 20px 60px 20px; /* Adjusted padding */
+    padding: 0 20px 60px 20px; 
     margin-top: 0; 
   }
 
@@ -1433,7 +1441,7 @@ body {
 
   .apply-now-page-container {
     flex-direction: column;
-    padding: 0;
+    padding: 80px 0 0; /* Creates space for navbar, stacks items vertically */
   }
 
   .contact-tagline {
@@ -1500,6 +1508,12 @@ body {
     overflow-wrap: break-word; 
     font-size: 0.9rem;
   }
+  
+  /* MODIFIED: This is the corrected rule for the mobile split-layout footer */
+  .footer.footer-split-layout {
+    width: 100%;
+    margin-left: 0;
+  }
 
   .footer-links {
     flex-direction: row;
@@ -1511,15 +1525,10 @@ body {
   }
 
   .apply-now-page-container .image-section {
-    top: 0;
-    height: 300px;
+    height: 1000px; /* Cropped image height */
+    padding: 1px; /* Remove padding to make image edge-to-edge */
     border: none;
     box-shadow: none;
-    margin-top: 80px;
-  }
-
-  .apply-now-page-container {
-    padding-top: 0;
   }
 
   .apply-now-page-container .form-section {
@@ -1537,7 +1546,6 @@ body {
     font-size: 2.5rem;
   }
   
-  /* MODIFIED: Ensured lightbox nav arrows are visible and tappable */
   .lightbox-nav {
     z-index: 2001;
     padding: 15px;

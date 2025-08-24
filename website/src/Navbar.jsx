@@ -3,7 +3,7 @@ import React, { useState, useContext, memo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ScrollContext } from "./ScrollContext";
 
-const Navbar = ({ isSticky, isHomePage, isWorksPage, isMinified, isMinimizedOnHome }) => {
+const Navbar = ({ isSticky, isHomePage, isWorksPage, isMinified, isMinimizedOnHome, isLogoHidden }) => {
   const location = useLocation();
   const { showSignupInNav, isWorkGridAligned, isMobile } = useContext(ScrollContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,25 +40,24 @@ const Navbar = ({ isSticky, isHomePage, isWorksPage, isMinified, isMinimizedOnHo
 
           {!isMobile && (
             <div className="desktop-controls-group">
-              {!isApplyNowPage && (
-                <div className="pre-nav-wrapper">
-                  {!isHomePage && (
-                    <Link to="/" onClick={handleHomeClick} className="pre-nav-link">
-                      Home
-                    </Link>
-                  )}
-                  {shouldShowOurWorks && (
-                    <Link to="/#works" className="pre-nav-link">
-                      Our Works
-                    </Link>
-                  )}
-                  {!isTeamPage && (
-                    <Link to="/team" onClick={handleTeamClick} className="pre-nav-link">
-                      Team
-                    </Link>
-                  )}
-                </div>
-              )}
+              <div className="pre-nav-wrapper">
+                {/* MODIFIED: Home button now appears if not on homepage OR if logo is hidden */}
+                {(!isHomePage || isLogoHidden) && (
+                  <Link to="/" onClick={handleHomeClick} className="pre-nav-link">
+                    Home
+                  </Link>
+                )}
+                {shouldShowOurWorks && (
+                  <Link to="/#works" className="pre-nav-link">
+                    Our Works
+                  </Link>
+                )}
+                {!isTeamPage && (
+                  <Link to="/team" onClick={handleTeamClick} className="pre-nav-link">
+                    Team
+                  </Link>
+                )}
+              </div>
               
               {isTeamPage ? (
                  <Link to="/apply-now" className="signup-btn">

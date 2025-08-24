@@ -182,13 +182,12 @@ const Layout = ({ scrollToWorks, worksRef, whatWeDoRef, landingRef }) => {
 
   return (
     <ScrollContext.Provider value={contextValue}>
-      {/* MODIFIED: The Navbar component is now rendered BEFORE the logo Link. */}
-      {/* This is crucial for the CSS sibling selector (~) to work correctly for resizing the logo. */}
       <Navbar
         isSticky={isNavbarSticky()}
         isHomePage={isHomePage}
         isMinimizedOnHome={isNavbarMinimizedOnHome}
         isMinified={isTeamPageScrolled || isNavbarOverlappingContent}
+        isLogoHidden={isLogoHidden} 
       />
       <Link
         to="/"
