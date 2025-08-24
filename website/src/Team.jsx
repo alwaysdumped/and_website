@@ -1,13 +1,12 @@
 // src/Team.jsx
 import React from "react";
 
-// Existing team member data for "The PoRs" section
 const teamData = [
   {
     role: "COSTAAN",
     name: "SACHIT LANKA",
     insta: "@sachit_lanka",
-    image : "/images/sachit.jpg"
+    image: "/images/sachit.jpg"
   },
   {
     role: "COSSACN",
@@ -63,22 +62,25 @@ const Team = () => {
                     <img src={member.image} alt={member.name} className="member-image" />
                   </div>
                   <div className="member-details">
-                    <p className="member-role">&#9830; {member.role}</p>
                     <p className="member-name">{member.name}</p>
-                    <a 
-                      href={`https://www.instagram.com/${member.insta.substring(1)}/`} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="member-contact"
-                    >
-                      {/* MODIFIED: Replaced the SVG with the outlined version from the footer */}
-                      <svg className="insta-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                      </svg>
-                      <span>{member.insta}</span>
-                    </a>
+                    {/* MODIFICATION START */}
+                    <div className="member-role-container">
+                      <p className="member-role">{member.role}</p>
+                      <a 
+                        href={`https://www.instagram.com/${member.insta.substring(1)}/`} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="member-contact"
+                      >
+                        <svg className="insta-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                        <span className="member-insta-handle">{member.insta}</span>
+                      </a>
+                    </div>
+                    {/* MODIFICATION END */}
                   </div>
                 </div>
               ))}

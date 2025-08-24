@@ -1261,15 +1261,14 @@ body {
   }
 }
 
-/* ========== RESPONSIVE ADJUSTMENTS ========== */
+/*========== RESPONSIVE ADJUSTMENTS ========== */
 
 @media (max-width: 768px) {
   /* --- General Layout --- */
   .page-container {
     padding: 100px 20px 40px;
   }
-  
-  /* ADDED: New class to remove horizontal padding for full-width grids */
+
   .page-container-flush {
     padding-left: 0;
     padding-right: 0;
@@ -1290,7 +1289,6 @@ body {
   /* --- Navbar & Hamburger Menu --- */
   .navbar {
     height: 80px;
-    /* MODIFIED: Reduced horizontal padding */
     padding: 0 10px;
   }
   
@@ -1309,7 +1307,6 @@ body {
   }
 
   .grid-item {
-    /* MODIFIED: Grid item height further reduced */
     height: 250px;
   }
 
@@ -1333,7 +1330,7 @@ body {
     top: 0;
     height: auto;
     padding: 60px 20px;
-    margin-top: 80px; /* Push content down from fixed navbar */
+    margin-top: 80px;
   }
 
   .team-content-section,
@@ -1346,7 +1343,7 @@ body {
   .team-page-container,
   .apply-now-page-container {
     flex-direction: column;
-    padding: 0; /* Remove padding from container, apply margin to first child instead */
+    padding: 0;
   }
 
   .contact-tagline {
@@ -1354,18 +1351,16 @@ body {
     text-align: center;
   }
   
-  /* MODIFIED: Team card has been completely restyled */
-  .team-member-card {
+  .main-team-photo-wrapper {
+    width: 100%;
+  }
+ .team-member-card {
     flex-direction: row;
     background-color: #ffffff;
     border-radius: 12px;
     padding: 1rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     align-items: center;
-  }
-  
-  .main-team-photo-wrapper {
-    width: 100%;
   }
   
   .member-image {
@@ -1377,14 +1372,38 @@ body {
   }
 
   .member-details {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
+    width: auto;
     height: auto;
     text-align: left;
     border: none;
     background-color: transparent;
-    padding: 0 0 0 1rem;
+    padding: 0 0.5rem 0 1rem;
+  }
+  
+  /* MODIFICATION START */
+  .member-role-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
+  .member-contact {
+    /* Vertical alignment is now handled by the parent container */
+    gap: 0.5em;
+    min-width: 0;
+  }
+
+  .member-contact .member-insta-handle {
+    display: none;
+  }
+  /* MODIFICATION END */
+
+  .member-contact span {
+    overflow-wrap: break-word; 
+    font-size: 0.9rem;
+  }
   .footer.footer-split-layout {
     width: 100%;
     margin-left: 0;
@@ -1404,10 +1423,9 @@ body {
     height: 300px;
     border: none;
     box-shadow: none;
-    margin-top: 80px; /* Push content down from fixed navbar */
+    margin-top: 80px;
   }
 
-  /* MODIFIED: Removed top padding from the container so margin-top works correctly */
   .apply-now-page-container {
     padding-top: 0;
   }
