@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { worksData } from "./data";
 import Masonry from './Masonry';
+import Loader from './Loader'; // MODIFIED: Imported Loader component
 import { ScrollContext } from "./ScrollContext";
 
 const GalleryPage = () => {
@@ -12,6 +13,8 @@ const GalleryPage = () => {
   const yearData = festData ? festData[year] : null;
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  // MODIFIED: Added loading state to prevent FOUC
+  const [isLoading, setIsLoading] = useState(true);
 
   const capitalizedFestName = festName.charAt(0).toUpperCase() + festName.slice(1);
 
@@ -40,6 +43,15 @@ const GalleryPage = () => {
     const prevIndex = (selectedImageIndex - 1 + yearData.images.length) % yearData.images.length;
     setSelectedImageIndex(prevIndex);
   };
+
+  useEffect(() => {
+    // MODIFIED: Set a timer to display the gallery after the Masonry JS has had time to run
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -89,10 +101,17 @@ const GalleryPage = () => {
           )}
         </div>
 
-        <Masonry 
-          items={masonryItems} 
-          onItemClick={(item, index) => openLightbox(index)}
-        />
+        {/* MODIFIED: Conditionally render Loader or Masonry */}
+        {isLoading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+            <Loader />
+          </div>
+        ) : (
+          <Masonry 
+            items={masonryItems} 
+            onItemClick={(item, index) => openLightbox(index)}
+          />
+        )}
         
         {selectedImageIndex !== null && (
           <div className="lightbox-overlay visible" onClick={closeLightbox} role="dialog" aria-modal="true">
