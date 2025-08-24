@@ -1,25 +1,24 @@
 // src/GalleryPage.jsx
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { worksData } from "./data";
 import Masonry from './Masonry';
+import { ScrollContext } from "./ScrollContext";
 
 const GalleryPage = () => {
   const { festName, year } = useParams();
+  const { galleryRef } = useContext(ScrollContext);
   const festData = worksData[festName];
   const yearData = festData ? festData[year] : null;
 
-  // State to track the currently selected image index
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   const capitalizedFestName = festName.charAt(0).toUpperCase() + festName.slice(1);
 
-  // MODIFIED: Create a page title that excludes the year for the "other" category.
   const pageTitle = festName === 'other'
     ? capitalizedFestName
     : `${capitalizedFestName} ${year}`;
 
-  // Handlers to open, close, and navigate the lightbox
   const openLightbox = (index) => {
     setSelectedImageIndex(index);
   };
@@ -42,7 +41,6 @@ const GalleryPage = () => {
     setSelectedImageIndex(prevIndex);
   };
 
-  // Effect to handle keyboard controls for the lightbox
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (selectedImageIndex === null) return;
@@ -78,17 +76,14 @@ const GalleryPage = () => {
 
   return (
     <>
-      {/* MODIFIED: Use the conditional pageTitle variable */}
       <title>{`${pageTitle}`} - Arts & Deco</title>
       <meta name="description" content={`Gallery for ${pageTitle}.`} />
 
-      <div className="page-container">
-        {/* MODIFIED: Use the conditional pageTitle variable */}
+      <div className="page-container" ref={galleryRef}>
         <h1 className="page-title">{pageTitle}</h1>
         <div className="breadcrumb">
           <Link to="/">Home</Link> / <Link to={`/works/${festName}`}>{capitalizedFestName}</Link>
           
-          {/* MODIFIED: Conditionally render the year in the breadcrumb */}
           {festName !== 'other' && (
             <> / <span>{year}</span></>
           )}
@@ -99,7 +94,6 @@ const GalleryPage = () => {
           onItemClick={(item, index) => openLightbox(index)}
         />
         
-        {/* This JSX renders the lightbox when an image is selected */}
         {selectedImageIndex !== null && (
           <div className="lightbox-overlay visible" onClick={closeLightbox} role="dialog" aria-modal="true">
             <button className="lightbox-close" onClick={closeLightbox} aria-label="Close image viewer">&times;</button>

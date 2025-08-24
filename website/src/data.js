@@ -50,6 +50,8 @@ export const worksData = {
         { id: 9, src: "/images/atmos/atmos22at9.jpeg", alt: "Artwork 9", width: 800, height: 800 },
         { id: 10, src: "/images/atmos/atmos22at10.jpeg", alt: "Artwork 10", width: 600, height: 800 },
         { id: 11, src: "/images/atmos/atmos22at11.jpeg", alt: "Artwork 11", width: 800, height: 600 },
+        { id: 12, src: "/images/atmos/atmos22at34.jpg", alt: "Artwork 12", width: 800, height: 600 },
+
       ],
     },
   },
@@ -128,12 +130,12 @@ export const worksData = {
   },
   other: {
     "2024": {
-      coverImage: "/images/other-2024-cover.jpg",
-      // MODIFIED: Added a background property to prevent crashes.
+      coverImage: "/images/other/orbenovologo.png",
       background: placeholder(800, 600, 'Other 24'),
       images: [
         { id: 1, src: "/images/other/other24.jpg", alt: "Artwork 1", width: 600, height: 800 },
         { id: 2, src: "/images/other/other23at1.jpg", alt: "Artwork 2", width: 600, height: 800 },
+        { id: 3, src: "/images/other/orbenovologo.png", alt: "Artwork 3", width: 600, height: 800 },
       ],
     },
   },

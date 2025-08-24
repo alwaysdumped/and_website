@@ -27,7 +27,7 @@ const WorksGrid = () => {
     {
       label: "OTHER",
       bgImage: "/images/work4.jpg",
-      textBgImage: ["/images/text-work2.jpg", "/images/other-2024-cover.jpg"],
+      textBgImage: ["/images/other/orbenovologo.png", "/images/other-2024-cover.jpg"],
     },
   ];
 
