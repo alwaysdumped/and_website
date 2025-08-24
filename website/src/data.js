@@ -5,7 +5,7 @@ const placeholder = (width, height, text) => `https://placehold.co/${width}x${he
 export const worksData = {
   atmos: {
     "2024": {
-      coverImage: "/images/atmos/atmos24logo.jpg",
+      coverImage: ["/images/atmos/atmos24logo.jpg","/images/other-2024-cover.jpg"],
       background: "/images/atmos/atmos24at7.jpg",
       images: [
         { id: 9, src: "/images/atmos/atmos24logo.jpg", alt: "Artwork 9", width: 600, height: 800 },
@@ -21,7 +21,7 @@ export const worksData = {
       ],
     },
     "2023": {
-      coverImage: "/images/atmos/atmos23logo.jpg",
+      coverImage: ["/images/atmos/atmos23logo.jpg","/images/other-2024-cover.jpg"],
       background: "/images/atmos/atmos23at3.jpg",
       images: [
         { id: 8, src: "/images/atmos/atmos23logo.jpg", alt: "Artwork 1", width: 600, height: 800 },
@@ -35,7 +35,7 @@ export const worksData = {
       ],
     },
     "2022": {
-      coverImage: "/images/atmos/atmos22logo.jpeg",
+      coverImage: ["/images/atmos/atmos22logo.jpeg","/images/other-2024-cover.jpg"],
       background: "/images/atmos/atmos22at8.jpeg",
       images: [
         { id: 12, src: "/images/atmos/atmos22logo.jpeg", alt: "Artwork 1", width: 600, height: 800 },
@@ -55,7 +55,7 @@ export const worksData = {
   },
   arena: {
     "2025": {
-      coverImage: "/images/arena/arena25logo.jpg",
+      coverImage: ["/images/arena/arena25logo.jpg","/images/other-2024-cover.jpg"],
       background: "/images/arena/arena25at1.jpg",
       images: [
         { id: 1, src: "/images/arena/arena25logo.jpg", alt: "Artwork 1", width: 600, height: 800 },
@@ -74,7 +74,7 @@ export const worksData = {
       ],
     },
     "2024": {
-      coverImage: "/images/arena/arena24logo.jpg",
+      coverImage: ["/images/arena/arena24logo.jpg","/images/other-2024-cover.jpg"],
       background: "/images/arena/arena24at1.jpg",
       images: [
         { id: 1, src: "/images/arena/arena24logo.jpg", alt: "Artwork 1", width: 600, height: 800 },
@@ -82,37 +82,59 @@ export const worksData = {
         { id: 3, src: "/images/arena/arena24at2.jpg", alt: "Artwork 3", width: 600, height: 700 },
       ],
     },
+    "2023": {
+      coverImage: ["/images/arena/arena23logo.jpg","/images/other-2024-cover.jpg"],
+      background: "/images/arena/arena23at1.jpg",
+      images: [
+        { id: 1, src: "/images/arena/arena23logo.jpg", alt: "Artwork 1", width: 600, height: 800 },
+        { id: 2, src: "/images/arena/arena23at1.jpg", alt: "Artwork 2", width: 800, height: 600 },
+      ],
+    },
   },
   pearl: {
+    "2025": {
+      coverImage: ["/images/pearl/pearl25logo.jpg","/images/other-2024-cover.jpg"],
+      background: "/images/pearl/pearl25at1.jpg",
+      images: [
+        { id: 1, src: "/images/pearl/pearl25logo.jpg", alt: "Artwork 1", width: 600, height: 800 },
+        { id: 2, src: "/images/pearl/pearl25at1.jpg", alt: "Artwork 2", width: 800, height: 600 },
+        { id: 3, src: "/images/pearl/pearl25at2.jpg", alt: "Artwork 3", width: 600, height: 700 },
+        { id: 4, src: "/images/pearl/pearl25at3.jpg", alt: "Artwork 4", width: 700, height: 800 },
+        { id: 5, src: "/images/pearl/pearl25at4.jpg", alt: "Artwork 5", width: 600, height: 600 },
+        { id: 6, src: "/images/pearl/pearl25str.jpg", alt: "Artwork 6", width: 600, height: 600 },
+      ],
+    },
     "2024": {
-      coverImage: "/images/pearl/pearl24logo.jpg",
+      coverImage: ["/images/pearl/pearl24logo.jpg","/images/other-2024-cover.jpg"],
       background: "/images/pearl/pearl24at1.jpeg",
       images: [
         { id: 1, src: "/images/pearl/pearl24logo.jpg", alt: "Artwork 1", width: 600, height: 800 },
         { id: 2, src: "/images/pearl/pearl24at1.jpeg", alt: "Artwork 2", width: 800, height: 600 },
         { id: 3, src: "/images/pearl/pearl24at2.jpg", alt: "Artwork 3", width: 600, height: 700 },
-        { id: 4, src: "/images/pearl/pearl24at3.jpg", alt: "Artwork 4", width: 700, height: 800 },
-        { id: 5, src: "/images/pearl/pearl24at4.jpg", alt: "Artwork 5", width: 600, height: 600 },
-        { id: 6, src: "/images/pearl/pearl24at5.jpg", alt: "Artwork 6", width: 800, height: 700 },
       ],
     },
     "2023": {
-      coverImage: "/images/pearl/pearl23logo2.jpg",
+      coverImage: ["/images/pearl/pearl23logo2.jpg","/images/other-2024-cover.jpg"],
       background: "/images/pearl/pearl23at1.jpg",
       images: [
           { id: 1, src: "/images/pearl/pearl23logo1.jpg", alt: "Artwork 1", width: 600, height: 800 },
+          { id: 3, src: "/images/pearl/pearl23logo2.jpg", alt: "Artwork 3", width: 600, height: 800 },
+          { id: 4, src: "/images/pearl/pearl23at2.jpg", alt: "Artwork 4", width: 700, height: 800 },
+          { id: 5, src: "/images/pearl/pearl23at3.jpg", alt: "Artwork 5", width: 600, height: 600 },
           { id: 2, src: "/images/pearl/pearl23at1.jpg", alt: "Artwork 2", width: 800, height: 600 },
-          { id: 4, src: "/images/pearl/pearl23logo2.jpg", alt: "Artwork 4", width: 600, height: 800 },
+          { id: 6, src: "/images/pearl/pearl23at4.jpg", alt: "Artwork 6", width: 800, height: 700 },
       ],
     },
   },
   other: {
     "2024": {
       coverImage: "/images/other-2024-cover.jpg",
+      // MODIFIED: Added a background property to prevent crashes.
       background: placeholder(800, 600, 'Other 24'),
       images: [
-        { id: 1, src: placeholder(600, 800, 'Other 24'), alt: "Artwork 1", width: 600, height: 800 },
+        { id: 1, src: "/images/other/other24.jpg", alt: "Artwork 1", width: 600, height: 800 },
+        { id: 2, src: "/images/other/other23at1.jpg", alt: "Artwork 2", width: 600, height: 800 },
       ],
     },
-  }
+  },
 };

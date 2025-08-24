@@ -14,6 +14,11 @@ const GalleryPage = () => {
 
   const capitalizedFestName = festName.charAt(0).toUpperCase() + festName.slice(1);
 
+  // MODIFIED: Create a page title that excludes the year for the "other" category.
+  const pageTitle = festName === 'other'
+    ? capitalizedFestName
+    : `${capitalizedFestName} ${year}`;
+
   // Handlers to open, close, and navigate the lightbox
   const openLightbox = (index) => {
     setSelectedImageIndex(index);
@@ -73,13 +78,20 @@ const GalleryPage = () => {
 
   return (
     <>
-      <title>{`${capitalizedFestName} ${year}`} - Arts & Deco</title>
-      <meta name="description" content={`Gallery for ${capitalizedFestName} ${year}.`} />
+      {/* MODIFIED: Use the conditional pageTitle variable */}
+      <title>{`${pageTitle}`} - Arts & Deco</title>
+      <meta name="description" content={`Gallery for ${pageTitle}.`} />
 
       <div className="page-container">
-        <h1 className="page-title">{`${capitalizedFestName} ${year}`}</h1>
+        {/* MODIFIED: Use the conditional pageTitle variable */}
+        <h1 className="page-title">{pageTitle}</h1>
         <div className="breadcrumb">
-          <Link to="/">Home</Link> / <Link to={`/works/${festName}`}>{capitalizedFestName}</Link> / <span>{year}</span>
+          <Link to="/">Home</Link> / <Link to={`/works/${festName}`}>{capitalizedFestName}</Link>
+          
+          {/* MODIFIED: Conditionally render the year in the breadcrumb */}
+          {festName !== 'other' && (
+            <> / <span>{year}</span></>
+          )}
         </div>
 
         <Masonry 

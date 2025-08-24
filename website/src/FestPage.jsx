@@ -34,14 +34,18 @@ const FestPage = () => {
           {years.map((year) => {
             const yearData = festData[year];
             
+            // MODIFIED: Use the first image from the coverImage array
+            const coverImage = Array.isArray(yearData.coverImage)
+              ? yearData.coverImage
+              : [yearData.coverImage];
+
             return (
               <Link key={year} to={`/works/${festName}/${year}`} className="grid-item-link">
                 <GridItem
                   label={year}
-                  // Use the new 'background' property for the static background
                   bgImage={yearData.background}
-                  // Use the 'coverImage' (logo) for the repeating hover effect
-                  textBgImage={Array(5).fill(yearData.coverImage)}
+                  // Use the coverImage variable which is now guaranteed to be an array
+                  textBgImage={coverImage}
                 />
               </Link>
             );
