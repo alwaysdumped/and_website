@@ -3,9 +3,9 @@ import React, { useState, useContext, memo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ScrollContext } from "./ScrollContext";
 
-const Navbar = ({ isSticky, isHomePage, isMinified }) => {
+const Navbar = ({ isSticky, isHomePage, isMinified, isMinimizedOnHome }) => {
   const location = useLocation();
-  const { showSignupInNav, isWorkGridAligned } = useContext(ScrollContext);
+  const { showSignupInNav, isWorkGridAligned, isMobile } = useContext(ScrollContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isTeamPage = location.pathname === '/team';
@@ -31,20 +31,42 @@ const Navbar = ({ isSticky, isHomePage, isMinified }) => {
   };
 
   const shouldShowOurWorks = isHomePage ? !isWorkGridAligned : true;
-
+  
   return (
     <>
-      <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isSticky && isHomePage ? "home-scroll" : ""} ${location.pathname === '/apply-now' ? "navbar-apply-now" : ""} ${isMinified ? "navbar-minified" : ""}`}>
+      <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isHomePage && isMinimizedOnHome ? "home-scroll" : ""} ${location.pathname === '/apply-now' ? "navbar-apply-now" : ""} ${isMinified ? "navbar-minified" : ""}`}>
         <div className="navbar-right desktop-nav">
+          
+          {/* MODIFIED: The wrapper's content is now fully dynamic based on the page context */}
+          {!isSticky && !isMobile && (
+            <div className={`pre-nav-wrapper ${showSignupInNav ? 'with-apply-btn' : ''}`}>
+              {!isHomePage && (
+                <Link to="/" onClick={handleHomeClick} className="pre-nav-link">
+                  Home
+                </Link>
+              )}
+              {shouldShowOurWorks && (
+                <Link to="/#works" className="pre-nav-link">
+                  Our Works
+                </Link>
+              )}
+              {!isTeamPage && (
+                <Link to="/team" onClick={handleTeamClick} className="pre-nav-link">
+                  Team
+                </Link>
+              )}
+            </div>
+          )}
+
           <ul className="nav-links">
-            {(isSticky || !isHomePage) && (
+            {isSticky && (
               <li>
                 <Link to="/" onClick={handleHomeClick} className="animated-nav-link">
                   <p>Home</p>
                 </Link>
               </li>
             )}
-            {shouldShowOurWorks && (
+            {isSticky && shouldShowOurWorks && (
               <li>
                 <Link to="/#works" className="animated-nav-link">
                   <p>Our Works</p>
@@ -52,17 +74,21 @@ const Navbar = ({ isSticky, isHomePage, isMinified }) => {
               </li>
             )}
             {isTeamPage ? (
-              <li>
-                <Link to="/apply-now" className="signup-btn">
-                  Apply Now
-                </Link>
-              </li>
+              isSticky && (
+                <li>
+                  <Link to="/apply-now" className="signup-btn">
+                    Apply Now
+                  </Link>
+                </li>
+              )
             ) : (
-              <li>
-                <Link to="/team" onClick={handleTeamClick} className="animated-nav-link">
-                  <p>Team</p>
-                </Link>
-              </li>
+              isSticky && (
+                <li>
+                  <Link to="/team" onClick={handleTeamClick} className="animated-nav-link">
+                    <p>Team</p>
+                  </Link>
+                </li>
+              )
             )}
           </ul>
 
@@ -83,9 +109,7 @@ const Navbar = ({ isSticky, isHomePage, isMinified }) => {
         </button>
       </nav>
 
-      {/* Mobile Menu Panel */}
       <div className={`mobile-nav-menu ${isMenuOpen ? 'open' : ''}`}>
-        {/* MODIFIED: Added an explicit close button */}
         <button className="mobile-nav-close" onClick={() => setIsMenuOpen(false)} aria-label="Close menu">&times;</button>
         <ul className="nav-links">
           <li>

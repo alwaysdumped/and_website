@@ -44,9 +44,10 @@ const ScrollToTop = () => {
   return null;
 };
 
-const Layout = ({ scrollToWorks, worksRef }) => {
+const Layout = ({ scrollToWorks, worksRef, whatWeDoRef, landingRef }) => {
   const location = useLocation();
-  const [isNavbarStickyOnHome, setIsNavbarStickyOnHome] = useState(false);
+  const [isNavbarVisibleOnHome, setIsNavbarVisibleOnHome] = useState(false);
+  const [isNavbarMinimizedOnHome, setIsNavbarMinimizedOnHome] = useState(false);
   const [showSignupInNav, setShowSignupInNav] = useState(false);
   const [isWorkGridAligned, setIsWorkGridAligned] = useState(false);
   const [isTeamPageScrolled, setIsTeamPageScrolled] = useState(false);
@@ -75,17 +76,24 @@ const Layout = ({ scrollToWorks, worksRef }) => {
     const isGalleryPage = isWorksPage && location.pathname.split('/').length === 4;
     const handleHomeScroll = () => {
       setIsScrolledOnHome(window.scrollY > 10);
-      const logoEl = logoRef.current;
+      
+      const landingEl = landingRef.current;
       const worksGridEl = worksRef.current;
-      if (logoEl && worksGridEl) {
-        const logoRect = logoEl.getBoundingClientRect();
+
+      if (landingEl) {
+        const landingRect = landingEl.getBoundingClientRect();
+        setIsNavbarVisibleOnHome(landingRect.bottom <= 110);
+      }
+      
+      if (worksGridEl) {
         const gridRect = worksGridEl.getBoundingClientRect();
-        setIsNavbarStickyOnHome(logoRect.bottom > gridRect.top);
-        if (gridRect.top === 0) return;
+        setIsNavbarMinimizedOnHome(gridRect.top <= 60);
+
         const stickyNavHeight = 60;
         const isExactlyAligned = Math.abs(gridRect.top - stickyNavHeight) < 2;
         setIsWorkGridAligned(isExactlyAligned);
       }
+      
       setShowSignupInNav(window.scrollY > 300);
     };
     const handleTeamScroll = () => setIsTeamPageScrolled(window.scrollY > 50);
@@ -101,7 +109,8 @@ const Layout = ({ scrollToWorks, worksRef }) => {
     };
     const handleWorksScroll = () => setIsScrolledOnWorksPage(window.scrollY > 50);
 
-    setIsNavbarStickyOnHome(false);
+    setIsNavbarVisibleOnHome(false);
+    setIsNavbarMinimizedOnHome(false);
     setIsTeamPageScrolled(false);
     setIsNavbarOverlappingContent(false);
     setIsScrolledOnWorksPage(false);
@@ -134,7 +143,7 @@ const Layout = ({ scrollToWorks, worksRef }) => {
     setIsWorkGridAligned(false);
     
     return () => cleanupFuncs.forEach(fn => fn());
-  }, [location, worksRef, galleryRef, isHomePage, isTeamPage, isApplyNowPage, isWorksPage]);
+  }, [location, worksRef, whatWeDoRef, landingRef, isHomePage, isTeamPage, isApplyNowPage, isWorksPage]);
 
   const handleLogoClick = (e) => {
     if (location.pathname === "/") {
@@ -144,7 +153,7 @@ const Layout = ({ scrollToWorks, worksRef }) => {
   };
 
   const isNavbarSticky = () => {
-    if (isHomePage) return isNavbarStickyOnHome;
+    if (isHomePage) return isNavbarVisibleOnHome;
     if (isTeamPage) return isTeamPageScrolled;
     if (isWorksPage) return isScrolledOnWorksPage;
     return isApplyNowPage;
@@ -166,14 +175,20 @@ const Layout = ({ scrollToWorks, worksRef }) => {
     isMobile,
   };
 
-  // REVERTED: The logic is back to its original state before the previous change.
   const isLogoHidden = 
     (isTeamPageScrolled || isNavbarOverlappingContent) || 
-    (!isMobile && isHomePage && isNavbarStickyOnHome) || 
+    (!isMobile && isHomePage && isNavbarMinimizedOnHome) ||
     (isMobile && isHomePage && isScrolledOnHome);
 
   return (
     <ScrollContext.Provider value={contextValue}>
+      <Navbar
+        isSticky={isNavbarSticky()}
+        isHomePage={isHomePage}
+        isMinimizedOnHome={isNavbarMinimizedOnHome}
+        isMinified={isTeamPageScrolled || isNavbarOverlappingContent}
+      />
+      
       <Link
         to="/"
         ref={logoRef}
@@ -182,12 +197,6 @@ const Layout = ({ scrollToWorks, worksRef }) => {
       >
         <img src="/images/and_logo.png" alt="Company Logo" />
       </Link>
-
-      <Navbar
-        isSticky={isNavbarSticky()}
-        isHomePage={isHomePage}
-        isMinified={isTeamPageScrolled || isNavbarOverlappingContent}
-      />
 
       <main>
         <Outlet />
@@ -198,14 +207,14 @@ const Layout = ({ scrollToWorks, worksRef }) => {
   );
 };
 
-const HomePageContent = memo(({ worksRef }) => (
+const HomePageContent = memo(({ worksRef, whatWeDoRef, landingRef }) => (
   <>
     <title>Arts & Deco</title>
     <meta name="description" content="Official website for the Department of Arts & Deco." />
-    <div id="home">
+    <div id="home" ref={landingRef}>
       <Landing />
     </div>
-    <div id="what-we-do">
+    <div id="what-we-do" ref={whatWeDoRef}>
       <WhatWeDo />
     </div>
     <div id="works" ref={worksRef}>
@@ -216,6 +225,8 @@ const HomePageContent = memo(({ worksRef }) => (
 
 const App = () => {
   const worksRef = useRef(null);
+  const whatWeDoRef = useRef(null);
+  const landingRef = useRef(null);
 
   const scrollToWorks = () => {
     const worksGridEl = worksRef.current;
@@ -241,8 +252,8 @@ const App = () => {
         }
       >
         <Routes>
-          <Route path="/" element={<Layout scrollToWorks={scrollToWorks} worksRef={worksRef} />}>
-            <Route index element={<HomePageContent worksRef={worksRef} />} />
+          <Route path="/" element={<Layout scrollToWorks={scrollToWorks} worksRef={worksRef} whatWeDoRef={whatWeDoRef} landingRef={landingRef} />}>
+            <Route index element={<HomePageContent worksRef={worksRef} whatWeDoRef={whatWeDoRef} landingRef={landingRef} />} />
             <Route path="apply-now" element={<ApplyNow />} />
             <Route path="team" element={<Team />} />
             <Route path="works/:festName" element={<FestPage />} />
