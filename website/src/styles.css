@@ -12,6 +12,38 @@
   }
 }
 
+/* ADDED: Keyframes for the new loader */
+@keyframes swing {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: ease-out;
+  }
+  25% {
+    transform: rotate(70deg);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: rotate(0deg);
+    animation-timing-function: linear;
+  }
+}
+
+@keyframes swing2 {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: linear;
+  }
+  50% {
+    transform: rotate(0deg);
+    animation-timing-function: ease-out;
+  }
+  75% {
+    transform: rotate(-70deg);
+    animation-timing-function: ease-in;
+  }
+}
+
+
 /* ========== GLOBAL & RESET STYLES ========== */
 * {
   margin: 0;
@@ -28,6 +60,44 @@ body {
 
 /* ========== CORE LAYOUT COMPONENTS ========== */
 
+/* ADDED: Styles for the new loader */
+.newtons-cradle {
+  --uib-size: 50px;
+  --uib-speed: 1.2s;
+  --uib-color: #474554;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--uib-size);
+  height: var(--uib-size);
+}
+
+.newtons-cradle__dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 25%;
+  transform-origin: center top;
+}
+
+.newtons-cradle__dot::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 25%;
+  border-radius: 50%;
+  background-color: var(--uib-color);
+}
+
+.newtons-cradle__dot:first-child {
+  animation: swing var(--uib-speed) linear infinite;
+}
+
+.newtons-cradle__dot:last-child {
+  animation: swing2 var(--uib-speed) linear infinite;
+}
 /* --- Main Logo --- */
 .main-logo {
   position: fixed;
@@ -70,11 +140,6 @@ body {
   display: flex;
   align-items: center;
   gap: 30px;
-  transition: margin-right 0.4s ease-in-out;
-}
-
-.navbar-right.with-button {
-  margin-right: 135px;
 }
 
 .navbar-scrolled {
@@ -123,10 +188,9 @@ body {
   text-align: center;
 }
 
-/* New style for Team Page footer */
 .footer.footer-team {
   background: transparent;
-  --primary-color: #222; /* Dark text for light background */
+  --primary-color: #222;
   --hovered-color: #002cee;
 }
 
@@ -137,7 +201,6 @@ body {
   gap: 30px;
 }
 
-/* Original footer link styles, now scoped to NOT be the team page */
 .footer:not(.footer-team) .footer-links a {
   margin: 0;
   color: #ddd;
@@ -162,8 +225,79 @@ body {
   height: 1.2em;
 }
 
-/* ========== GENERIC PAGE & SHARED COMPONENT STYLES ========== */
+/* --- Hamburger Menu (Mobile Only) --- */
+.hamburger-menu {
+  display: none;
+  z-index: 1002;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+}
 
+.hamburger-line {
+  width: 25px;
+  height: 3px;
+  background-color: var(--primary-color);
+  margin: 5px 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.hamburger-menu.open .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger-menu.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+.hamburger-menu.open .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+.mobile-nav-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(5px);
+  z-index: 1001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.mobile-nav-menu.open {
+  transform: translateX(0);
+}
+
+.mobile-nav-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mobile-nav-menu .nav-links {
+  flex-direction: column;
+  gap: 40px;
+  --primary-color: #fff;
+  --hovered-color: #ff3c78;
+}
+
+.mobile-nav-menu .nav-links p,
+.mobile-nav-menu .nav-links span {
+  font-size: 1.5rem;
+}
+
+/* ========== GENERIC PAGE & SHARED COMPONENT STYLES ========== */
 .page-container {
   padding: 130px 40px 60px;
   min-height: 100vh;
@@ -202,7 +336,6 @@ body {
 }
 
 /* ========== HOMEPAGE SECTIONS ========== */
-
 .landing {
   height: 100vh;
   display: flex;
@@ -251,7 +384,6 @@ body {
 }
 
 /* ========== PAGE-SPECIFIC STYLES ========== */
-
 /* --- Fest Page Grid --- */
 .fest-grid {
   display: grid;
@@ -362,11 +494,11 @@ body {
   gap: 0.5rem;
   align-items: center;
   text-decoration: none;
-  /* MODIFIED: This line makes the entire link (and SVG icon) use the correct color */
   color: var(--primary-color);
 }
 
-.animated-nav-link p {
+.animated-nav-link p,
+.animated-nav-link span {
   margin: 0;
   position: relative;
   font-size: 1rem;
@@ -385,7 +517,8 @@ body {
   transition: 0.3s ease-out;
 }
 
-.animated-nav-link:hover p {
+.animated-nav-link:hover p,
+.animated-nav-link:hover span {
   color: var(--hovered-color);
 }
 
@@ -393,9 +526,8 @@ body {
   width: 100%;
 }
 
-/* Scoped override for footer links */
 .footer.footer-team .animated-nav-link,
-.footer.footer-team .animated-nav-link p {
+.footer.footer-team .animated-nav-link span {
   font-size: 1.1rem;
   font-weight: normal;
 }
@@ -552,7 +684,7 @@ body {
   text-decoration: none;
   display: inline-block;
   text-shadow: none;
-  transition: all 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .signup-btn:hover {
@@ -564,9 +696,21 @@ body {
   transform: translate(0.05em, 0.05em);
   box-shadow: 0.05em 0.05em;
 }
-.navbar > .signup-btn {
-  position: absolute;
-  right: 40px;
+
+.nav-signup-btn {
+  width: 115px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.3s ease, width 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+}
+
+.nav-signup-btn.hidden {
+  opacity: 0;
+  width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: -30px; 
+  pointer-events: none;
 }
 
 .navbar .signup-btn {
@@ -644,6 +788,7 @@ body {
   transform: translateX(200%);
   transition-delay: 300ms;
 }
+
 .signup-btn-landing.visible {
   opacity: 1;
   visibility: visible;
@@ -653,32 +798,6 @@ body {
   opacity: 0;
   visibility: hidden;
   transform: translateX(-50%) translateY(20px);
-}
-
-.signup-btn.hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(-50%) translateY(10px);
-}
-
-.signup-btn.visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
-
-.navbar .signup-btn.hidden {
-  transform: translateY(10px);
-}
-
-.navbar .signup-btn.visible {
-  transform: translateY(0);
-}
-
-.navbar.navbar-scrolled > .signup-btn.hidden {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
 }
 
 .apply-now-page-container {
@@ -883,6 +1002,7 @@ body {
 .checklist input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
+  appearance: none; /* ADDED: Standard property for modern browsers */
   position: relative;
   height: 15px;
   width: 15px;
@@ -894,7 +1014,6 @@ body {
   display: grid;
   align-items: center;
 }
-
 .checklist input[type="checkbox"]::before, .checklist input[type="checkbox"]::after {
   content: "";
   position: absolute;
@@ -962,45 +1081,6 @@ body {
   fill: currentColor;
 }
 
-/* ========== RESPONSIVE ADJUSTMENTS ========== */
-
-@media (max-width: 1200px) {
-  .fest-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 1024px) {
-  .contact-content {
-    flex-direction: column;
-    gap: 40px;
-  }
-}
-
-@media (max-width: 768px) {
-  .works-grid,
-  .fest-grid {
-    grid-template-columns: 1fr;
-  }
-  .grid-text {
-    font-size: 8rem;
-  }
-  .contact-content {
-    flex-direction: column;
-    gap: 40px;
-  }
-
-  .contact-tagline {
-    font-size: 2.5rem;
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .page-container {
-    padding: 120px 20px 40px;
-  }
-}
 /* ========== LIGHTBOX STYLES ========== */
 @keyframes zoomIn {
   from { transform: scale(0.8); opacity: 0; }
@@ -1178,5 +1258,172 @@ body {
   100% {
     opacity: 0;
     box-shadow: 0 -15px 0 0px #323232, 14px -8px 0 0px #323232, 14px 8px 0 0px #323232, 0 15px 0 0px #323232, -14px 8px 0 0px #323232, -14px -8px 0 0px #323232;
+  }
+}
+
+/* ========== RESPONSIVE ADJUSTMENTS ========== */
+
+@media (max-width: 768px) {
+  /* --- General Layout --- */
+  .page-container {
+    padding: 100px 20px 40px;
+  }
+  
+  /* ADDED: New class to remove horizontal padding for full-width grids */
+  .page-container-flush {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .main-logo {
+    left: 20px;
+  }
+
+  .main-logo img {
+    height: 50px;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+  }
+
+  /* --- Navbar & Hamburger Menu --- */
+  .navbar {
+    height: 80px;
+    /* MODIFIED: Reduced horizontal padding */
+    padding: 0 10px;
+  }
+  
+  .navbar-right.desktop-nav {
+    display: none;
+  }
+
+  .hamburger-menu {
+    display: block;
+  }
+
+  /* --- Grids --- */
+  .works-grid,
+  .fest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-item {
+    /* MODIFIED: Grid item height further reduced */
+    height: 250px;
+  }
+
+  .grid-text {
+    font-size: 8rem;
+  }
+
+  .grid-item .text-image-fill {
+    opacity: 1;
+  }
+
+  .grid-item .text-visible {
+    opacity: 0;
+  }
+
+  /* --- Team Page & Apply Now Page Split Layout --- */
+  .team-tagline-section,
+  .image-section {
+    position: relative;
+    width: 100%;
+    top: 0;
+    height: auto;
+    padding: 60px 20px;
+    margin-top: 80px; /* Push content down from fixed navbar */
+  }
+
+  .team-content-section,
+  .form-section {
+    width: 100%;
+    margin-left: 0;
+    padding: 0 20px 60px 20px;
+  }
+
+  .team-page-container,
+  .apply-now-page-container {
+    flex-direction: column;
+    padding: 0; /* Remove padding from container, apply margin to first child instead */
+  }
+
+  .contact-tagline {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+  
+  /* MODIFIED: Team card has been completely restyled */
+  .team-member-card {
+    flex-direction: row;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    align-items: center;
+  }
+  
+  .main-team-photo-wrapper {
+    width: 100%;
+  }
+  
+  .member-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .member-details {
+    width: 100%;
+    height: auto;
+    text-align: left;
+    border: none;
+    background-color: transparent;
+    padding: 0 0 0 1rem;
+  }
+
+  .footer.footer-split-layout {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .footer-links {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .footer-links a span {
+    display: none;
+  }
+
+  .apply-now-page-container .image-section {
+    top: 0;
+    height: 300px;
+    border: none;
+    box-shadow: none;
+    margin-top: 80px; /* Push content down from fixed navbar */
+  }
+
+  /* MODIFIED: Removed top padding from the container so margin-top works correctly */
+  .apply-now-page-container {
+    padding-top: 0;
+  }
+
+  .apply-now-page-container .form-section {
+    padding-top: 40px;
+  }
+
+  .navbar > .signup-btn {
+    display: none;
+  }
+
+  /* --- Lightbox Adjustments --- */
+  .lightbox-close {
+    top: 10px;
+    right: 15px;
+    font-size: 2.5rem;
   }
 }

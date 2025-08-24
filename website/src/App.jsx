@@ -13,6 +13,7 @@ import Landing from "./Landing";
 import WhatWeDo from "./WhatWeDo";
 import WorksGrid from "./WorksGrid";
 import Footer from "./Footer";
+import Loader from "./Loader";
 import "./styles.css";
 import { ScrollContext } from "./ScrollContext";
 
@@ -20,6 +21,20 @@ const ApplyNow = lazy(() => import('./ApplyNow'));
 const Team = lazy(() => import('./Team'));
 const FestPage = lazy(() => import('./FestPage'));
 const GalleryPage = lazy(() => import('./GalleryPage'));
+
+const useMediaQuery = (query) => {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    window.addEventListener('resize', listener);
+    return () => window.removeEventListener('resize', listener);
+  }, [matches, query]);
+  return matches;
+};
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -36,10 +51,16 @@ const Layout = ({ scrollToWorks, worksRef }) => {
   const [isWorkGridAligned, setIsWorkGridAligned] = useState(false);
   const [isTeamPageScrolled, setIsTeamPageScrolled] = useState(false);
   const [isNavbarOverlappingContent, setIsNavbarOverlappingContent] = useState(false);
-  // MODIFIED: Added new state for scrolling on fest/gallery pages
   const [isScrolledOnWorksPage, setIsScrolledOnWorksPage] = useState(false);
+  const [isScrolledOnHome, setIsScrolledOnHome] = useState(false);
   const logoRef = useRef(null);
   const galleryRef = useRef(null);
+
+  const isApplyNowPage = location.pathname === '/apply-now';
+  const isTeamPage = location.pathname === '/team';
+  const isHomePage = location.pathname === '/';
+  const isWorksPage = location.pathname.startsWith('/works/');
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     if (location.hash === '#works') {
@@ -51,12 +72,9 @@ const Layout = ({ scrollToWorks, worksRef }) => {
   }, [location, scrollToWorks]);
 
   useEffect(() => {
-    const isHomePage = location.pathname === '/';
-    const isTeamPage = location.pathname === '/team';
-    const isWorksPage = location.pathname.startsWith('/works/');
     const isGalleryPage = isWorksPage && location.pathname.split('/').length === 4;
-
     const handleHomeScroll = () => {
+      setIsScrolledOnHome(window.scrollY > 10);
       const logoEl = logoRef.current;
       const worksGridEl = worksRef.current;
       if (logoEl && worksGridEl) {
@@ -70,11 +88,7 @@ const Layout = ({ scrollToWorks, worksRef }) => {
       }
       setShowSignupInNav(window.scrollY > 300);
     };
-    
-    const handleTeamScroll = () => {
-      setIsTeamPageScrolled(window.scrollY > 50);
-    };
-
+    const handleTeamScroll = () => setIsTeamPageScrolled(window.scrollY > 50);
     const handleGalleryScroll = () => {
       const navbarMinifiedHeight = 55;
       const galleryEl = galleryRef.current;
@@ -85,53 +99,42 @@ const Layout = ({ scrollToWorks, worksRef }) => {
         setIsNavbarOverlappingContent(hasScrolled && isPhysicallyOverlapping);
       }
     };
-    
-    // MODIFIED: New scroll handler for fest/gallery pages
-    const handleWorksScroll = () => {
-      setIsScrolledOnWorksPage(window.scrollY > 50);
-    };
+    const handleWorksScroll = () => setIsScrolledOnWorksPage(window.scrollY > 50);
 
-    // Reset all scroll-related states on route change
     setIsNavbarStickyOnHome(false);
     setIsTeamPageScrolled(false);
     setIsNavbarOverlappingContent(false);
     setIsScrolledOnWorksPage(false);
+    setIsScrolledOnHome(false);
+    if (!isHomePage) {
+      setShowSignupInNav(false);
+    }
     
+    let cleanupFuncs = [];
     if (isHomePage) {
       window.addEventListener("scroll", handleHomeScroll);
-      handleHomeScroll(); 
-      return () => window.removeEventListener("scroll", handleHomeScroll);
+      handleHomeScroll();
+      cleanupFuncs.push(() => window.removeEventListener("scroll", handleHomeScroll));
     } 
-    
     if (isTeamPage) {
       window.addEventListener("scroll", handleTeamScroll);
       handleTeamScroll(); 
-      return () => window.removeEventListener("scroll", handleTeamScroll);
+      cleanupFuncs.push(() => window.removeEventListener("scroll", handleTeamScroll));
     }
-
     if (isGalleryPage) {
       window.addEventListener("scroll", handleGalleryScroll);
       handleGalleryScroll();
-      // Also attach the works scroll handler for navbar visibility
-      window.addEventListener("scroll", handleWorksScroll);
-      handleWorksScroll();
-      return () => {
-        window.removeEventListener("scroll", handleGalleryScroll);
-        window.removeEventListener("scroll", handleWorksScroll);
-      }
+      cleanupFuncs.push(() => window.removeEventListener("scroll", handleGalleryScroll));
     }
-    
-    // MODIFIED: Attach handler for FestPage (and non-gallery works pages)
     if (isWorksPage) {
       window.addEventListener("scroll", handleWorksScroll);
       handleWorksScroll();
-      return () => window.removeEventListener("scroll", handleWorksScroll);
+      cleanupFuncs.push(() => window.removeEventListener("scroll", handleWorksScroll));
     }
-
-    setShowSignupInNav(false);
     setIsWorkGridAligned(false);
     
-  }, [location, worksRef, galleryRef]);
+    return () => cleanupFuncs.forEach(fn => fn());
+  }, [location, worksRef, galleryRef, isHomePage, isTeamPage, isApplyNowPage, isWorksPage]);
 
   const handleLogoClick = (e) => {
     if (location.pathname === "/") {
@@ -140,33 +143,33 @@ const Layout = ({ scrollToWorks, worksRef }) => {
     }
   };
 
-  const isApplyNowPage = location.pathname === '/apply-now';
-  const isTeamPage = location.pathname === '/team';
-  const isHomePage = location.pathname === '/';
-  const isWorksPage = location.pathname.startsWith('/works/');
-
   const isNavbarSticky = () => {
-    if (isHomePage) {
-      return isNavbarStickyOnHome;
-    }
-    if (isTeamPage) {
-      return isTeamPageScrolled;
-    }
-    // MODIFIED: Navbar on fest/gallery pages is sticky only after scrolling
-    if (isWorksPage) {
-      return isScrolledOnWorksPage;
-    }
-    // Default for Apply Now and other potential pages
+    if (isHomePage) return isNavbarStickyOnHome;
+    if (isTeamPage) return isTeamPageScrolled;
+    if (isWorksPage) return isScrolledOnWorksPage;
     return isApplyNowPage;
   };
 
+  let isNavbarButtonVisible;
+  if (isHomePage) {
+    isNavbarButtonVisible = showSignupInNav;
+  } else if (isApplyNowPage || isTeamPage) {
+    isNavbarButtonVisible = false;
+  } else {
+    isNavbarButtonVisible = true;
+  }
+
   const contextValue = {
-    showSignupInNav,
+    showSignupInNav: isNavbarButtonVisible,
     isWorkGridAligned,
-    galleryRef
+    galleryRef,
+    isMobile, // MODIFIED: Added isMobile to the context
   };
 
-  const isLogoHidden = (isTeamPageScrolled || isNavbarOverlappingContent) || (isHomePage && isNavbarStickyOnHome);
+  const isLogoHidden = 
+    (isTeamPageScrolled || isNavbarOverlappingContent) || 
+    (!isMobile && isHomePage && isNavbarStickyOnHome) || 
+    (isMobile && isHomePage && isScrolledOnHome);
 
   return (
     <ScrollContext.Provider value={contextValue}>
@@ -189,7 +192,7 @@ const Layout = ({ scrollToWorks, worksRef }) => {
         <Outlet />
       </main>
       
-      {!isTeamPage && <Footer isApplyNowPage={isApplyNowPage} isTeamPage={isTeamPage} />}
+      <Footer isApplyNowPage={isApplyNowPage} isTeamPage={isTeamPage} />
     </ScrollContext.Provider>
   );
 };
@@ -219,7 +222,6 @@ const App = () => {
       const stickyNavHeight = 60;
       const elementPosition = worksGridEl.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - stickyNavHeight;
-
       window.scrollTo({
           top: offsetPosition,
           behavior: "smooth"
@@ -230,7 +232,13 @@ const App = () => {
   return (
     <Router>
       <ScrollToTop />
-      <Suspense fallback={<div className="page-container"><h1>Loading...</h1></div>}>
+      <Suspense 
+        fallback={
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <Loader />
+          </div>
+        }
+      >
         <Routes>
           <Route path="/" element={<Layout scrollToWorks={scrollToWorks} worksRef={worksRef} />}>
             <Route index element={<HomePageContent worksRef={worksRef} />} />

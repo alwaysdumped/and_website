@@ -4,13 +4,18 @@ import { Link } from "react-router-dom";
 import { ScrollContext } from "./ScrollContext";
 
 const Landing = () => {
-  const { showSignupInNav } = useContext(ScrollContext);
+  // MODIFIED: Consuming isMobile from context
+  const { showSignupInNav, isMobile } = useContext(ScrollContext);
+
+  // MODIFIED: Logic to determine the button's class based on screen size
+  const buttonClassName = isMobile
+    ? "signup-btn-landing" // On mobile, the button is always visible
+    : `signup-btn-landing ${showSignupInNav ? 'hidden' : 'visible'}`; // On desktop, it hides/shows on scroll
 
   return (
     <section 
       id="home" 
       className="landing"
-      // MODIFIED: Added inline style for the background image to fix the build error
       style={{ 
         backgroundImage: `url('/images/and_logo_end1.PNG')`,
         backgroundSize: 'cover',
@@ -23,7 +28,7 @@ const Landing = () => {
 
       <Link 
         to="/apply-now"
-        className={`signup-btn-landing ${showSignupInNav ? 'hidden' : 'visible'}`}
+        className={buttonClassName}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -25,7 +25,8 @@ const FestPage = () => {
       <title>{pageTitle} Works - Arts & Deco</title>
       <meta name="description" content={`Explore our works from ${pageTitle}.`} />
 
-      <div className="page-container">
+      {/* MODIFIED: Added a new class for custom mobile padding */}
+      <div className="page-container page-container-flush">
         <h1 className="page-title">{pageTitle}</h1>
         <div className="breadcrumb">
           <Link to="/">Home</Link> / <span>{pageTitle}</span>
@@ -34,7 +35,6 @@ const FestPage = () => {
           {years.map((year) => {
             const yearData = festData[year];
             
-            // MODIFIED: Use the first image from the coverImage array
             const coverImage = Array.isArray(yearData.coverImage)
               ? yearData.coverImage
               : [yearData.coverImage];
@@ -44,7 +44,6 @@ const FestPage = () => {
                 <GridItem
                   label={year}
                   bgImage={yearData.background}
-                  // Use the coverImage variable which is now guaranteed to be an array
                   textBgImage={coverImage}
                 />
               </Link>
