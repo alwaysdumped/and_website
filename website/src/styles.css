@@ -667,6 +667,7 @@ body {
 .insta-icon {
   width: 1.1em;
   height: 1.1em;
+  color: black;
 }
 
 /* --- Apply Now Page & Button --- */
@@ -1382,7 +1383,6 @@ body {
     padding: 0 0.5rem 0 1rem;
   }
   
-  /* MODIFICATION START */
   .member-role-container {
     display: flex;
     align-items: center;
@@ -1390,7 +1390,6 @@ body {
   }
 
   .member-contact {
-    /* Vertical alignment is now handled by the parent container */
     gap: 0.5em;
     min-width: 0;
   }
@@ -1398,7 +1397,6 @@ body {
   .member-contact .member-insta-handle {
     display: none;
   }
-  /* MODIFICATION END */
 
   .member-contact span {
     overflow-wrap: break-word; 
@@ -1443,5 +1441,146 @@ body {
     top: 10px;
     right: 15px;
     font-size: 2.5rem;
+  }
+}
+
+/* ========== NEW DESKTOP CARD STYLES ========== */
+@media (min-width: 769px) {
+  .team-members-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 60px 40px; /* More vertical gap for the shadow effect */
+  }
+    .main-team-photo-wrapper {
+    width: 100%;
+    margin: 0;
+  }
+
+  .desktop-card-link {
+    text-decoration: none;
+  }
+
+  .article-wrapper {
+    width: 280px;
+    -webkit-transition: 0.15s all ease-in-out;
+    transition: 0.15s all ease-in-out;
+    border-radius: 10px;
+    padding: 5px;
+    border: 4px solid transparent;
+    cursor: pointer;
+    background-color: white;
+    /* MODIFICATION START: Make wrapper a flex container for equal height */
+    display: flex;
+    flex-direction: column;
+    /* MODIFICATION END */
+  }
+  
+  .article-wrapper:hover {
+    -webkit-box-shadow: 10px 10px 0 #4e84ff, 20px 20px 0 #4444bd;
+    box-shadow: 10px 10px 0 #4e84ff, 20px 20px 0 #4444bd;
+    border-color: #0578c5;
+    -webkit-transform: translate(-20px, -20px);
+    -ms-transform: translate(-20px, -20px);
+    transform: translate(-20px, -20px);
+  }
+  
+  .article-wrapper:active {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  
+  .types {
+    gap: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    place-content: flex-start;
+  }
+  
+  .rounded-lg {
+    border-radius: 10px;
+  }
+  
+  .article-wrapper:hover .project-hover {
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+    background-color: transparent !important;
+  }
+  
+  .project-info {
+    padding-top: 20px;
+    padding: 10px;
+    /* MODIFICATION START: Make info section grow to fill space */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    /* MODIFICATION END */
+  }
+  
+  .project-title {
+    font-size: 1.5em;
+    margin: 0;
+    font-weight: 600;
+    color: black;
+    white-space: normal;
+    word-break: break-word;
+  }
+  
+  /* DELETED: This class is no longer used */
+  /* .flex-pr { ... } */
+  
+  .project-type {
+    background: #b2b2fd;
+    color: #1a41cd;
+    font-weight: bold;
+    padding: 0.3em 0.7em;
+    border-radius: 15px;
+    letter-spacing: -0.6px;
+    /* MODIFICATION: Increased font size */
+    font-size: 14px;
+  }
+  
+  .project-hover {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    padding: 9px;
+    background-color: transparent !important;
+  }
+  
+  .container-project {
+    width: 100%;
+    height: 200px; /* Increased height for better image display */
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* NEW: Rule for the bottom row of the card */
+  .project-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto; /* Pushes this to the bottom of the card */
+    padding-top: 10px; /* Add some space above */
+  }
+
+  /* Team Page Layout Adjustments for Desktop */
+  .team-tagline-section {
+    width: 30%;
+    justify-content: flex-start; /* Changed from default 'center' */
+    padding: 0 40px 0 48px;      /* Reduced left padding from 40px to 20px */
+  }
+
+  .team-content-section {
+    margin-left: 30%;
+  }
+  
+  .contact-tagline {
+    font-size: 3.7rem; /* Adjusted for narrower column */
   }
 }
