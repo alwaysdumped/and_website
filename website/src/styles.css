@@ -178,6 +178,10 @@ body {
   height: 40px;
 }
 
+.navbar-scrolled.home-scroll {
+  height: 60px;
+}
+
 .navbar-scrolled,
 .navbar.navbar-apply-now {
   --primary-color: #fff;
@@ -241,9 +245,10 @@ body {
   color: #ff3c78;
 }
 
+/* MODIFIED: Re-added rule for split-layout footer on Team Page */
 .footer.footer-split-layout {
-  width: 50%;
-  margin-left: 50%;
+  width: 70%;
+  margin-left: 30%;
 }
 
 .footer-icon {
@@ -329,18 +334,11 @@ body {
 
 .pre-nav-wrapper {
   display: flex;
-  /* MODIFIED: Changed background color to light blue */
   background: #b2b2fd;
   border: 3px solid black;
   border-radius: 0.4em;
   box-shadow: 0.1em 0.1em black;
   overflow: hidden;
-  transition: transform 0.3s ease-in-out;
-  transform: translateX(0);
-}
-
-.pre-nav-wrapper.with-apply-btn {
-  /* This class is now unused for positioning */
 }
 
 .pre-nav-link {
@@ -352,6 +350,11 @@ body {
   transition: background-color 0.2s ease;
   position: relative;
   display: block;
+  white-space: nowrap;
+}
+
+.pre-nav-link.signup-style {
+  background-color: #fbca1f;
 }
 
 .pre-nav-link:hover {
@@ -595,6 +598,7 @@ body {
 }
 
 /* --- Team Page --- */
+/* MODIFIED: Reverted to non-flex layout for fixed sidebar */
 .team-page-container {
   padding: 0;
 }
@@ -603,12 +607,12 @@ body {
   display: none;
 }
 
+/* MODIFIED: Reverted to fixed-position sidebar */
 .team-tagline-section {
-  flex: 1;
   position: fixed;
   left: 0;
   top: 90px;
-  width: 50%;
+  width: 30%;
   height: calc(100vh - 90px);
   display: flex;
   justify-content: center;
@@ -616,15 +620,15 @@ body {
   padding: 0 40px;
 }
 
+/* MODIFIED: Reverted to margin-based offset for content */
 .team-content-section {
-  flex: 1;
-  margin-left: 50%;
+  margin-left: 30%;
   padding: 100px 40px 60px 40px;
 }
 
 .contact-tagline {
   font-family: 'Poppins', sans-serif;
-  font-size: 3.3rem;
+  font-size: clamp(2.5rem, 6.5vmin, 4.2rem);
   font-weight: bold;
   line-height: 1.2;
   color: #4a90e2;
@@ -633,10 +637,6 @@ body {
 
 .team-section {
   margin-bottom: 4rem;
-}
-
-.team-section.centered-heading {
-  text-align: center;
 }
 
 .team-section-heading {
@@ -768,7 +768,6 @@ body {
 }
 
 .pre-nav-wrapper + .nav-signup-btn {
-  /* MODIFIED: Further decreased space */
   margin-left: 8px;
 }
 .nav-links + .nav-signup-btn {
@@ -817,8 +816,8 @@ body {
   border-radius: 0.4em;
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
-  height: 60px;
-  width: 160px;
+  height: 50px;
+  width: 140px;
   text-decoration: none;
   box-shadow: 0.1em 0.1em black;
 }
@@ -843,7 +842,7 @@ body {
 }
 
 .signup-btn-landing:hover svg {
-  transform: scale(3) translate(50%, -10%);
+  transform: scale(3) translate(60%, -10%);
 }
 
 .signup-btn-landing .now {
@@ -855,7 +854,7 @@ body {
 }
 
 .signup-btn-landing:hover .now {
-  transform: translateX(10px);
+  transform: translateX(15px);
   transition-delay: 300ms;
 }
 
@@ -1344,6 +1343,11 @@ body {
     padding: 100px 20px 40px;
   }
 
+  .team-page-container {
+    padding: 100px 20px 60px;
+    flex-direction: column;
+  }
+
   .page-container-flush {
     padding-left: 0;
     padding-right: 0;
@@ -1368,6 +1372,17 @@ body {
     padding: 0 10px;
   }
   
+  /* MODIFIED: New rules to shrink navbar and logo on Fest/Gallery pages on mobile */
+  .navbar.works-page-scrolled {
+    height: 60px;
+  }
+  .navbar.works-page-scrolled ~ .main-logo {
+    top: 10px;
+  }
+  .navbar.works-page-scrolled ~ .main-logo img {
+    height: 40px;
+  }
+
   .navbar-right.desktop-nav {
     display: none;
   }
@@ -1405,8 +1420,8 @@ body {
     width: 100%;
     top: 0;
     height: auto;
-    padding: 60px 20px;
-    margin-top: 80px;
+    padding: 0 20px 60px 20px; /* Adjusted padding */
+    margin-top: 0; 
   }
 
   .team-content-section,
@@ -1416,7 +1431,6 @@ body {
     padding: 0 20px 60px 20px;
   }
 
-  .team-page-container,
   .apply-now-page-container {
     flex-direction: column;
     padding: 0;
@@ -1458,6 +1472,10 @@ body {
     padding: 0 0.5rem 0 1rem;
   }
   
+  .member-details .member-role {
+    font-size: 1.2rem;
+  }
+
   .member-role-container {
     display: flex;
     align-items: center;
@@ -1468,6 +1486,11 @@ body {
     gap: 0.5em;
     min-width: 0;
   }
+  
+  .team-member-card .insta-icon {
+    width: 2em;
+    height: 2em;
+  }
 
   .member-contact .member-insta-handle {
     display: none;
@@ -1476,10 +1499,6 @@ body {
   .member-contact span {
     overflow-wrap: break-word; 
     font-size: 0.9rem;
-  }
-  .footer.footer-split-layout {
-    width: 100%;
-    margin-left: 0;
   }
 
   .footer-links {
@@ -1517,14 +1536,42 @@ body {
     right: 15px;
     font-size: 2.5rem;
   }
+  
+  /* MODIFIED: Ensured lightbox nav arrows are visible and tappable */
+  .lightbox-nav {
+    z-index: 2001;
+    padding: 15px;
+  }
+  .lightbox-prev {
+    left: 5px;
+  }
+  .lightbox-next {
+    right: 5px;
+  }
 }
 
 /* ========== NEW DESKTOP CARD STYLES ========== */
 @media (min-width: 769px) {
 
+  .navbar.navbar-scrolled {
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    --primary-color: #111;
+    --hovered-color: #002cee;
+  }
+
+  .desktop-controls-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   .team-members-list {
+    display: flex;
     flex-direction: row;
     justify-content: flex-start; 
+    flex-wrap: wrap;
     gap: 60px 40px;
   }
     .main-team-photo-wrapper {
@@ -1635,17 +1682,6 @@ body {
     align-items: center;
     margin-top: auto; 
     padding-top: 10px; 
-  }
-
-  /* Team Page Layout Adjustments for Desktop */
-  .team-tagline-section {
-    width: 30%;
-    justify-content: flex-start; 
-    padding: 0 40px 0 48px;
-  }
-
-  .team-content-section {
-    margin-left: 30%;
   }
   
   .contact-tagline {

@@ -101,7 +101,6 @@ const Team = () => {
                         style={{ backgroundImage: `url(${member.image})` }}
                       ></div>
                       <div className="project-info">
-                        {/* MODIFICATION START: Restructured for new layout */}
                         <div className="project-title">{member.name}</div>
                         <div className="project-bottom-row">
                           <div className="types">
@@ -115,7 +114,6 @@ const Team = () => {
                             </svg>
                           </div>
                         </div>
-                        {/* MODIFICATION END */}
                       </div>
                     </article>
                   </a>

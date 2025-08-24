@@ -3,11 +3,12 @@ import React, { useState, useContext, memo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ScrollContext } from "./ScrollContext";
 
-const Navbar = ({ isSticky, isHomePage, isMinified, isMinimizedOnHome }) => {
+const Navbar = ({ isSticky, isHomePage, isWorksPage, isMinified, isMinimizedOnHome }) => {
   const location = useLocation();
   const { showSignupInNav, isWorkGridAligned, isMobile } = useContext(ScrollContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const isApplyNowPage = location.pathname === '/apply-now';
   const isTeamPage = location.pathname === '/team';
 
   const handleHomeClick = (e) => {
@@ -34,71 +35,46 @@ const Navbar = ({ isSticky, isHomePage, isMinified, isMinimizedOnHome }) => {
   
   return (
     <>
-      <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isHomePage && isMinimizedOnHome ? "home-scroll" : ""} ${location.pathname === '/apply-now' ? "navbar-apply-now" : ""} ${isMinified ? "navbar-minified" : ""}`}>
+      <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isHomePage && isMinimizedOnHome ? "home-scroll" : ""} ${isSticky && isWorksPage ? "works-page-scrolled" : ""} ${location.pathname === '/apply-now' ? "navbar-apply-now" : ""} ${isMinified ? "navbar-minified" : ""}`}>
         <div className="navbar-right desktop-nav">
-          
-          {/* MODIFIED: The wrapper's content is now fully dynamic based on the page context */}
-          {!isSticky && !isMobile && (
-            <div className={`pre-nav-wrapper ${showSignupInNav ? 'with-apply-btn' : ''}`}>
-              {!isHomePage && (
-                <Link to="/" onClick={handleHomeClick} className="pre-nav-link">
-                  Home
-                </Link>
-              )}
-              {shouldShowOurWorks && (
-                <Link to="/#works" className="pre-nav-link">
-                  Our Works
-                </Link>
-              )}
-              {!isTeamPage && (
-                <Link to="/team" onClick={handleTeamClick} className="pre-nav-link">
-                  Team
-                </Link>
-              )}
-            </div>
-          )}
 
-          <ul className="nav-links">
-            {isSticky && (
-              <li>
-                <Link to="/" onClick={handleHomeClick} className="animated-nav-link">
-                  <p>Home</p>
-                </Link>
-              </li>
-            )}
-            {isSticky && shouldShowOurWorks && (
-              <li>
-                <Link to="/#works" className="animated-nav-link">
-                  <p>Our Works</p>
-                </Link>
-              </li>
-            )}
-            {isTeamPage ? (
-              isSticky && (
-                <li>
-                  <Link to="/apply-now" className="signup-btn">
+          {!isMobile && (
+            <div className="desktop-controls-group">
+              {!isApplyNowPage && (
+                <div className="pre-nav-wrapper">
+                  {!isHomePage && (
+                    <Link to="/" onClick={handleHomeClick} className="pre-nav-link">
+                      Home
+                    </Link>
+                  )}
+                  {shouldShowOurWorks && (
+                    <Link to="/#works" className="pre-nav-link">
+                      Our Works
+                    </Link>
+                  )}
+                  {!isTeamPage && (
+                    <Link to="/team" onClick={handleTeamClick} className="pre-nav-link">
+                      Team
+                    </Link>
+                  )}
+                </div>
+              )}
+              
+              {isTeamPage ? (
+                 <Link to="/apply-now" className="signup-btn">
+                  Apply Now
+                 </Link>
+              ) : (
+                !isApplyNowPage && (
+                  <Link
+                    to="/apply-now"
+                    className={`signup-btn nav-signup-btn ${showSignupInNav ? 'visible' : 'hidden'}`}
+                  >
                     Apply Now
                   </Link>
-                </li>
-              )
-            ) : (
-              isSticky && (
-                <li>
-                  <Link to="/team" onClick={handleTeamClick} className="animated-nav-link">
-                    <p>Team</p>
-                  </Link>
-                </li>
-              )
-            )}
-          </ul>
-
-          {!isTeamPage && location.pathname !== "/apply-now" && (
-            <Link
-              to="/apply-now"
-              className={`signup-btn nav-signup-btn ${showSignupInNav ? 'visible' : 'hidden'}`}
-            >
-              Apply Now
-            </Link>
+                )
+              )}
+            </div>
           )}
         </div>
 
