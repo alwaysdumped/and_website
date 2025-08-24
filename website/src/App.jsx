@@ -163,9 +163,10 @@ const Layout = ({ scrollToWorks, worksRef }) => {
     showSignupInNav: isNavbarButtonVisible,
     isWorkGridAligned,
     galleryRef,
-    isMobile, // MODIFIED: Added isMobile to the context
+    isMobile,
   };
 
+  // REVERTED: The logic is back to its original state before the previous change.
   const isLogoHidden = 
     (isTeamPageScrolled || isNavbarOverlappingContent) || 
     (!isMobile && isHomePage && isNavbarStickyOnHome) || 

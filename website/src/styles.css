@@ -422,7 +422,7 @@ body {
   display: inline-block;
   width: fit-content;
   font-family: 'Anton', sans-serif;
-  font-size: 14rem;
+  font-size: clamp(8rem, 13vw, 14rem);
   font-weight: 900;
   letter-spacing: 10px;
   text-transform: uppercase;
@@ -1581,6 +1581,7 @@ body {
   }
   
   .contact-tagline {
-    font-size: 3.7rem; /* Adjusted for narrower column */
+    /* MODIFIED: Replaced vw with vmin to make font size responsive to viewport height as well as width */
+    font-size: clamp(2.5rem, 5vmin, 3.7rem);
   }
 }
