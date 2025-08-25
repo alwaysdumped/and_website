@@ -44,7 +44,7 @@ const ScrollToTop = () => {
   return null;
 };
 
-const Layout = ({ scrollToWorks, worksRef, whatWeDoRef, landingRef }) => {
+const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) => {
   const location = useLocation();
   const [isNavbarVisibleOnHome, setIsNavbarVisibleOnHome] = useState(false);
   const [isNavbarMinimizedOnHome, setIsNavbarMinimizedOnHome] = useState(false);
@@ -61,7 +61,6 @@ const Layout = ({ scrollToWorks, worksRef, whatWeDoRef, landingRef }) => {
   const isTeamPage = location.pathname === '/team';
   const isHomePage = location.pathname === '/';
   const isWorksPage = location.pathname.startsWith('/works/');
-  const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     if (location.hash === '#works') {
@@ -72,28 +71,34 @@ const Layout = ({ scrollToWorks, worksRef, whatWeDoRef, landingRef }) => {
     }
   }, [location, scrollToWorks]);
 
+  // This useEffect is crucial for the footer fix
+  useEffect(() => {
+    if (!isMobile && isApplyNowPage) {
+      document.body.classList.add('apply-now-body-bg');
+    }
+    // Cleanup function to remove the class when the page changes
+    return () => {
+      document.body.classList.remove('apply-now-body-bg');
+    };
+  }, [isApplyNowPage, isMobile]);
+
   useEffect(() => {
     const isGalleryPage = isWorksPage && location.pathname.split('/').length === 4;
     const handleHomeScroll = () => {
       setIsScrolledOnHome(window.scrollY > 10);
-      
       const landingEl = landingRef.current;
       const worksGridEl = worksRef.current;
-
       if (landingEl) {
         const landingRect = landingEl.getBoundingClientRect();
         setIsNavbarVisibleOnHome(landingRect.bottom <= 110);
       }
-      
       if (worksGridEl) {
         const gridRect = worksGridEl.getBoundingClientRect();
         setIsNavbarMinimizedOnHome(gridRect.top <= 60);
-
-        const stickyNavHeight = 60;
+        const stickyNavHeight = isMobile ? 60 : 0;
         const isExactlyAligned = Math.abs(gridRect.top - stickyNavHeight) < 2;
         setIsWorkGridAligned(isExactlyAligned);
       }
-      
       setShowSignupInNav(window.scrollY > 300);
     };
     const handleTeamScroll = () => setIsTeamPageScrolled(window.scrollY > 50);
@@ -108,7 +113,6 @@ const Layout = ({ scrollToWorks, worksRef, whatWeDoRef, landingRef }) => {
       }
     };
     const handleWorksScroll = () => setIsScrolledOnWorksPage(window.scrollY > 50);
-
     setIsNavbarVisibleOnHome(false);
     setIsNavbarMinimizedOnHome(false);
     setIsTeamPageScrolled(false);
@@ -118,16 +122,15 @@ const Layout = ({ scrollToWorks, worksRef, whatWeDoRef, landingRef }) => {
     if (!isHomePage) {
       setShowSignupInNav(false);
     }
-    
     let cleanupFuncs = [];
     if (isHomePage) {
       window.addEventListener("scroll", handleHomeScroll);
       handleHomeScroll();
       cleanupFuncs.push(() => window.removeEventListener("scroll", handleHomeScroll));
-    } 
+    }
     if (isTeamPage) {
       window.addEventListener("scroll", handleTeamScroll);
-      handleTeamScroll(); 
+      handleTeamScroll();
       cleanupFuncs.push(() => window.removeEventListener("scroll", handleTeamScroll));
     }
     if (isGalleryPage) {
@@ -141,12 +144,25 @@ const Layout = ({ scrollToWorks, worksRef, whatWeDoRef, landingRef }) => {
       cleanupFuncs.push(() => window.removeEventListener("scroll", handleWorksScroll));
     }
     setIsWorkGridAligned(false);
-    
     return () => cleanupFuncs.forEach(fn => fn());
-  }, [location, worksRef, whatWeDoRef, landingRef, isHomePage, isTeamPage, isApplyNowPage, isWorksPage]);
+  }, [location, worksRef, whatWeDoRef, landingRef, isHomePage, isTeamPage, isApplyNowPage, isWorksPage, isMobile]);
 
   const handleLogoClick = (e) => {
     if (location.pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleHomeClick = (e) => {
+    if (location.pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleTeamClick = (e) => {
+    if (location.pathname === "/team") {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -175,24 +191,68 @@ const Layout = ({ scrollToWorks, worksRef, whatWeDoRef, landingRef }) => {
     isMobile,
   };
 
-  const isLogoHidden = 
-    (isTeamPageScrolled || isNavbarOverlappingContent) || 
+  const isLogoHidden =
+    (isTeamPageScrolled || isNavbarOverlappingContent) ||
     (!isMobile && isHomePage && isNavbarMinimizedOnHome) ||
     (isMobile && isHomePage && isScrolledOnHome);
 
+  const shouldShowOurWorks = isHomePage ? !isWorkGridAligned : true;
+  const logoScrolledClass = !isMobile && isHomePage && isNavbarMinimizedOnHome ? 'scrolled-desktop' : '';
+
   return (
     <ScrollContext.Provider value={contextValue}>
-      <Navbar
-        isSticky={isNavbarSticky()}
-        isHomePage={isHomePage}
-        isMinimizedOnHome={isNavbarMinimizedOnHome}
-        isMinified={isTeamPageScrolled || isNavbarOverlappingContent}
-        isLogoHidden={isLogoHidden} 
-      />
+      {isMobile ? (
+        <Navbar
+          isSticky={isNavbarSticky()}
+          isHomePage={isHomePage}
+        />
+      ) : (
+        <div className={`desktop-button-container ${isApplyNowPage ? 'center-on-apply-page' : ''}`}>
+          <div className="desktop-controls-group">
+            <div className="pre-nav-wrapper">
+              <Link
+                to="/"
+                onClick={handleHomeClick}
+                className={`pre-nav-link ${(!isHomePage || isLogoHidden) ? '' : 'hidden'}`}
+              >
+                Home
+              </Link>
+              <Link
+                to="/#works"
+                className={`pre-nav-link ${shouldShowOurWorks ? '' : 'hidden'}`}
+              >
+                Our Works
+              </Link>
+              <Link
+                to="/team"
+                onClick={handleTeamClick}
+                className={`pre-nav-link ${!isTeamPage ? '' : 'hidden'}`}
+              >
+                Team
+              </Link>
+            </div>
+            {isTeamPage ? (
+              <Link to="/apply-now" className="signup-btn">
+                Apply Now
+              </Link>
+            ) : (
+              !isApplyNowPage && (
+                <Link
+                  to="/apply-now"
+                  className={`signup-btn nav-signup-btn ${showSignupInNav ? 'visible' : 'hidden'}`}
+                >
+                  Apply Now
+                </Link>
+              )
+            )}
+          </div>
+        </div>
+      )}
+
       <Link
         to="/"
         ref={logoRef}
-        className={`main-logo ${!isLogoHidden ? "" : "logo-hidden"}`}
+        className={`main-logo ${isLogoHidden ? "logo-hidden" : ""} ${logoScrolledClass}`}
         onClick={handleLogoClick}
       >
         <img src="/images/and_logo.png" alt="Company Logo" />
@@ -224,6 +284,7 @@ const HomePageContent = memo(({ worksRef, whatWeDoRef, landingRef }) => (
 ));
 
 const App = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const worksRef = useRef(null);
   const whatWeDoRef = useRef(null);
   const landingRef = useRef(null);
@@ -231,7 +292,7 @@ const App = () => {
   const scrollToWorks = () => {
     const worksGridEl = worksRef.current;
     if (worksGridEl) {
-      const stickyNavHeight = 60;
+      const stickyNavHeight = isMobile ? 60 : 0;
       const elementPosition = worksGridEl.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - stickyNavHeight;
       window.scrollTo({
@@ -252,7 +313,7 @@ const App = () => {
         }
       >
         <Routes>
-          <Route path="/" element={<Layout scrollToWorks={scrollToWorks} worksRef={worksRef} whatWeDoRef={whatWeDoRef} landingRef={landingRef} />}>
+          <Route path="/" element={<Layout isMobile={isMobile} scrollToWorks={scrollToWorks} worksRef={worksRef} whatWeDoRef={whatWeDoRef} landingRef={landingRef} />} >
             <Route index element={<HomePageContent worksRef={worksRef} whatWeDoRef={whatWeDoRef} landingRef={landingRef} />} />
             <Route path="apply-now" element={<ApplyNow />} />
             <Route path="team" element={<Team />} />

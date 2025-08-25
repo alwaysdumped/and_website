@@ -1,9 +1,7 @@
 // src/ApplyNow.jsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const ApplyNow = () => {
-  const navigate = useNavigate();
   const [isSubmitted, setIsSubmitted] = useState(false);
   
   const [formData, setFormData] = useState({

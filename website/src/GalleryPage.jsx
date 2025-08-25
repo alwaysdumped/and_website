@@ -1,5 +1,5 @@
 // src/GalleryPage.jsx
-import React, { useState, useEffect, useMemo, useContext } from "react";
+import React, { useState, useEffect, useMemo, useContext, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { worksData } from "./data";
 import Masonry from './Masonry';
@@ -30,19 +30,19 @@ const GalleryPage = () => {
     setSelectedImageIndex(null);
   };
 
-  const showNextImage = (e) => {
+  const showNextImage = useCallback((e) => {
     e.stopPropagation();
     if (selectedImageIndex === null || !yearData) return;
     const nextIndex = (selectedImageIndex + 1) % yearData.images.length;
     setSelectedImageIndex(nextIndex);
-  };
+  }, [selectedImageIndex, yearData]);
 
-  const showPrevImage = (e) => {
+  const showPrevImage = useCallback((e) => {
     e.stopPropagation();
     if (selectedImageIndex === null || !yearData) return;
     const prevIndex = (selectedImageIndex - 1 + yearData.images.length) % yearData.images.length;
     setSelectedImageIndex(prevIndex);
-  };
+  }, [selectedImageIndex, yearData]);
 
   useEffect(() => {
     // MODIFIED: Set a timer to display the gallery after the Masonry JS has had time to run
@@ -65,7 +65,7 @@ const GalleryPage = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [selectedImageIndex, yearData]);
+  }, [selectedImageIndex, showNextImage, showPrevImage]);
 
   const masonryItems = useMemo(() => {
     if (!yearData) return [];
