@@ -1,9 +1,28 @@
 // src/ApplyNow.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from 'react-router-dom';
+import { ScrollContext } from "./ScrollContext";
 
 const ApplyNow = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  
+  const { isMobile } = useContext(ScrollContext);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Set scrolled state to true if user scrolls more than 50px
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    // Add scroll listener when component mounts
+    window.addEventListener('scroll', handleScroll);
+
+    // Clean up listener when component unmounts
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []); // Empty dependency array ensures this runs only once on mount
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -69,7 +88,6 @@ const ApplyNow = () => {
 
       <div className="apply-now-page-container">
         <div className="image-section">
-          {/* This div is now dedicated to the background image to fix the error */}
           <div 
             className="image-section-bg" 
             style={{ backgroundImage: `url('/images/thope.png')` }}
@@ -78,8 +96,20 @@ const ApplyNow = () => {
         </div>
 
         <div className="form-section">
+          {/* Desktop navigation that becomes sticky on scroll */}
+          {!isMobile && (
+            <div className={`apply-now-desktop-nav ${isScrolled ? 'scrolled' : ''}`}>
+              <div className="desktop-controls-group">
+                <div className="pre-nav-wrapper">
+                  <Link to="/" className="pre-nav-link">Home</Link>
+                  <Link to="/#works" className="pre-nav-link">Our Works</Link>
+                  <Link to="/team" className="pre-nav-link">Team</Link>
+                </div>
+              </div>
+            </div>
+          )}
+
           <form className="apply-now-form" onSubmit={handleSubmit}>
-            {/* ... form content remains the same ... */}
             <div className="title">Apply Now</div>
             
             <input className="form-input" placeholder="Name" name="name" type="text" value={formData.name} onChange={handleChange} required />

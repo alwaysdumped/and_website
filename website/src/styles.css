@@ -8,6 +8,15 @@
  * =========================================
  */
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes scroll-text-bg {
   from {
     background-position: 0% 50%;
@@ -164,7 +173,7 @@ body {
 }
 
 body.apply-now-body-bg {
-  background-color: #f8f8f8;
+  background-color: #fbca1f;
 }
 
 /*
@@ -567,6 +576,10 @@ body.apply-now-body-bg {
   background: #f2f2f2;
 }
 
+.fest-grid .grid-item {
+  height: clamp(250px, 28vw, 450px);
+}
+
 /* --- Grid Item (Shared) --- */
 .grid-item {
   position: relative;
@@ -892,6 +905,11 @@ body.apply-now-body-bg {
   pointer-events: none;
 }
 
+.nav-signup-btn.visible {
+  opacity: 1;
+  width: 115px;
+}
+
 .navbar.navbar-minified .signup-btn {
   padding: 0.2em 0.9em;
   font-size: 13px;
@@ -923,7 +941,7 @@ body.apply-now-body-bg {
   box-shadow: 0.1em 0.1em black;
   cursor: pointer;
   transform: translateX(-50%);
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .signup-btn-landing:active {
@@ -1376,6 +1394,7 @@ body.apply-now-body-bg {
     height: 80px;
     padding: 0 10px;
     justify-content: flex-end;
+    align-items: center;
   }
   .hamburger-menu {
     display: block;
@@ -1458,7 +1477,7 @@ body.apply-now-body-bg {
   .form-section {
     width: 100%;
     margin-left: 0;
-    padding: 0 20px 60px 20px;
+    padding: 0 10px 60px 10px;
   }
   .apply-now-page-container {
     padding: 80px 0 0;
@@ -1478,6 +1497,8 @@ body.apply-now-body-bg {
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     flex-direction: row;
+    min-height: 140px;
+    gap: 1rem;
   }
   .member-image {
     width: 100px;
@@ -1495,12 +1516,16 @@ body.apply-now-body-bg {
     background-color: transparent;
     border: none;
     text-align: left;
+    justify-content: flex-start;
   }
   .member-details .member-role {
     font-size: clamp(1.1rem, 0.9rem + 1vw, 1.2rem);
+    font-weight: 600;
   }
   .member-details .member-name {
     font-size: clamp(1rem, 0.8rem + 1vw, 1.1rem);
+    font-weight: 500;
+    margin: 4px 0;
   }
   .member-role-container {
     display: flex;
@@ -1509,11 +1534,10 @@ body.apply-now-body-bg {
   }
   .member-contact {
     min-width: 0;
-    gap: 0.5em;
   }
   .team-member-card .insta-icon {
-    width: 2rem;
-    height: 2rem;
+    width: clamp(1.5rem, 1rem + 2vw, 2rem);
+    height: clamp(1.5rem, 1rem + 2vw, 2rem);
     flex-shrink: 0;
   }
   .member-contact .member-insta-handle {
@@ -1535,7 +1559,7 @@ body.apply-now-body-bg {
     display: none;
   }
   .apply-now-page-container .image-section {
-    height: 1000px;
+    height: 200px;
     padding: 1px;
     border: none;
     box-shadow: none;
@@ -1569,16 +1593,6 @@ body.apply-now-body-bg {
  */
 
 @media (min-width: 769px) {
-  /* --- Flexbox layout for the root container on the Apply Now page */
-  body.apply-now-body-bg #root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  body.apply-now-body-bg #root main {
-    flex-grow: 1;
-  }
 
   /* --- Logo Scroll Effect --- */
   .main-logo.scrolled-desktop {
@@ -1590,24 +1604,43 @@ body.apply-now-body-bg {
 
   /* --- Apply Now Page --- */
   .apply-now-page-container .form-section {
-    display: grid;
-    place-items: end center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    padding: 60px 20px;
     min-height: initial;
-    height: auto;
-    padding: 20px 20px 5vh;
     background-color: transparent;
   }
   
-  .desktop-button-container.center-on-apply-page {
-    right: auto;
-    left: 55vw;
-    width: 45vw;
-    display: flex;
-    justify-content: center;
+  .apply-now-desktop-nav {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
   }
-  
+
+  .apply-now-desktop-nav.scrolled {
+    position: fixed;
+    top: 25px;
+    left: 77.5%; 
+    transform: translateX(-50%);
+  }
+
   .apply-now-page-container .apply-now-form {
     margin: 0;
+  }
+
+  /* --- Footer --- */
+  .footer {
+    padding: clamp(15px, 2vw, 25px);
+  }
+
+  .footer:not(.footer-team) .footer-links a,
+  .footer.footer-team .animated-nav-link {
+    font-size: clamp(1rem, 0.8rem + 0.3vw, 1.2rem);
   }
 
   /* --- Team Page Cards --- */
@@ -1617,6 +1650,7 @@ body.apply-now-body-bg {
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 60px 40px;
+    align-items: stretch; 
   }
   .main-team-photo-wrapper {
     width: 90%;
@@ -1626,7 +1660,6 @@ body.apply-now-body-bg {
     display: flex;
     flex-direction: column;
     width: 260px;
-    height: 100%;
     padding: 5px;
     background-color: white;
     border: 4px solid transparent;

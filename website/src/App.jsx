@@ -71,12 +71,10 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
     }
   }, [location, scrollToWorks]);
 
-  // This useEffect is crucial for the footer fix
   useEffect(() => {
     if (!isMobile && isApplyNowPage) {
       document.body.classList.add('apply-now-body-bg');
     }
-    // Cleanup function to remove the class when the page changes
     return () => {
       document.body.classList.remove('apply-now-body-bg');
     };
@@ -120,7 +118,7 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
     setIsScrolledOnWorksPage(false);
     setIsScrolledOnHome(false);
     if (!isHomePage) {
-      setShowSignupInNav(false);
+      setShowSignupInNav(true);
     }
     let cleanupFuncs = [];
     if (isHomePage) {
@@ -191,10 +189,11 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
     isMobile,
   };
 
-  const isLogoHidden =
+  // MODIFIED: Wrapped conditions in a !isMobile check to prevent logo from hiding on mobile.
+  const isLogoHidden = !isMobile && (
     (isTeamPageScrolled || isNavbarOverlappingContent) ||
-    (!isMobile && isHomePage && isNavbarMinimizedOnHome) ||
-    (isMobile && isHomePage && isScrolledOnHome);
+    (isHomePage && isNavbarMinimizedOnHome)
+  );
 
   const shouldShowOurWorks = isHomePage ? !isWorkGridAligned : true;
   const logoScrolledClass = !isMobile && isHomePage && isNavbarMinimizedOnHome ? 'scrolled-desktop' : '';
@@ -207,46 +206,46 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
           isHomePage={isHomePage}
         />
       ) : (
-        <div className={`desktop-button-container ${isApplyNowPage ? 'center-on-apply-page' : ''}`}>
-          <div className="desktop-controls-group">
-            <div className="pre-nav-wrapper">
-              <Link
-                to="/"
-                onClick={handleHomeClick}
-                className={`pre-nav-link ${(!isHomePage || isLogoHidden) ? '' : 'hidden'}`}
-              >
-                Home
-              </Link>
-              <Link
-                to="/#works"
-                className={`pre-nav-link ${shouldShowOurWorks ? '' : 'hidden'}`}
-              >
-                Our Works
-              </Link>
-              <Link
-                to="/team"
-                onClick={handleTeamClick}
-                className={`pre-nav-link ${!isTeamPage ? '' : 'hidden'}`}
-              >
-                Team
-              </Link>
-            </div>
-            {isTeamPage ? (
-              <Link to="/apply-now" className="signup-btn">
-                Apply Now
-              </Link>
-            ) : (
-              !isApplyNowPage && (
+        !isApplyNowPage && (
+          <div className="desktop-button-container">
+            <div className="desktop-controls-group">
+              <div className="pre-nav-wrapper">
+                <Link
+                  to="/"
+                  onClick={handleHomeClick}
+                  className={`pre-nav-link ${(!isHomePage || isLogoHidden) ? '' : 'hidden'}`}
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/#works"
+                  className={`pre-nav-link ${shouldShowOurWorks ? '' : 'hidden'}`}
+                >
+                  Our Works
+                </Link>
+                <Link
+                  to="/team"
+                  onClick={handleTeamClick}
+                  className={`pre-nav-link ${!isTeamPage ? '' : 'hidden'}`}
+                >
+                  Team
+                </Link>
+              </div>
+              {isTeamPage ? (
+                <Link to="/apply-now" className="signup-btn">
+                  Apply Now
+                </Link>
+              ) : (
                 <Link
                   to="/apply-now"
-                  className={`signup-btn nav-signup-btn ${showSignupInNav ? 'visible' : 'hidden'}`}
+                  className={`signup-btn nav-signup-btn ${isHomePage ? (showSignupInNav ? 'visible' : 'hidden') : 'visible'}`}
                 >
                   Apply Now
                 </Link>
-              )
-            )}
+              )}
+            </div>
           </div>
-        </div>
+        )
       )}
 
       <Link
