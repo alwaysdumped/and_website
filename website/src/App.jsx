@@ -170,7 +170,7 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
     if (isHomePage) return isNavbarVisibleOnHome;
     if (isTeamPage) return isTeamPageScrolled;
     if (isWorksPage) return isScrolledOnWorksPage;
-    return isApplyNowPage;
+    return true; // Apply Now page navbar should always have the sticky style
   };
 
   let isNavbarButtonVisible;
@@ -189,10 +189,8 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
     isMobile,
   };
 
-  // MODIFIED: Wrapped conditions in a !isMobile check to prevent logo from hiding on mobile.
   const isLogoHidden = !isMobile && (
-    (isTeamPageScrolled || isNavbarOverlappingContent) ||
-    (isHomePage && isNavbarMinimizedOnHome)
+    isNavbarOverlappingContent || (isHomePage && isNavbarMinimizedOnHome)
   );
 
   const shouldShowOurWorks = isHomePage ? !isWorkGridAligned : true;
@@ -206,7 +204,7 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
           isHomePage={isHomePage}
         />
       ) : (
-        !isApplyNowPage && (
+        !isApplyNowPage && !isTeamPage && (
           <div className="desktop-button-container">
             <div className="desktop-controls-group">
               <div className="pre-nav-wrapper">
@@ -226,23 +224,17 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
                 <Link
                   to="/team"
                   onClick={handleTeamClick}
-                  className={`pre-nav-link ${!isTeamPage ? '' : 'hidden'}`}
+                  className={`pre-nav-link`}
                 >
                   Team
                 </Link>
               </div>
-              {isTeamPage ? (
-                <Link to="/apply-now" className="signup-btn">
-                  Apply Now
-                </Link>
-              ) : (
-                <Link
-                  to="/apply-now"
-                  className={`signup-btn nav-signup-btn ${isHomePage ? (showSignupInNav ? 'visible' : 'hidden') : 'visible'}`}
-                >
-                  Apply Now
-                </Link>
-              )}
+              <Link
+                to="/apply-now"
+                className={`signup-btn nav-signup-btn ${isHomePage ? (showSignupInNav ? 'visible' : 'hidden') : 'visible'}`}
+              >
+                Apply Now
+              </Link>
             </div>
           </div>
         )
@@ -261,7 +253,9 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
         <Outlet />
       </main>
       
-      <Footer isApplyNowPage={isApplyNowPage} isTeamPage={isTeamPage} />
+      { /* MODIFIED: Hide global footer on desktop for Team and Apply Now pages */ }
+      { !(!isMobile && (isTeamPage || isApplyNowPage)) && <Footer isApplyNowPage={isApplyNowPage} isTeamPage={isTeamPage} /> }
+
     </ScrollContext.Provider>
   );
 };

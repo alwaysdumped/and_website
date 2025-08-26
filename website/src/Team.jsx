@@ -28,13 +28,17 @@ const teamData = [
 const Team = () => {
   const { isMobile } = useContext(ScrollContext);
 
+  // MODIFIED: Desktop layout is now a split-screen view.
   const desktopLayout = (
     <div className="split-layout-container">
+        {/* The quote is in a fixed left-side column. */}
         <div className="team-tagline-section">
             <h1 className="contact-tagline">
-                WE DO<br />THIS NOT<br />BECAUSE<br />IT IS<br />EASY BUT<br />BECAUSE<br />WE<br />THOUGHT<br />IT WOULD<br />BE EASY
+                WE DO THIS NOT BECAUSE IT IS EASY BUT BECAUSE WE THOUGHT IT WOULD BE EASY
             </h1>
         </div>
+        
+        {/* The right side contains all scrollable content. */}
         <div className="right-column">
             <div className="desktop-button-container">
                 <div className="desktop-controls-group">
@@ -64,7 +68,6 @@ const Team = () => {
                                         <div className="types">
                                             <span className="project-type">{member.role}</span>
                                         </div>
-                                        {/* MODIFIED: Added backticks to the href attribute to fix syntax error */}
                                         <a href={`https://www.instagram.com/${member.insta.substring(1)}/`} target="_blank" rel="noopener noreferrer" className="project-hover">
                                           <svg className="insta-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -79,10 +82,13 @@ const Team = () => {
                     </div>
                 </section>
             </div>
+            {/* The footer is now rendered inside the right column for desktop view. */}
+            <Footer isTeamPage={true} />
         </div>
     </div>
   );
 
+  // Mobile layout remains a single column. The global footer from App.jsx will be used.
   const mobileLayout = (
     <div className="page-container team-page-container">
         <div className="team-tagline-section">
@@ -101,22 +107,24 @@ const Team = () => {
                 <h2 className="team-section-heading">The PoRs</h2>
                 <div className="team-members-list">
                     {teamData.map((member) => (
-                        <div key={member.name} className="team-member-card">
-                           <img src={member.image} alt={member.name} className="member-image" />
-                           <div className="member-details">
-                                <div className="member-name">{member.name}</div>
-                                <div className="member-role-container">
-                                    <div className="member-role">{member.role}</div>
-                                    <a href={`https://www.instagram.com/${member.insta.substring(1)}/`} target="_blank" rel="noopener noreferrer" className="member-contact">
-                                        <svg className="insta-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                        </svg>
+                         <article key={member.name} className="article-wrapper">
+                            <div className="rounded-lg container-project" style={{ backgroundImage: `url(${member.image})` }}></div>
+                            <div className="project-info">
+                                <div className="project-title">{member.name}</div>
+                                <div className="project-bottom-row">
+                                    <div className="types">
+                                        <span className="project-type">{member.role}</span>
+                                    </div>
+                                    <a href={`https://www.instagram.com/${member.insta.substring(1)}/`} target="_blank" rel="noopener noreferrer" className="project-hover">
+                                      <svg className="insta-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                      </svg>
                                     </a>
                                 </div>
-                           </div>
-                        </div>
+                            </div>
+                        </article>
                     ))}
                 </div>
             </section>

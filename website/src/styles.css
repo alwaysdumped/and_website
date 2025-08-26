@@ -173,7 +173,7 @@ body {
 }
 
 body.apply-now-body-bg {
-  background-color: #fbca1f;
+  background-color: #f8f8f8;
 }
 
 /*
@@ -331,11 +331,6 @@ body.apply-now-body-bg {
 
 .footer:not(.footer-team) .footer-links a:hover {
   color: #ff3c78;
-}
-
-.footer.footer-split-layout {
-  width: 45%;
-  margin-left: 55%;
 }
 
 .footer-icon {
@@ -728,29 +723,7 @@ body.apply-now-body-bg {
   display: none;
 }
 
-.team-tagline-section {
-  position: fixed;
-  top: 90px;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30%;
-  height: calc(100vh - 90px);
-  padding: 0 40px;
-}
-
-.contact-tagline {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  font-size: clamp(2.5rem, 6.5vmin, 4.2rem);
-  font-weight: bold;
-  line-height: 1.2;
-  color: #4a90e2;
-}
-
 .team-content-section {
-  margin-left: 30%;
   padding: 100px 40px 60px 40px;
 }
 
@@ -1053,7 +1026,6 @@ body.apply-now-body-bg {
   min-height: 100vh;
   padding: 20px;
   padding-top: 110px;
-  margin-left: 55%;
 }
 
 .apply-now-form {
@@ -1365,7 +1337,8 @@ body.apply-now-body-bg {
 
 @media (max-width: 768px) {
   /* --- Hide desktop elements --- */
-  .desktop-button-container {
+  .desktop-button-container,
+  .apply-now-desktop-nav {
     display: none;
   }
 
@@ -1373,10 +1346,11 @@ body.apply-now-body-bg {
   .page-container {
     padding: 100px 20px 40px;
   }
+
   .team-page-container {
-    padding: 100px 20px 60px;
-    flex-direction: column;
+    padding: 100px 20px 5px;
   }
+  
   .page-container-flush {
     padding-left: 0;
     padding-right: 0;
@@ -1464,7 +1438,6 @@ body.apply-now-body-bg {
   }
 
   /* --- Split Layout Pages (Team & Apply Now) --- */
-  .team-tagline-section,
   .image-section {
     position: relative;
     top: 0;
@@ -1472,100 +1445,78 @@ body.apply-now-body-bg {
     height: auto;
     margin-top: 0;
     padding: 0 20px 60px 20px;
+    border: none;
+    box-shadow: none;
   }
-  .team-content-section,
+
   .form-section {
     width: 100%;
     margin-left: 0;
     padding: 0 10px 60px 10px;
   }
+
   .apply-now-page-container {
     padding: 80px 0 0;
     flex-direction: column;
   }
+  
+  .apply-now-page-container .image-section {
+      height: 200px;
+  }
+
+  .team-tagline-section {
+    padding: 0 0 60px 0;
+  }
+  
   .contact-tagline {
     font-size: 2.5rem;
     text-align: center;
   }
+  
+  .team-content-section {
+    padding: 0;
+  }
+  
   .main-team-photo-wrapper {
     width: 100%;
   }
-  .team-member-card {
+
+  .article-wrapper {
+    display: flex;
+    flex-direction: row;
     align-items: center;
+    gap: 1rem;
     padding: 1rem;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    flex-direction: row;
-    min-height: 140px;
-    gap: 1rem;
   }
-  .member-image {
+  
+  .article-wrapper .container-project {
     width: 100px;
     height: 100px;
-    margin: 0;
     border-radius: 50%;
     flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
   }
-  .member-details {
-    flex: 1;
-    width: auto;
-    height: auto;
-    min-width: 0;
+  
+  .article-wrapper .project-info {
     padding: 0 0.5rem 0 1rem;
-    background-color: transparent;
-    border: none;
     text-align: left;
-    justify-content: flex-start;
   }
-  .member-details .member-role {
-    font-size: clamp(1.1rem, 0.9rem + 1vw, 1.2rem);
-    font-weight: 600;
+  
+  .team-members-list {
+      flex-direction: column;
+      gap: 1.5rem;
   }
-  .member-details .member-name {
-    font-size: clamp(1rem, 0.8rem + 1vw, 1.1rem);
-    font-weight: 500;
-    margin: 4px 0;
-  }
-  .member-role-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .member-contact {
-    min-width: 0;
-  }
-  .team-member-card .insta-icon {
-    width: clamp(1.5rem, 1rem + 2vw, 2rem);
-    height: clamp(1.5rem, 1rem + 2vw, 2rem);
-    flex-shrink: 0;
-  }
-  .member-contact .member-insta-handle {
-    display: none;
-  }
-  .member-contact span {
-    font-size: 0.9rem;
-    overflow-wrap: break-word;
-  }
-  .footer.footer-split-layout {
-    width: 100%;
-    margin-left: 0;
-  }
+
   .footer-links {
     gap: 20px;
     flex-direction: row;
   }
   .footer-links a span {
     display: none;
-  }
-  .apply-now-page-container .image-section {
-    height: 200px;
-    padding: 1px;
-    border: none;
-    box-shadow: none;
-  }
-  .apply-now-page-container .form-section {
-    padding-top: 40px;
   }
 
   /* --- Lightbox --- */
@@ -1603,34 +1554,40 @@ body.apply-now-body-bg {
   }
 
   /* --- Apply Now Page --- */
+  .apply-now-right-column {
+    width: 45%;
+    margin-left: 55%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* MODIFIED: Increased top padding and removed flex-grow */
   .apply-now-page-container .form-section {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center; 
-    padding: 60px 20px;
+    padding: 120px 20px 40px; /* Increased top padding, reduced bottom */
     min-height: initial;
     background-color: transparent;
   }
   
   .apply-now-desktop-nav {
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-  }
-
-  .apply-now-desktop-nav.scrolled {
     position: fixed;
     top: 25px;
-    left: 77.5%; 
-    transform: translateX(-50%);
+    right: 40px;
+    z-index: 10;
   }
 
   .apply-now-page-container .apply-now-form {
     margin: 0;
+  }
+  
+  /* MODIFIED: Pushes the footer to the bottom of the right column */
+  .apply-now-right-column .footer {
+    margin-top: auto;
   }
 
   /* --- Footer --- */
@@ -1643,7 +1600,35 @@ body.apply-now-body-bg {
     font-size: clamp(1rem, 0.8rem + 0.3vw, 1.2rem);
   }
 
-  /* --- Team Page Cards --- */
+  /* --- Team Page --- */
+  .team-tagline-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 35%;
+    height: 100vh;
+    padding: 120px 40px 40px 40px;
+  }
+  
+  .contact-tagline {
+    font-size: clamp(2.5rem, 6.5vmin, 4.2rem);
+    text-align: left;
+  }
+
+  .right-column {
+    width: 65%;
+    margin-left: 35%;
+    min-height: 100vh;
+  }
+
+  .right-column .footer {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
   .team-members-list {
     display: flex;
     flex-direction: row;
@@ -1728,8 +1713,5 @@ body.apply-now-body-bg {
     align-items: center;
     margin-top: auto;
     padding-top: 10px;
-  }
-  .contact-tagline {
-    font-size: clamp(2.5rem, 6.5vmin, 4.2rem);
   }
 }

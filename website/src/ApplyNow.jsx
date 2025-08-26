@@ -1,27 +1,14 @@
 // src/ApplyNow.jsx
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from 'react-router-dom';
 import { ScrollContext } from "./ScrollContext";
+import Footer from './Footer';
 
 const ApplyNow = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { isMobile } = useContext(ScrollContext);
-  const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Set scrolled state to true if user scrolls more than 50px
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    // Add scroll listener when component mounts
-    window.addEventListener('scroll', handleScroll);
-
-    // Clean up listener when component unmounts
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []); // Empty dependency array ensures this runs only once on mount
+  // MODIFIED: Removed the useEffect and useState for 'isScrolled' as the nav is now always fixed.
 
   const [formData, setFormData] = useState({
     name: "",
@@ -81,12 +68,89 @@ const ApplyNow = () => {
     }
   };
 
-  return (
-    <>
-      <title>Apply Now - Arts & Deco</title>
-      <meta name="description" content="Apply to join the Department of Arts & Deco community." />
+  const formContent = (
+    <form className="apply-now-form" onSubmit={handleSubmit}>
+      <div className="title">Apply Now</div>
+      <input className="form-input" placeholder="Name" name="name" type="text" value={formData.name} onChange={handleChange} required />
+      <input className="form-input" name="email" placeholder="Email" type="email" value={formData.email} onChange={handleChange} required />
+      <input className="form-input" name="id" placeholder="ID Number" type="text" value={formData.id} onChange={handleChange} required />
+      <input className="form-input" name="phone" placeholder="Phone" type="tel" value={formData.phone} onChange={handleChange} required />
+      <div className="form-group-condensed">
+        <label>Domain of Interest</label>
+        <div className="checklist">
+          {domainOptions.map((option) => {
+            const optionValue = option.toLowerCase().replace('-', '');
+            return (
+              <div className="checklist-item" key={option}>
+                <input 
+                  value={optionValue} 
+                  name="domain" 
+                  type="checkbox" 
+                  id={optionValue}
+                  checked={formData.domain.includes(optionValue)}
+                  onChange={handleChange}
+                />
+                <label htmlFor={optionValue}>{option}</label>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      {formData.domain.includes('other') && (
+        <input 
+          className="form-input" 
+          name="otherDomain" 
+          placeholder="Please specify your domain" 
+          type="text" 
+          value={formData.otherDomain} 
+          onChange={handleChange} 
+          required 
+        />
+      )}
+      {!isSubmitted ? (
+        <button className="form-btn">Submit</button>
+      ) : (
+        <p className="form-success-message">
+          <svg className="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+          </svg>
+          Application successful!
+        </p>
+      )}
+    </form>
+  );
 
-      <div className="apply-now-page-container">
+  const desktopLayout = (
+    <div className="apply-now-page-container">
+      <div className="image-section">
+        <div 
+          className="image-section-bg" 
+          style={{ backgroundImage: `url('/images/thope.png')` }}
+        ></div>
+        <h1 className="image-section-text">Join Us</h1>
+      </div>
+      
+      <div className="apply-now-right-column">
+        {/* MODIFIED: Removed the dynamic 'scrolled' class */}
+        <div className="apply-now-desktop-nav">
+          <div className="desktop-controls-group">
+            <div className="pre-nav-wrapper">
+              <Link to="/" className="pre-nav-link">Home</Link>
+              <Link to="/#works" className="pre-nav-link">Our Works</Link>
+              <Link to="/team" className="pre-nav-link">Team</Link>
+            </div>
+          </div>
+        </div>
+        <div className="form-section">
+          {formContent}
+        </div>
+        <Footer isApplyNowPage={true} />
+      </div>
+    </div>
+  );
+
+  const mobileLayout = (
+     <div className="apply-now-page-container">
         <div className="image-section">
           <div 
             className="image-section-bg" 
@@ -94,76 +158,17 @@ const ApplyNow = () => {
           ></div>
           <h1 className="image-section-text">Join Us</h1>
         </div>
-
         <div className="form-section">
-          {/* Desktop navigation that becomes sticky on scroll */}
-          {!isMobile && (
-            <div className={`apply-now-desktop-nav ${isScrolled ? 'scrolled' : ''}`}>
-              <div className="desktop-controls-group">
-                <div className="pre-nav-wrapper">
-                  <Link to="/" className="pre-nav-link">Home</Link>
-                  <Link to="/#works" className="pre-nav-link">Our Works</Link>
-                  <Link to="/team" className="pre-nav-link">Team</Link>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <form className="apply-now-form" onSubmit={handleSubmit}>
-            <div className="title">Apply Now</div>
-            
-            <input className="form-input" placeholder="Name" name="name" type="text" value={formData.name} onChange={handleChange} required />
-            <input className="form-input" name="email" placeholder="Email" type="email" value={formData.email} onChange={handleChange} required />
-            <input className="form-input" name="id" placeholder="ID Number" type="text" value={formData.id} onChange={handleChange} required />
-            <input className="form-input" name="phone" placeholder="Phone" type="tel" value={formData.phone} onChange={handleChange} required />
-
-            <div className="form-group-condensed">
-              <label>Domain of Interest</label>
-              <div className="checklist">
-                {domainOptions.map((option) => {
-                  const optionValue = option.toLowerCase().replace('-', '');
-                  return (
-                    <div className="checklist-item" key={option}>
-                      <input 
-                        value={optionValue} 
-                        name="domain" 
-                        type="checkbox" 
-                        id={optionValue}
-                        checked={formData.domain.includes(optionValue)}
-                        onChange={handleChange}
-                      />
-                      <label htmlFor={optionValue}>{option}</label>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            
-            {formData.domain.includes('other') && (
-              <input 
-                className="form-input" 
-                name="otherDomain" 
-                placeholder="Please specify your domain" 
-                type="text" 
-                value={formData.otherDomain} 
-                onChange={handleChange} 
-                required 
-              />
-            )}
-            
-            {!isSubmitted ? (
-              <button className="form-btn">Submit</button>
-            ) : (
-              <p className="form-success-message">
-                <svg className="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                </svg>
-                Application successful!
-              </p>
-            )}
-          </form>
+          {formContent}
         </div>
       </div>
+  );
+
+  return (
+    <>
+      <title>Apply Now - Arts & Deco</title>
+      <meta name="description" content="Apply to join the Department of Arts & Deco community." />
+      {isMobile ? mobileLayout : desktopLayout}
     </>
   );
 };
