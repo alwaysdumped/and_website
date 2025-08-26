@@ -173,7 +173,7 @@ body {
 }
 
 body.apply-now-body-bg {
-  background-color: #f8f8f8;
+  background-color: #fbca1f;
 }
 
 /*
@@ -724,7 +724,7 @@ body.apply-now-body-bg {
 }
 
 .team-content-section {
-  padding: 100px 40px 60px 40px;
+  padding: 100px 40px 20px 40px;
 }
 
 .team-section {
@@ -1562,16 +1562,16 @@ body.apply-now-body-bg {
     flex-direction: column;
   }
   
-  /* MODIFIED: Increased top padding and removed flex-grow */
   .apply-now-page-container .form-section {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center; 
-    padding: 120px 20px 40px; /* Increased top padding, reduced bottom */
+    padding: 120px 20px 40px;
     min-height: initial;
     background-color: transparent;
+    flex-grow: 1;
   }
   
   .apply-now-desktop-nav {
@@ -1585,7 +1585,6 @@ body.apply-now-body-bg {
     margin: 0;
   }
   
-  /* MODIFIED: Pushes the footer to the bottom of the right column */
   .apply-now-right-column .footer {
     margin-top: auto;
   }
@@ -1601,6 +1600,14 @@ body.apply-now-body-bg {
   }
 
   /* --- Team Page --- */
+  .team-members-list {
+    display: grid;
+    /* MODIFIED: Changed grid columns to be fixed-width and aligned left */
+    grid-template-columns: repeat(auto-fill, 260px);
+    justify-content: start;
+    gap: 25px;
+  }
+
   .team-tagline-section {
     position: fixed;
     top: 0;
@@ -1629,14 +1636,6 @@ body.apply-now-body-bg {
     padding-right: 40px;
   }
 
-  .team-members-list {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 60px 40px;
-    align-items: stretch; 
-  }
   .main-team-photo-wrapper {
     width: 90%;
     margin: 0;
