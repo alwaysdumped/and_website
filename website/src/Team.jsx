@@ -64,8 +64,13 @@ const Team = () => {
                                         <div className="types">
                                             <span className="project-type">{member.role}</span>
                                         </div>
+                                        {/* MODIFIED: Added backticks to the href attribute to fix syntax error */}
                                         <a href={`https://www.instagram.com/${member.insta.substring(1)}/`} target="_blank" rel="noopener noreferrer" className="project-hover">
-                                            {/* SVG Icon */}
+                                          <svg className="insta-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                          </svg>
                                         </a>
                                     </div>
                                 </div>
@@ -100,7 +105,6 @@ const Team = () => {
                            <img src={member.image} alt={member.name} className="member-image" />
                            <div className="member-details">
                                 <div className="member-name">{member.name}</div>
-                                {/* MODIFIED: Grouped the role and contact link together */}
                                 <div className="member-role-container">
                                     <div className="member-role">{member.role}</div>
                                     <a href={`https://www.instagram.com/${member.insta.substring(1)}/`} target="_blank" rel="noopener noreferrer" className="member-contact">
