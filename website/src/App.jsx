@@ -170,7 +170,7 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
     if (isHomePage) return isNavbarVisibleOnHome;
     if (isTeamPage) return isTeamPageScrolled;
     if (isWorksPage) return isScrolledOnWorksPage;
-    return true; // Apply Now page navbar should always have the sticky style
+    return true;
   };
 
   let isNavbarButtonVisible;
@@ -202,6 +202,9 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
         <Navbar
           isSticky={isNavbarSticky()}
           isHomePage={isHomePage}
+          isTeamPage={isTeamPage}
+          isApplyNowPage={isApplyNowPage} /* MODIFIED: Pass isApplyNowPage prop */
+          isWorksPage={isWorksPage}       /* MODIFIED: Pass isWorksPage prop */
         />
       ) : (
         !isApplyNowPage && !isTeamPage && (
@@ -253,7 +256,6 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
         <Outlet />
       </main>
       
-      { /* MODIFIED: Hide global footer on desktop for Team and Apply Now pages */ }
       { !(!isMobile && (isTeamPage || isApplyNowPage)) && <Footer isApplyNowPage={isApplyNowPage} isTeamPage={isTeamPage} /> }
 
     </ScrollContext.Provider>

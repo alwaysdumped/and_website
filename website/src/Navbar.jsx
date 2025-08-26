@@ -2,7 +2,8 @@
 import React, { useState, memo } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const Navbar = ({ isSticky, isHomePage }) => {
+// MODIFIED: Accept new props for page detection
+const Navbar = ({ isSticky, isHomePage, isTeamPage, isApplyNowPage, isWorksPage }) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -28,7 +29,8 @@ const Navbar = ({ isSticky, isHomePage }) => {
   
   return (
     <>
-      <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${isHomePage && isSticky ? "home-scroll" : ""}`}>
+      {/* MODIFIED: Apply 'home-scroll' class on all content pages */ }
+      <nav className={`navbar ${isSticky ? "navbar-scrolled" : ""} ${(isHomePage || isTeamPage || isApplyNowPage || isWorksPage) && isSticky ? "home-scroll" : ""}`}>
         <button className={`hamburger-menu ${isMenuOpen ? 'open' : ''}`} onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Open menu">
           <div className="hamburger-line"></div>
           <div className="hamburger-line"></div>

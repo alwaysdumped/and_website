@@ -173,7 +173,7 @@ body {
 }
 
 body.apply-now-body-bg {
-  background-color: #f8f8f8;
+  background-color: #fbca1f;
 }
 
 /*
@@ -423,7 +423,7 @@ body.apply-now-body-bg {
   background: #b2b2fd;
   border: 3px solid black;
   border-radius: 0.4em;
-  box-shadow: 0.1em 0.1em black;
+  box-shadow: 0.1em 0.1em;
 }
 
 .pre-nav-link {
@@ -724,7 +724,7 @@ body.apply-now-body-bg {
 }
 
 .team-content-section {
-  padding: 100px 40px 20px 40px;
+  padding: 100px 40px 60px 40px;
 }
 
 .team-section {
@@ -1348,7 +1348,7 @@ body.apply-now-body-bg {
   }
 
   .team-page-container {
-    padding: 100px 20px 5px;
+    padding: 100px 20px 40px;
   }
   
   .page-container-flush {
@@ -1361,6 +1361,11 @@ body.apply-now-body-bg {
   }
   .page-title {
     font-size: 2.5rem;
+  }
+
+  /* MODIFIED: Make works section height auto to ensure footer is visible */
+  #works {
+    height: auto;
   }
 
   /* --- Navbar & Hamburger Menu --- */
@@ -1427,9 +1432,14 @@ body.apply-now-body-bg {
   .grid-item {
     height: 250px;
   }
-  .grid-text {
-    font-size: 8rem;
+
+  .works-grid .grid-text {
+    font-size: clamp(6rem, 25vw, 10rem);
   }
+  .fest-grid .grid-text {
+    font-size: clamp(5rem, 22vw, 9rem);
+  }
+
   .grid-item .text-image-fill {
     opacity: 1;
   }
@@ -1570,8 +1580,6 @@ body.apply-now-body-bg {
     justify-content: center; 
     padding: 120px 20px 40px;
     min-height: initial;
-    background-color: transparent;
-    flex-grow: 1;
   }
   
   .apply-now-desktop-nav {
@@ -1602,7 +1610,6 @@ body.apply-now-body-bg {
   /* --- Team Page --- */
   .team-members-list {
     display: grid;
-    /* MODIFIED: Changed grid columns to be fixed-width and aligned left */
     grid-template-columns: repeat(auto-fill, 260px);
     justify-content: start;
     gap: 25px;
