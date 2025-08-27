@@ -8,8 +8,6 @@ const ApplyNow = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { isMobile } = useContext(ScrollContext);
 
-  // MODIFIED: Removed the useEffect and useState for 'isScrolled' as the nav is now always fixed.
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -44,11 +42,14 @@ const ApplyNow = () => {
     }
   };
   
-  const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // CORRECTED: This URL now points to your new, correct Firebase project ID.
+    const apiUrl = 'https://us-central1-andbphc-ed23c.cloudfunctions.net/api/api/submit-to-google-sheet';
+
     try {
-      const response = await fetch('http://localhost:3001/api/submit-to-google-sheet', {
+      const response = await fetch(apiUrl, { // Use the new apiUrl
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +132,6 @@ const ApplyNow = () => {
       </div>
       
       <div className="apply-now-right-column">
-        {/* MODIFIED: Removed the dynamic 'scrolled' class */}
         <div className="apply-now-desktop-nav">
           <div className="desktop-controls-group">
             <div className="pre-nav-wrapper">

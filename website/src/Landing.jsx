@@ -6,6 +6,12 @@ import { ScrollContext } from "./ScrollContext";
 const Landing = () => {
   const { showSignupInNav, isMobile } = useContext(ScrollContext);
 
+  // Determine which background image to use based on the isMobile flag.
+  // The isMobile prop comes from the ScrollContext.
+  const landingImage = isMobile
+    ? '/images/and_mobile_landing.PNG'  // <-- Set your new mobile image path here
+    : '/images/and_logo_end1.PNG';  // <-- This is your existing desktop image
+
   const buttonClassName = isMobile
     ? "signup-btn-landing"
     : `signup-btn-landing ${showSignupInNav ? 'hidden' : 'visible'}`;
@@ -15,7 +21,8 @@ const Landing = () => {
       id="home" 
       className="landing"
       style={{ 
-        backgroundImage: `url('/images/and_logo_end1.PNG')`,
+        // Use the new landingImage variable to set the background
+        backgroundImage: `url('${landingImage}')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
