@@ -45,8 +45,7 @@ const ApplyNow = () => {
     const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // CORRECTED: This URL now points to your new, correct Firebase project ID.
-    const apiUrl = 'https://us-central1-andbphc-ed23c.cloudfunctions.net/api/api/submit-to-google-sheet';
+  const apiUrl = '/api/submit-to-google-sheet';
 
     try {
       const response = await fetch(apiUrl, { // Use the new apiUrl

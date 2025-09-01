@@ -9,8 +9,8 @@ const Landing = () => {
   // Determine which background image to use based on the isMobile flag.
   // The isMobile prop comes from the ScrollContext.
   const landingImage = isMobile
-    ? '/images/and_mobile_landing.PNG'  // <-- Set your new mobile image path here
-    : '/images/and_logo_end1.PNG';  // <-- This is your existing desktop image
+    ? '/images/and_mobile_landing.png'  // <-- Set your new mobile image path here
+    : '/images/and_logo_end1.png';  // <-- This is your existing desktop image
 
   const buttonClassName = isMobile
     ? "signup-btn-landing"

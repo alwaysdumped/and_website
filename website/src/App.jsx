@@ -264,8 +264,6 @@ const Layout = ({ isMobile, scrollToWorks, worksRef, whatWeDoRef, landingRef }) 
 
 const HomePageContent = memo(({ worksRef, whatWeDoRef, landingRef }) => (
   <>
-    <title>Arts & Deco</title>
-    <meta name="description" content="Official website for the Department of Arts & Deco." />
     <div id="home" ref={landingRef}>
       <Landing />
     </div>

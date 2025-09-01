@@ -1,71 +1,61 @@
-// backend/functions/server.js
-const functions = require("firebase-functions");
 const express = require('express');
 const { google } = require('googleapis');
 const cors = require('cors');
+const { defineSecret } = require("firebase-functions/params");
+
+const GOOGLE_CLIENT_EMAIL = defineSecret("GOOGLE_CLIENT_EMAIL");
+const GOOGLE_PRIVATE_KEY = defineSecret("GOOGLE_PRIVATE_KEY");
+const GOOGLE_SPREADSHEET_ID = defineSecret("GOOGLE_SPREADSHEET_ID");
 
 const app = express();
-app.use(cors({ origin: true })); // Enable CORS for all origins
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use(cors({ origin: true }));
+app.use(express.json());
 
-// --- Securely get credentials from Firebase environment configuration ---
-// IMPORTANT: You must set these using the Firebase CLI before deploying.
-// See previous instructions on using `firebase functions:config:set`.
-const config = functions.config().google;
-
-// --- Google Sheets Authentication ---
-const auth = new google.auth.GoogleAuth({
-  // Use the credentials set in the Firebase environment config
-  credentials: {
-    client_email: config.client_email,
-    // The private key must have newlines restored
-    private_key: config.private_key.replace(/\\n/g, '\n'),
-  },
-  scopes: 'https://www.googleapis.com/auth/spreadsheets',
-});
-const spreadsheetId = config.spreadsheet_id; // Get Spreadsheet ID from config
-
-// The API endpoint that the React form will send data to
 app.post('/api/submit-to-google-sheet', async (req, res) => {
   const formData = req.body;
-
   try {
+    const client_email = GOOGLE_CLIENT_EMAIL.value();
+    const spreadsheetId = GOOGLE_SPREADSHEET_ID.value();
+    const private_key = GOOGLE_PRIVATE_KEY.value().replace(/\\n/g, '\n');
+
+    const auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: client_email,
+        private_key: private_key,
+      },
+      scopes: 'https://www.googleapis.com/auth/spreadsheets',
+    });
+
+    if (!spreadsheetId || !client_email || !private_key) {
+      throw new Error("Missing required environment variables for Google Sheets API.");
+    }
+
     const authClient = await auth.getClient();
     const googleSheets = google.sheets({ version: 'v4', auth: authClient });
-
-    // --- Prepare Data for Google Sheets ---
-    // Converts the domain array into a comma-separated string
-    const domainString = formData.domain.join(', ');
-
-    // The values to append, matching the order of your sheet headers
+    const domainString = formData.domain ? formData.domain.join(', ') : '';
     const rowValues = [
-      formData.name,
-      formData.email,
-      formData.id,
-      formData.phone,
+      formData.name || '',
+      formData.email || '',
+      formData.id || '',
+      formData.phone || '',
       domainString,
-      formData.otherDomain,
-      new Date().toISOString(), // Adds a timestamp
+      formData.otherDomain || '',
+      new Date().toISOString(),
     ];
-
-    // --- Append Data to the Sheet ---
     await googleSheets.spreadsheets.values.append({
       auth,
       spreadsheetId,
-      range: 'Sheet1!A:G', // The range to append to
+      range: 'Sheet1!A:G',
       valueInputOption: 'USER_ENTERED',
       resource: {
         values: [rowValues],
       },
     });
-
     res.status(200).json({ message: 'Submission successful!' });
   } catch (error) {
-    console.error('Error writing to Google Sheets:', error);
-    res.status(500).json({ message: 'Error submitting to Google Sheets', error });
+    console.error('Detailed Error:', error);
+    res.status(500).json({ message: 'Error submitting to Google Sheets', error: error.message });
   }
 });
 
-// Expose the Express app as a single Cloud Function called "api".
-// This means you do not need app.listen(), as Firebase handles the server.
-exports.api = functions.https.onRequest(app);
+module.exports = app;
